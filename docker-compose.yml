@@ -25,4 +25,3 @@ services:
             POSTGRES_USER: secured123
             POSTGRES_PASSWORD: secured123
             POSTGRES_DB: secured123
-
