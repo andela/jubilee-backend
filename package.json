@@ -48,14 +48,5 @@
     "eslint": "^6.1.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/andela/jubilee-backend.git"
-  },
-  "keywords": [],
-  "bugs": {
-    "url": "https://github.com/andela/jubilee-backend/issues"
-  },
-  "homepage": "https://github.com/andela/jubilee-backend#readme"
+  }
 }
