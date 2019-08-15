@@ -1,30 +1,24 @@
 {
-  "name": "express-authorshaven",
+  "name": "jubilee-backend",
   "version": "1.0.0",
-  "description": "A Social platform for the creative at heart",
+  "description": "[![Reviewed by Hound](https://img.shields.io/badge/ESLint%20Reviewed%20by%20-HoundCI-d16ef5)](https://houndci.com)",
   "main": "index.js",
+  "dependencies": {
+    "dotenv": "^8.0.0"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Andela Simulations Programme",
-  "license": "MIT",
-  "dependencies": {
-    "body-parser": "^1.18.3",
-    "cors": "^2.8.4",
-    "dotenv": "^6.0.0",
-    "ejs": "^2.6.1",
-    "errorhandler": "^1.5.0",
-    "express": "^4.16.3",
-    "express-jwt": "^5.3.1",
-    "express-session": "^1.15.6",
-    "jsonwebtoken": "^8.3.0",
-    "method-override": "^2.3.10",
-    "methods": "^1.1.2",
-    "mongoose": "^5.2.2",
-    "mongoose-unique-validator": "^2.0.1",
-    "passport": "^0.4.0",
-    "passport-local": "^1.0.0",
-    "request": "^2.87.0",
-    "underscore": "^1.9.1"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela/jubilee-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andela/jubilee-backend/issues"
+  },
+  "homepage": "https://github.com/andela/jubilee-backend#readme"
 }
