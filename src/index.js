@@ -18,7 +18,7 @@ const app = express();
 app.use(cors());
 
 // Normal express config defaults
-app.use(require("morgan")("dev"));
+// app.use(require("morgan")("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -38,12 +38,12 @@ if (!isProduction) {
     app.use(errorhandler());
 }
 
-if (isProduction) {
-    mongoose.connect(process.env.MONGODB_URI);
-} else {
-    mongoose.connect("mongodb://localhost/conduit");
-    mongoose.set("debug", true);
-}
+// if (isProduction) {
+//     mongoose.connect(process.env.MONGODB_URI);
+// } else {
+//     mongoose.connect("mongodb://localhost/conduit");
+//     mongoose.set("debug", true);
+// }
 
 require("./models/User");
 
