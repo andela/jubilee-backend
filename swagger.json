@@ -69,8 +69,8 @@
         },
         "/users/login": {
             "post": {
-                "description": "Handles sign in",
-                "summary": "User can sign in",
+                "description": "#",
+                "summary": "#",
                 "tags": [
                     "Auth"
                 ],
