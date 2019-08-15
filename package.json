@@ -1,17 +1,26 @@
 {
-  "name": "express-authorshaven",
+  "name": "jubilee-backend",
   "version": "1.0.0",
-  "description": "A Social platform for the creative at heart",
+  "description": "Barefoot Nomad - Making company travel and accomodation easy and convinient. =======",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Andela Simulations Programme",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela/jubilee-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andela/jubilee-backend/issues"
+  },
+  "homepage": "https://github.com/andela/jubilee-backend#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
-    "dotenv": "^6.0.0",
+    "dotenv": "^8.0.0",
     "ejs": "^2.6.1",
     "errorhandler": "^1.5.0",
     "express": "^4.16.3",
