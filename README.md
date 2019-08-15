@@ -1,3 +1,5 @@
+[![Reviewed by Hound](https://img.shields.io/badge/ESLint%20Reviewed%20by%20-HoundCI-d16ef5)](https://houndci.com)
+
 Barefoot Nomad - Making company travel and accomodation easy and convinient.
 =======
 
