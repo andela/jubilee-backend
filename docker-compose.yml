@@ -3,7 +3,7 @@ version: '3'
 services:
     web_api:
         build: .
-        container_name: jubilee_api
+        container_name: jubilee-backend
         volumes:
             - .:/usr/src/app
             - /usr/src/app/node_modules
@@ -15,7 +15,7 @@ services:
             - "3000:3000"
 
     postgres:
-        container_name: jubilee_api_postgres
+        container_name: jubilee-backend-database
         image: onjin/alpine-postgres:9.6
         restart: unless-stopped
         ports:
