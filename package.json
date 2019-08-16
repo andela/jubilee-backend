@@ -1,8 +1,14 @@
 {
-  "name": "jubilee-backend",
+  "name": "express-authorshaven",
   "version": "1.0.0",
-  "description": "Barefoot Nomad - Making company travel and accomodation easy and convinient.\r =======",
+  "description": "A Social platform for the creative at heart",
   "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon --exec babel-node ./src/index.js"
+  },
+  "author": "Andela Simulations Programme",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
@@ -29,19 +35,16 @@
     "@babel/node": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/register": "^7.5.5",
-    "nodemon": "^1.19.1"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "nodemon --exec babel-node ./src/index.js"
+    "nodemon": "^1.19.1",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/andela/jubilee-backend.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/andela/jubilee-backend/issues"
   },
