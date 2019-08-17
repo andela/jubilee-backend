@@ -4,7 +4,7 @@ dotenv.config();
 
 module.exports = {
   production: {
-    use_env_variable: process.env.DATABASE_URL
+    prodDatabaseURI: process.env.DATABASE_URL
   },
 
   development: {
