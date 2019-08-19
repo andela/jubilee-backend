@@ -2,6 +2,8 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
+import dotenv from 'dotenv';
+dotenv.config();
 
 passport.use(
     new LocalStrategy(
