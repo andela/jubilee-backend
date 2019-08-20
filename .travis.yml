@@ -1,7 +1,12 @@
+sudo: false
 language: node_js
 node_js:
-  - "stable"
+ - "stable"
 services:
   - postgresql
+before_script:
+  - yarn global add nyc
+script:
+ - npm run coveralls
 notifications:
   email: false

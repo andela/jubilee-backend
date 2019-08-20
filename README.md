@@ -1,5 +1,6 @@
 [![Reviewed by Hound](https://img.shields.io/badge/ESLint%20Reviewed%20by%20-HoundCI-d16ef5)](https://houndci.com)
 [![Build Status](https://travis-ci.com/andela/jubilee-backend.svg?branch=develop)](https://travis-ci.com/andela/jubilee-backend)
+[![Coverage Status](https://coveralls.io/repos/github/andela/jubilee-backend/badge.svg?branch=develop)](https://coveralls.io/github/andela/jubilee-backend?branch=develop)
 ___
 
 Barefoot Nomad - Making company travel and accomodation easy and convinient.
