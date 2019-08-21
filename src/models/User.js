@@ -38,8 +38,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  User.associate = models => {
-    // associations can be defined here
+  User.associate = () => {
+    // add model as function parameter and define associations here
   };
   return User;
 };
