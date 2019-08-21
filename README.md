@@ -13,7 +13,7 @@ Make company global travel and accommodation easy and convenient for the strong 
 
 This project is bootstraped using Docker, Docker must be installed on your machine. Download [Docker](https://docs.docker.com/docker-for-windows/install/)
 
-###Technology
+## Technology
 - Node 10.15.0
 - Persists data to Postgres
 
