@@ -38,7 +38,6 @@ if (!isProduction) {
 }
 
 
-require("./models/User");
 
 app.use(require("./routes"));
 

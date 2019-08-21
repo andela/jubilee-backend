@@ -4,7 +4,6 @@ import swaggerDocument from '../../../swagger.json';
 
 const router = Router();
 
-router.use('/', require('./users'));
 
 router.use((err, req, res, next) => {
   if (err.name === 'ValidationError') {
