@@ -1,90 +1,106 @@
-'use strict';
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Users', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      firstName: {
-        type: Sequelize.STRING
-      },
-      lastName: {
-        type: Sequelize.STRING
-      },
-      birthdate: {
-        type: Sequelize.DATE
-      },
-      preferredLanguage: {
-        type: Sequelize.STRING
-      },
-      preferredCurrency: {
-        type: Sequelize.STRING
-      },
-      email: {
-        type: Sequelize.STRING
-      },
-      gender: {
-        type: Sequelize.STRING
-      },
-      street: {
-        type: Sequelize.STRING
-      },
-      city: {
-        type: Sequelize.STRING
-      },
-      state: {
-        type: Sequelize.STRING
-      },
-      country: {
-        type: Sequelize.STRING
-      },
-      zip: {
-        type: Sequelize.STRING
-      },
-      phoneNumber: {
-        type: Sequelize.STRING
-      },
-      companyName: {
-        type: Sequelize.STRING
-      },
-      password: {
-        type: Sequelize.STRING
-      },
-      role: {
-        type: Sequelize.STRING
-      },
-      isVerified: {
-        type: Sequelize.BOOLEAN
-      },
-      email: {
-        type: Sequelize.STRING
-      },
-      facebookId: {
-        type: Sequelize.STRING
-      },
-      googleId: {
-        type: Sequelize.STRING
-      },
-      department: {
-        type: Sequelize.STRING
-      },
-      lineManager: {
-        type: Sequelize.STRING
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
-  },
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Users');
-  }
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Users', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.INTEGER
+    },
+    firstName: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    birthdate: {
+      type: Sequelize.DATE,
+      allowNull: true,
+    },
+    preferredLanguage: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      defaultValue: 'EN'
+    },
+    preferredCurrency: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: 'dollar'
+    },
+    email: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    gender: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    street: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    city: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    state: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    country: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    zip: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    phoneNumber: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    companyName: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    role: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    isVerified: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    facebookId: {
+      type: Sequelize.STRING,
+      allowNull: true,
+    },
+    googleId: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    department: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    lineManager: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    createdAt: {
+      allowNull: false,
+      type: Sequelize.DATE
+    },
+    updatedAt: {
+      allowNull: false,
+      type: Sequelize.DATE
+    }
+  }),
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('Users')
 };

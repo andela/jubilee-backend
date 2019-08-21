@@ -1,30 +1,44 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    birthdate: DataTypes.DATE,
-    preferredLanguage: DataTypes.STRING,
-    preferredCurrency: DataTypes.STRING,
-    email: DataTypes.STRING,
-    gender: DataTypes.STRING,
-    street: DataTypes.STRING,
-    city: DataTypes.STRING,
-    state: DataTypes.STRING,
-    country: DataTypes.STRING,
-    zip: DataTypes.STRING,
-    phoneNumber: DataTypes.STRING,
-    companyName: DataTypes.STRING,
-    password: DataTypes.STRING,
-    role: DataTypes.STRING,
-    isVerified: DataTypes.BOOLEAN,
-    email: DataTypes.STRING,
-    facebookId: DataTypes.STRING,
-    googleId: DataTypes.STRING,
-    department: DataTypes.STRING,
-    lineManager: DataTypes.STRING
-  }, {});
-  User.associate = function(models) {
+  const User = sequelize.define(
+    'User',
+    {
+      firstName: { type: DataTypes.STRING, allowNull: false },
+      lastName: { type: DataTypes.STRING, allowNull: false },
+      birthdate: { type: DataTypes.DATE, allowNull: true },
+      preferredLanguage: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'EN'
+      },
+      preferredCurrency: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'dollar'
+      },
+      email: { type: DataTypes.STRING, allowNull: false },
+      gender: { type: DataTypes.STRING, allowNull: false },
+      street: { type: DataTypes.STRING, allowNull: true },
+      city: { type: DataTypes.STRING, allowNull: true },
+      state: { type: DataTypes.STRING, allowNull: true },
+      country: { type: DataTypes.STRING, allowNull: false },
+      zip: { type: DataTypes.STRING, allowNull: true },
+      phoneNumber: { type: DataTypes.STRING, allowNull: false },
+      companyName: { type: DataTypes.STRING, allowNull: false },
+      password: { type: DataTypes.STRING, allowNull: true },
+      role: { type: DataTypes.STRING, allowNull: true },
+      isVerified: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      facebookId: { type: DataTypes.STRING, allowNull: true },
+      googleId: { type: DataTypes.STRING, allowNull: true },
+      department: { type: DataTypes.STRING, allowNull: true },
+      lineManager: { type: DataTypes.STRING, allowNull: true }
+    },
+    {}
+  );
+  User.associate = models => {
     // associations can be defined here
   };
   return User;
