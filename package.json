@@ -6,7 +6,10 @@
   "scripts": {
     "test": "mocha --timeout 10000 -c test --require @babel/register --exit",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
-    "start:dev": "nodemon --exec babel-node ./src/index.js"
+    "start:dev": "nodemon --exec babel-node ./src/index.js",
+    "migrate:reset": "sequelize-cli db:migrate:undo:all",
+    "migrate": "babel-node ./node_modules/.bin/sequelize db:migrate"
+
   },
   "repository": {
     "type": "git",
