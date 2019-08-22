@@ -6,7 +6,6 @@ services:
         container_name: jubilee-backend
         volumes:
             - .:/usr/src/app
-            - /usr/src/app/node_modules
         depends_on:
             - postgres
         env_file:
