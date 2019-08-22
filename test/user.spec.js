@@ -17,24 +17,23 @@ describe('Auth route', () => {
   });
 
   describe('Signup route', () => {
-    it('should signup successfully with a status of 201', () => {
+    it('should signup successfully with a status of 201', async () => {
       const user = {
-        email: 'sjohndoe@yahoo.com',
+        email: 'johndoe@yahoo.com',
         firstName: 'John',
         lastName: 'Doe',
         password: 'qwertyuiop1234',
         companyName: 'Andela',
         country: 'Nigeria',
-        gender: 'male',
-        is_admin: false
+        gender: 'male'
       };
 
-      const response = request.post('/api/auth/signup').send(user);
+      const response = await request.post('/api/auth/signup').send(user);
       expect(response.body.status).to.equal(201);
-      expect(response.body).to.be.a('object');
-      expect(response.body.token).to.be.a('string');
-      expect(response.body.firstName).to.equal('Segun');
-      expect(response.body.lastName).to.equal('Ogundipe');
+      expect(response.body.data).to.be.a('object');
+      expect(response.body.data.token).to.be.a('string');
+      expect(response.body.data.firstName).to.equal('John');
+      expect(response.body.data.lastName).to.equal('Doe');
     });
   });
 });
