@@ -15,6 +15,7 @@ export default class UserService {
   static async create(user) {
     try {
       user.password = hashSync(user.password, genSaltSync(10));
+      console.log(database);
       return await database.User.create(user);
     } catch (error) {
       console.log(error);
