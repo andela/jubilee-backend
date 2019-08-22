@@ -26,7 +26,7 @@ module.exports = {
     preferredCurrency: {
       type: Sequelize.STRING,
       allowNull: false,
-      defaultValue: 'dollar'
+      defaultValue: 'Naira'
     },
     email: {
       type: Sequelize.STRING,
@@ -34,7 +34,7 @@ module.exports = {
     },
     gender: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     street: {
       type: Sequelize.STRING,
@@ -58,7 +58,7 @@ module.exports = {
     },
     phoneNumber: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     companyName: {
       type: Sequelize.STRING,
@@ -71,6 +71,7 @@ module.exports = {
     role: {
       type: Sequelize.STRING,
       allowNull: false,
+      defaultValue: 'user'
     },
     isVerified: {
       type: Sequelize.BOOLEAN,
