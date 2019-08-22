@@ -35,7 +35,6 @@ describe('Auth route', () => {
       };
 
       const response = await request.post('/api/auth/signup').send(user);
-      console.log('response', response.body);
       expect(response.body.status).to.equal(201);
       expect(response.body.data).to.be.a('object');
       expect(response.body.data.token).to.be.a('string');
