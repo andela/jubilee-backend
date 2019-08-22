@@ -38,8 +38,8 @@ describe('Auth route', () => {
       expect(response.body.status).to.equal(201);
       expect(response.body.data).to.be.a('object');
       expect(response.body.data.token).to.be.a('string');
-      expect(response.body.data.firstName).to.equal('John');
-      expect(response.body.data.lastName).to.equal('Doe');
+      expect(response.body.data.firstName).to.be.a('string');
+      expect(response.body.data.lastName).to.be.a('string');
     });
   });
 });
