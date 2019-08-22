@@ -1,26 +1,29 @@
 version: '3'
 
 services:
-    web_api:
-        build: .
-        container_name: jubilee-backend
-        volumes:
-            - .:/usr/src/app
-        depends_on:
-            - postgres
-        env_file:
-            - .env
-        ports:
-            - "3000:3000"
+  web_api:
+    build: .
+    container_name: jubilee-backend
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    environment:
+      DATABASE_URL_DEV: postgres
 
-    postgres:
-        container_name: jubilee-backend-database
-        image: onjin/alpine-postgres:9.6
-        restart: unless-stopped
-        ports:
-            - "5432:5432"
-        environment:
-            LC_ALL: C.UTF-8
-            POSTGRES_USER: secured123
-            POSTGRES_PASSWORD: secured123
-            POSTGRES_DB: secured123
+  postgres:
+    container_name: jubilee-backend-database
+    image: onjin/alpine-postgres:9.6
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      LC_ALL: C.UTF-8
+      POSTGRES_USER: secured123
+      POSTGRES_PASSWORD: secured123
+      POSTGRES_DB: secured123

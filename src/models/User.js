@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       preferredCurrency: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: 'dollar'
+        defaultValue: 'Naira'
       },
-      email: { typ: DataTypes.STRING, allowNull: false },
+      email: { type: DataTypes.STRING, allowNull: false },
       gender: { type: DataTypes.STRING, allowNull: true },
       street: { type: DataTypes.STRING, allowNull: true },
       city: { type: DataTypes.STRING, allowNull: true },
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       phoneNumber: { type: DataTypes.STRING, allowNull: true },
       companyName: { type: DataTypes.STRING, allowNull: false },
       password: { type: DataTypes.STRING, allowNull: true },
-      role: { type: DataTypes.STRING, allowNull: true },
+      role: { type: DataTypes.STRING, allowNull: false, defaultValue: 'user' },
       isVerified: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
