@@ -12,7 +12,6 @@ const isProduction = env.NODE_ENV === 'production';
 // Create global app object
 const app = express();
 
-app.use(cors());
 
 // Normal express config defaults
 app.use(morgan('dev'));
