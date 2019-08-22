@@ -1,4 +1,4 @@
-import { hashSync, genSaltSync } from 'bcrypt';
+import { hashSync, genSaltSync } from 'bcryptjs';
 import ApiError from '../utils/index';
 import { database } from '../models/User';
 
