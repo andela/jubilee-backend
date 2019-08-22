@@ -6,7 +6,7 @@ import database from '../models';
  */
 export default class UserService {
   /**
-   * Save user in the database
+   * Saves user in the database
    *
    * @param {object} user - The user to be saved in the database
    * @returns {Promise<object>} A promise object with user detail.
