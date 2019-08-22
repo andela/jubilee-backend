@@ -1,5 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import faker from 'faker';
 import app from '../src/index';
 
 chai.use(chaiHttp);
@@ -19,13 +20,18 @@ describe('Auth route', () => {
   describe('Signup route', () => {
     it('should signup successfully with a status of 201', async () => {
       const user = {
-        email: 'johndoe@yahoo.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        password: 'qwertyuiop1234',
-        companyName: 'Andela',
-        country: 'Nigeria',
-        gender: 'male'
+        email: faker.internet.email(),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+        password: faker.internet.password(15, false),
+        companyName: faker.company.companyName(),
+        country: faker.address.country(),
+        gender: 'male',
+        street: faker.address.streetAddress(),
+        city: faker.address.city(),
+        state: faker.address.state(),
+        birthdate: faker.date.past(),
+        phoneNumber: faker.phone.phoneNumber()
       };
 
       const response = await request.post('/api/auth/signup').send(user);
