@@ -1,8 +1,9 @@
+
 /**
  * A collection of methods that controls user's interaction via the User routes
  *
- * @class UserController
+ * @class User
  */
-class UserController {}
+class User {}
 
-export default UserController;
+export default User;

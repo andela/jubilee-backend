@@ -1,3 +1,7 @@
-import UserController from './UserController';
+import User from './UserController';
+import Auth from './AuthController';
 
-export default UserController;
+export {
+  Auth,
+  User
+};
