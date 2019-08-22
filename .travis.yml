@@ -2,16 +2,12 @@ sudo: false
 language: node_js
 node_js:
  - "stable"
- env:
-  global:
-    - export NODE_ENV=test
 services:
   - postgresql
 before_script:
   - yarn global add nyc
-  - psql -c 'create database haventest;' -U postgres
+  - psql -c 'create database jubilee_test;' -U postgres
 script:
- - npm run test
  - npm run coveralls
 notifications:
   email: false
