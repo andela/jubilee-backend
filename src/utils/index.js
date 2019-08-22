@@ -1,3 +1,4 @@
 import ApiError from './ApiError';
+import ApiResponse from './ApiResponse';
 
-export default ApiError;
+export { ApiError, ApiResponse };
