@@ -1,6 +1,6 @@
 const response = (responseObject, data, code) => {
   const res = responseObject;
-  if (code >= 400) {
+  if (typeof data === 'string') {
     return res.status(code).json({
       status: code,
       error: `${data}`,
