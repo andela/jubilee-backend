@@ -1,6 +1,6 @@
-import ApiError from '../utils/index';
 import { hashSync, genSaltSync } from 'bcrypt';
-import database from '../models/User';
+import ApiError from '../utils/index';
+import { database } from '../models/User';
 
 /**
  * UserService class, interface for UserModel
@@ -17,6 +17,7 @@ export default class UserService {
       user.password = hashSync(user.password, genSaltSync(10));
       return await database.User.create(user);
     } catch (error) {
+      console.log(error);
       throw new ApiError(500, error.message);
     }
   }
