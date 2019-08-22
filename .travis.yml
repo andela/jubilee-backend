@@ -11,6 +11,7 @@ before_script:
   - yarn global add nyc
   - psql -c 'create database haventest;' -U postgres
 script:
+ - npm run test
  - npm run coveralls
 notifications:
   email: false
