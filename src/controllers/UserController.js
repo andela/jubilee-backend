@@ -22,9 +22,8 @@ export default class UserController {
       createdUser.token = generatedToken;
       res.status(201).json(new ApiResponse(true, 201, createdUser));
     } catch (error) {
-      res
-        .status(error.status || 500)
-        .json(new ApiResponse(false, error.status || 500, error.message));
+      const status = error.status || 500;
+      res.status(status).json(new ApiResponse(false, status, error.message));
     }
   }
 }

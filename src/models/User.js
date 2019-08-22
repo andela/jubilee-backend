@@ -15,7 +15,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 'Naira'
       },
-      email: { type: DataTypes.STRING, allowNull: false },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        isEmail: true,
+        unique: true
+      },
       gender: { type: DataTypes.STRING, allowNull: true },
       street: { type: DataTypes.STRING, allowNull: true },
       city: { type: DataTypes.STRING, allowNull: true },
