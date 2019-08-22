@@ -21,6 +21,7 @@ export default class UserController {
       res.status(201).json(new ApiResponse(true, 201, userResponse));
     } catch (error) {
       const status = error.status || 500;
+      console.log('error', error);
       res.status(status).json(new ApiResponse(false, status, error.message));
     }
   }
