@@ -1,6 +1,7 @@
-import UserService from '../services/index';
-import { ApiResponse, UserResponse } from '../utils/index';
+import UserService from '../services';
+import { ApiResponse, UserResponse } from '../utils';
 
+const { userLogin } = UserService;
 /**
  * User controller class that implements crud operation in the database
  */
@@ -19,6 +20,22 @@ export default class UserController {
       const createdUser = await UserService.create(user);
       const userResponse = new UserResponse(createdUser);
       res.status(201).json(new ApiResponse(true, 201, userResponse));
+    } catch (error) {
+      const status = error.status || 500;
+      res.status(status).json(new ApiResponse(false, status, error.message));
+    }
+  }
+
+  /**
+  *  Login an existing user
+  * 
+  * @param {object} req request object
+  * @param {object} res reponse object
+  * @returns {object} JSON response
+  */
+  static async loginUser(req, res) {
+    try {
+      return await userLogin(req.body, res);
     } catch (error) {
       const status = error.status || 500;
       res.status(status).json(new ApiResponse(false, status, error.message));

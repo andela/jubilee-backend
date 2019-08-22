@@ -1,12 +1,14 @@
 import express from 'express';
-import cors from 'cors';
 import morgan from 'morgan';
 import routes from './routes';
+
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors());
+
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -17,6 +19,35 @@ app.get('/', (req, res) =>
   res.status(200).send({ message: 'welcome to BN: jubilee-team' })
 );
 app.all('*', (req, res) => res.send({ message: 'route not found' }));
+
+// error handlers
+
+// development error handler
+// will print stacktrace
+if (!isProduction) {
+  app.use((err, req, res, next) => {
+    console.log(err.stack);
+    res.status(err.status || 500);
+    res.json({
+      errors: {
+        message: err.message,
+        error: err
+      }
+    });
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.json({
+    errors: {
+      message: err.message,
+      error: {}
+    }
+  });
+});
 
 app.listen(port, () => {
   console.info(`Listening on port ${port}`);
