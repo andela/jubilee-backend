@@ -9,7 +9,6 @@
     "start:dev": "nodemon --exec babel-node ./src/index.js",
     "migrate:reset": "babel-node ./node_modules/.bin/sequelize db:migrate:undo:all",
     "migrate": "babel-node ./node_modules/.bin/sequelize db:migrate"
-
   },
   "repository": {
     "type": "git",
