@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/andela/jubilee-backend#readme",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "dotenv": "^8.0.0",

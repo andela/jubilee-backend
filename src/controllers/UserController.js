@@ -1,8 +1,8 @@
-import UserService from '../services/index';
+import { UserService } from '../services/index';
 import { ApiResponse } from '../utils/index';
 
 /**
- * Controller class for performing crud operation in the database
+ * User controller class that implements crud operation in the database
  */
 export default class UserController {
   /**
