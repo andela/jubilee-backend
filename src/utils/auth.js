@@ -36,6 +36,16 @@ class Auth {
   static generateToken(payload, secret = sCrypt, duration = '7d') {
     return jwt.sign(payload, secret, { expiresIn: duration });
   }
+
+  /**
+   * @description  Verifies and decodes the access token
+   * @param {string} token  Access token
+   * @param {string} secret decryption key
+   * @returns {object} Decoded Access token
+   */
+  static verifyToken(token, secret = sCrypt) {
+    return jwt.verify(token, secret);
+  }
 }
 
 export default Auth;
