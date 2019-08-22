@@ -1,5 +1,6 @@
 import { UserService } from '../services/index';
 import { ApiResponse } from '../utils/index';
+import { TokenMiddleware } from '../middlewares/index';
 
 /**
  * User controller class that implements crud operation in the database
@@ -17,6 +18,8 @@ export default class UserController {
       const user = req.body;
 
       const createdUser = await UserService.create(user);
+      const generatedToken = TokenMiddleware.generateToken(createdUser.email);
+      createdUser.token = generatedToken;
       res.status(201).json(new ApiResponse(true, 201, createdUser));
     } catch (error) {
       res
