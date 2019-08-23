@@ -1,57 +1,50 @@
-const mongoose = require("mongoose");
-const uniqueValidator = require("mongoose-unique-validator");
-const crypto = require("crypto");
-const secret = require("../config").secret;
-
-const UserSchema = new mongoose.Schema(
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define(
+    'User',
     {
-        username: {
-            type: String,
-            lowercase: true,
-            unique: true,
-            required: [true, "can't be blank"],
-            match: [/^[a-zA-Z0-9]+$/, "is invalid"],
-            index: true
-        },
-        email: {
-            type: String,
-            lowercase: true,
-            unique: true,
-            required: [true, "can't be blank"],
-            match: [/\S+@\S+\.\S+/, "is invalid"],
-            index: true
-        },
-        bio: String,
-        image: String,
-        favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Article" }],
-        following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-        hash: String,
-        salt: String
+      firstName: { type: DataTypes.STRING, allowNull: false },
+      lastName: { type: DataTypes.STRING, allowNull: false },
+      birthdate: { type: DataTypes.DATE, allowNull: true },
+      preferredLanguage: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'EN'
+      },
+      preferredCurrency: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'Naira'
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        isEmail: true,
+        unique: true
+      },
+      gender: { type: DataTypes.STRING, allowNull: true },
+      street: { type: DataTypes.STRING, allowNull: true },
+      city: { type: DataTypes.STRING, allowNull: true },
+      state: { type: DataTypes.STRING, allowNull: true },
+      country: { type: DataTypes.STRING, allowNull: false },
+      zip: { type: DataTypes.STRING, allowNull: true },
+      phoneNumber: { type: DataTypes.STRING, allowNull: true },
+      companyName: { type: DataTypes.STRING, allowNull: false },
+      password: { type: DataTypes.STRING, allowNull: true },
+      role: { type: DataTypes.STRING, allowNull: false, defaultValue: 'user' },
+      isVerified: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      facebookId: { type: DataTypes.STRING, allowNull: true },
+      googleId: { type: DataTypes.STRING, allowNull: true },
+      department: { type: DataTypes.STRING, allowNull: true },
+      lineManager: { type: DataTypes.STRING, allowNull: true }
     },
-    { timestamps: true }
-);
-
-UserSchema.plugin(uniqueValidator, { message: "is already taken." });
-
-UserSchema.methods.validPassword = function(password) {
-    const hash = crypto
-        .pbkdf2Sync(password, this.salt, 10000, 512, "sha512")
-        .toString("hex");
-    return this.hash === hash;
+    {}
+  );
+  User.associate = () => {
+    // add model as function parameter and define associations here
+  };
+  return User;
 };
-
-UserSchema.methods.setPassword = function(password) {
-    this.salt = crypto.randomBytes(16).toString("hex");
-    this.hash = crypto
-        .pbkdf2Sync(password, this.salt, 10000, 512, "sha512")
-        .toString("hex");
-};
-
-UserSchema.methods.toAuthJSON = function() {
-    return {
-        username: this.username,
-        email: this.email
-    };
-};
-
-mongoose.model("User", UserSchema);

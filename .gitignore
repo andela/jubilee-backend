@@ -92,4 +92,7 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
+# Prettier
+.prettierrc.yaml
+
 # End of https://www.gitignore.io/api/node

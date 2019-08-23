@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../../../swagger.json';
+import userRouter from './users';
 
 const router = Router();
 
-router.use('/', require('./users'));
+// Auth routes
+router.use('/', userRouter);
 
 router.use((err, req, res, next) => {
   if (err.name === 'ValidationError') {
