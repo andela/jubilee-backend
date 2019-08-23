@@ -4,9 +4,12 @@
   "description": "Barefoot Nomad - Making company travel and accomodation easy and convinient. =======",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --timeout 10000 -c test --require @babel/register --exit",
+    "test": "nyc --reporter=html --reporter=text mocha --timeout 10000 -c test --require @babel/register --exit",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
-    "start:dev": "nodemon --exec babel-node ./src/index.js"
+    "start:dev": "nodemon --exec babel-node ./src/index.js",
+    "migrate": "sequelize db:migrate",
+    "migrate:reset": "sequelize db:migrate:undo:all",
+    "seed": "sequelize db:seed:all"
   },
   "repository": {
     "type": "git",
@@ -20,7 +23,8 @@
   },
   "homepage": "https://github.com/andela/jubilee-backend#readme",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "@babel/polyfill": "^7.4.4",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "dotenv": "^8.0.0",
@@ -40,7 +44,8 @@
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "request": "^2.87.0",
-    "sequelize": "^5.15.0",
+    "sequelize": "^5.16.0",
+    "sequelize-cli": "^5.5.0",
     "swagger-ui-express": "^4.0.7",
     "underscore": "^1.9.1"
   },

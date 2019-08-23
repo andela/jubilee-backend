@@ -1,31 +1,44 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    firstName: {
+    firstName: { type: DataTypes.STRING, allowNull: false },
+    lastName: { type: DataTypes.STRING, allowNull: false },
+    birthdate: { type: DataTypes.DATE, allowNull: true },
+    preferredLanguage: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: 'EN'
     },
-    lastName: {
+    preferredCurrency: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: 'Naira'
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      isEmail: true,
+      unique: true
     },
-    password: {
-      type: DataTypes.STRING,
+    gender: { type: DataTypes.STRING, allowNull: true },
+    street: { type: DataTypes.STRING, allowNull: true },
+    city: { type: DataTypes.STRING, allowNull: true },
+    state: { type: DataTypes.STRING, allowNull: true },
+    country: { type: DataTypes.STRING, allowNull: false },
+    zip: { type: DataTypes.STRING, allowNull: true },
+    phoneNumber: { type: DataTypes.STRING, allowNull: true },
+    companyName: { type: DataTypes.STRING, allowNull: false },
+    password: { type: DataTypes.STRING, allowNull: true },
+    role: { type: DataTypes.STRING, allowNull: false, defaultValue: 'user' },
+    isVerified: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: false
     },
-    phoneNo: DataTypes.INTEGER,
-    company: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    role: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    }
+    facebookId: { type: DataTypes.STRING, allowNull: true },
+    googleId: { type: DataTypes.STRING, allowNull: true },
+    department: { type: DataTypes.STRING, allowNull: true },
+    lineManager: { type: DataTypes.STRING, allowNull: true }
   }, {});
   return User;
 };

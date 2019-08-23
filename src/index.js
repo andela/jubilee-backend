@@ -1,6 +1,6 @@
 import morgan from 'morgan';
 import express from 'express';
-import userRoutes from './routes/api/users';
+import routes from './routes';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -16,7 +16,7 @@ app.use(express.json());
 
 require('./models/User');
 
-app.use(userRoutes);
+app.use(routes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -60,3 +60,5 @@ app.use((err, req, res, next) => {
 const server = app.listen(process.env.PORT || 3000, () => {
   console.log(`Listening on port ${server.address().port}`);
 });
+
+export default server;
