@@ -30,6 +30,7 @@ export default class userValidation {
      * @returns {object} - returns an object (error or response).
      */
   static signup(req, res, next) {
+    // joi parameters to test against user inputs
     const schema = {
       firstName: joi.string().min(3).max(15).required()
         .label('first name is too short'),
@@ -41,9 +42,13 @@ export default class userValidation {
         .label('invalid password format'),
       gender: joi.string().valid('male', 'female').required()
         .label('please input gender'),
-      city: joi.string().min(5).max(20).required()
+      street: joi.string().min(5).max(20).required()
+        .label('please input a street'),
+      city: joi.string().min(3).max(20).required()
         .label('please input a city'),
-      country: joi.string().min(5).max(15).required()
+      state: joi.string().min(3).max(20).required()
+        .label('please input a state'),
+      country: joi.string().min(3).max(15).required()
         .label('please input a country'),
       birthdate: joi.date().iso().required()
         .label('please input a valid date format'),
@@ -52,6 +57,7 @@ export default class userValidation {
       companyName: joi.string().min(3).max(15).required()
         .label('please add your company name'),
     };
+    // Once user inputs are validated, move into server
     const { error } = joi.validate({ ...req.body }, schema);
     if (!error) next();
     else {

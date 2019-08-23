@@ -1,6 +1,7 @@
+// Response function for error / success returns
 const response = (responseObject, data, code) => {
   const res = responseObject;
-  if (typeof data === 'string') {
+  if (code >= 400) {
     return res.status(code).json({
       status: code,
       error: `${data}`,
