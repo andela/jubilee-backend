@@ -2,6 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import faker from 'faker';
 import app from '../src/index';
+import database from '../src/models';
 
 chai.use(chaiHttp);
 
@@ -11,9 +12,12 @@ let request;
 describe('Auth route', () => {
   before(() => {
     request = chai.request(app).keepOpen();
+    database.sequelize.sync({ force: true });
   });
 
   after(() => {
+    database.sequelize.drop();
+    database.sequelize.sync();
     request.close();
   });
 

@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
-// import dotenv from 'dotenv';
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
 
 import sequelizeConfig from '../config/config';
 
