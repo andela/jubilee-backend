@@ -10,14 +10,14 @@ const { expect } = chai;
 let request;
 
 describe('Auth route', () => {
-  before(() => {
+  before(async () => {
     request = chai.request(app).keepOpen();
-    database.sequelize.sync({ force: true });
+    await database.sequelize.sync({ force: true });
   });
 
-  after(() => {
-    database.sequelize.drop();
-    database.sequelize.sync();
+  after(async () => {
+    await database.sequelize.drop();
+    await database.sequelize.sync();
     request.close();
   });
 
