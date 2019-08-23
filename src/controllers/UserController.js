@@ -1,4 +1,4 @@
-import { UserService } from '../services/index';
+import UserService from '../services/index';
 import { ApiResponse, UserResponse } from '../utils/index';
 
 /**

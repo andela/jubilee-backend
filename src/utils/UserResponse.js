@@ -1,4 +1,4 @@
-import { TokenMiddleware } from '../middlewares/index';
+import TokenMiddleware from '../middlewares/index';
 
 /**
  * Model response for user detail
