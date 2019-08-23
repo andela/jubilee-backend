@@ -10,13 +10,12 @@ export default class ApiResponse {
    * @param {number} status - The status code of the response
    * @param {object | array | string } data - The response data
    */
-  constructor(success, status, data) {
+  constructor(success, status, data = 'A server error prevented your request from being completed') {
     this.status = status || 500;
     if (success) {
       this.data = data;
     } else {
-      this.message = data || 
-      'A server error prevented your request from being completed';
+      this.message = data;
     }
   }
 }

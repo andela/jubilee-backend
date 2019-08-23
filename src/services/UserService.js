@@ -17,26 +17,24 @@ export default class UserService {
    */
   static async create(user) {
     user.password = hashPassword(user.password);
-    const { dataValues: user } = await User.create(user);
-    return user;
+    const { dataValues: newUser } = await User.create(user);
+    return newUser;
   }
- /**
+
+  /**
    *
    * updates an existing user by ID
    * @static
    * @param {object} userData user properties to be updated
     * @param {string} id user id
-   * @returns {Promise<object | null> } an object containing the updated properties of
-   * a the user on success or a null value if update fails
+   * @returns {Promise<object | null | string> } an object containing the updated
+   * properties of the user is returned on success
+   * or a null value if update fails, and an error message if a user is not found
    * @memberof UserService
    */
   static async updateById(userData, id) {
-    try {
-      const [, [user]] = await User.update(userData, { returning: true, where: { id } });
-      return user;
-    } catch (e) {
-      return null;
-    }
+    const [rowaffected, [user]] = await User.update(userData, { returning: true, where: { id } });
+    if (!rowaffected) throw new Error('Not Found');
+    return user;
   }
-  
 }

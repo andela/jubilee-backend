@@ -36,7 +36,7 @@ class Helpers {
     try {
       return jwt.verify(token, SECRET);
     } catch (err) {
-      return 'Invalid Token';
+      throw new Error('Invalid Token');
     }
   }
 
@@ -54,7 +54,7 @@ class Helpers {
   static generateVerificationLink(req, { id, firstName, role }) {
     const token = Helpers.generateToken({ id, firstName, role });
     const host = req.hostname === 'localhost' ? `${req.hostname}:${PORT}` : req.hostname;
-    return `${req.protocol}://${host}/api/auth/verify/${token}`;
+    return `${req.protocol}://${host}/api/auth/verify?token=${token}`;
   }
 
   /**
@@ -65,7 +65,7 @@ class Helpers {
  * @returns {string} - Encrypted password.
  */
   static hashPassword(password) {
-    return bcrypt.hashSync(password, 10)
+    return bcrypt.hashSync(password, 10);
   }
 
   /**
@@ -76,10 +76,9 @@ class Helpers {
  * @memberof Helpers
  * @returns {boolean} - returns true if there is a match and false otherwise.
  */
-static comparePassword (password, hash){
-  bcrypt.compareSync(password, hash);
-}
-
+  static comparePassword(password, hash) {
+    return bcrypt.compareSync(password, hash);
+  }
 }
 
 export default Helpers;
