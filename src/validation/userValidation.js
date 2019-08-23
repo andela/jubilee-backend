@@ -4,13 +4,13 @@ import response from '../utils';
 
 // password complexity object
 const complexityOPtions = {
-  min: 5,
+  min: 8,
   max: 250,
   lowerCase: 1,
   upperCase: 1,
   numeric: 1,
   symbol: 1,
-  requirementCount: 4,
+  requirementCount: 3,
 };
 
 // TODO: create userValidation class
@@ -18,7 +18,7 @@ const complexityOPtions = {
    * This class holds all methods used for user validation
    * Functions:
    * 1) signup - validates user upon registration.
-   * 2) signin - validates users during signin
+   * 2) dummy - a dummy method for testing validations upon success.
    */
 export default class userValidation {
   /**
@@ -65,7 +65,7 @@ export default class userValidation {
    * @param {object} res - response of method
    * @return {object} - returns an object
    */
-  static async dummy(req, res) {
+  static dummy(req, res) {
     try {
       response(res, 'success', 200);
     } catch (error) {
