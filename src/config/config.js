@@ -1,4 +1,3 @@
-// import dotenv from 'dotenv';
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -8,7 +7,7 @@ module.exports = {
     prodDatabaseURI: process.env.DATABASE_URL
   },
 
-  development: {
+  development: { 
     username: process.env.DB_USERNAME_DEV,
     password: process.env.DB_PASSWORD_DEV,
     database: process.env.DATABASE_DEV,
