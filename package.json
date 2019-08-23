@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/andela/jubilee-backend#readme",
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
@@ -42,7 +43,7 @@
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "request": "^2.87.0",
-    "sequelize": "^5.15.0",
+    "sequelize": "^5.16.0",
     "sequelize-cli": "^5.5.0",
     "swagger-ui-express": "^4.0.7",
     "underscore": "^1.9.1"
