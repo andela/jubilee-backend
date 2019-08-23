@@ -62,12 +62,12 @@ export default class UserService {
           error: 'Invalid login details',
         });
       }
-      // if (!Auth.compare(password, user.password)) {
-      //   return res.status(401).json({
-      //     status: 401,
-      //     error: 'Invalid login details',
-      //   });
-      // }
+      if (!Auth.compare(password, user.password)) {
+        return res.status(401).json({
+          status: 401,
+          error: 'Invalid password',
+        });
+      }
       const { id, firstName, lastName } = user;
       const output = { email, firstName, lastName };
       const token = Auth.generateToken({ id, email });
