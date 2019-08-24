@@ -63,6 +63,7 @@ export default class userValidation {
     if (error) {
       res.status(400).json(new ApiResponse(false, 400, error.details[0].context.label));
     } else {
+      // check if user exists in database
       const user = await UserService.find(req.body.email);
       if (!user) {
         next();

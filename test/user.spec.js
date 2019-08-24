@@ -62,7 +62,6 @@ describe('Auth route', () => {
       };
 
       const response = await request.post('/api/auth/signup').send(user);
-      // NOTE: logging response body for testing. Will be removed dduring production
       expect(response).to.has.status(400);
       expect(response.body.status).to.equal(400);
       expect(response.body).to.be.a('object');
@@ -86,9 +85,6 @@ describe('Auth route', () => {
       };
 
       const response = await request.post('/api/auth/signup').send(user);
-      // NOTE: logging response body for testing. Will be removed dduring production
-      console.log(response.body);
-      console.log(user);
       expect(response.body.status).to.equal(201);
       expect(response.body.data).to.be.a('object');
       expect(response.body.data.token).to.be.a('string');
@@ -113,8 +109,6 @@ describe('Auth route', () => {
       };
 
       const response = await request.post('/api/auth/signup').send(user);
-      // NOTE: logging response body for testing. Will be removed dduring production
-      console.log(response.body);
       expect(response).to.has.status(409);
       expect(response.body.status).to.equal(409);
       expect(response.body).to.be.a('object');
