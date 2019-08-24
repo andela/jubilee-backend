@@ -1,6 +1,7 @@
 import joi from '@hapi/joi';
 import passwordComplexity from 'joi-password-complexity';
 import { response, ApiResponse } from '../utils';
+import UserService from '../services/index';
 
 // password complexity object
 const complexityOPtions = {
@@ -29,7 +30,7 @@ export default class userValidation {
      * @param {object} next - the returned values going into the next operation.
      * @returns {object} - returns an object (error or response).
      */
-  static signup(req, res, next) {
+  static async signup(req, res, next) {
     // joi parameters to test against user inputs
     const schema = {
       firstName: joi.string().min(3).max(15).required()
@@ -52,16 +53,22 @@ export default class userValidation {
         .label('please input a country'),
       birthdate: joi.date().iso().required()
         .label('please input a valid date format'),
-      phoneNumber: joi.string().min(11).max(11).required()
+      phoneNumber: joi.string().regex(/^[0-9+\(\)#\.\s\/ext-]+$/).required()
         .label('phone number must be 11 digits'),
-      companyName: joi.string().min(3).max(15).required()
+      companyName: joi.string().min(3).max(40).required()
         .label('please add your company name'),
     };
     // Once user inputs are validated, move into server
     const { error } = joi.validate({ ...req.body }, schema);
-    if (!error) next();
-    else {
+    if (error) {
       res.status(400).json(new ApiResponse(false, 400, error.details[0].context.label));
+    } else {
+      const user = await UserService.find(req.body.email);
+      if (!user) {
+        next();
+      } else {
+        res.status(400).json(new ApiResponse(false, 400, `User with email: "${req.body.email}" already exists`));
+      }
     }
   }
 

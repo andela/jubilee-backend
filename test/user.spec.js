@@ -35,17 +35,39 @@ describe('Auth route', () => {
         city: 'Lagos',
         state: 'Imo',
         birthdate: '2019-08-20',
-        phoneNumber: '00000000000',
+        phoneNumber: faker.phone.phoneNumber(),
       };
 
       const response = await request.post('/api/auth/signup').send(user);
       // NOTE: logging response body for testing. Will be removed dduring production
-      console.log(`LOG TAG 1: ${response.body}`);
       expect(response).to.has.status(201);
       expect(response.body).to.be.a('object');
       expect(response.body.status).to.equal(201);
     });
-    
+
+    it('should fail validation if parameters are incomplete', async () => {
+      const user = {
+        firstName: 'Tony',
+        lastName: 'Marshall',
+        password: 'tmonarqA1.',
+        companyName: 'Jubilee',
+        country: 'NIgeria',
+        gender: 'male',
+        street: 'Abage',
+        city: 'Lagos',
+        state: 'Imo',
+        birthdate: '2019-08-20',
+        phoneNumber: faker.phone.phoneNumber(),
+      };
+
+      const response = await request.post('/api/auth/signup').send(user);
+      // NOTE: logging response body for testing. Will be removed dduring production
+      expect(response).to.has.status(400);
+      expect(response.body.status).to.equal(400);
+      expect(response.body).to.be.a('object');
+      expect(response.body).to.be.a('object');
+      expect(response.body.message).to.be.a('string');
+    });
     it('should signup successfully with a status of 201', async () => {
       const user = {
         email: faker.internet.email(),
@@ -59,13 +81,11 @@ describe('Auth route', () => {
         city: faker.address.city(),
         state: faker.address.state(),
         birthdate: faker.date.past(),
-        phoneNumber: '00000000000',
+        phoneNumber: faker.phone.phoneNumber(),
       };
 
       const response = await request.post('/api/auth/signup').send(user);
       // NOTE: logging response body for testing. Will be removed dduring production
-      console.log(user);
-      console.log(response.body);
       expect(response.body.status).to.equal(201);
       expect(response.body.data).to.be.a('object');
       expect(response.body.data.token).to.be.a('string');

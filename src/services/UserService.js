@@ -37,4 +37,14 @@ export default class UserService {
     if (!rowaffected) throw new Error('Not Found');
     return user;
   }
+
+  /**
+   * Finds user in the database
+   *
+   * @param {object} email - The user email
+   * @returns {Promise<object>} A promise object with user detail if user exists.
+   */
+  static find(email) {
+    return database.User.findOne({ where: { email } });
+  }
 }
