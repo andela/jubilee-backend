@@ -7,8 +7,7 @@ import database from '../src/models';
 chai.use(chaiHttp);
 
 const { expect } = chai;
-let request,
-    email;
+let request;
 
 describe('Auth route', () => {
   before(async () => {
