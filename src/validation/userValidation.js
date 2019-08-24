@@ -67,7 +67,7 @@ export default class userValidation {
       if (!user) {
         next();
       } else {
-        res.status(400).json(new ApiResponse(false, 400, `User with email: "${req.body.email}" already exists`));
+        res.status(409).json(new ApiResponse(false, 409, `User with email: "${req.body.email}" already exists`));
       }
     }
   }
