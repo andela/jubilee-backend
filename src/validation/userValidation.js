@@ -1,6 +1,6 @@
 import joi from '@hapi/joi';
 import passwordComplexity from 'joi-password-complexity';
-import response from '../utils';
+import { response, ApiResponse } from '../utils';
 
 // password complexity object
 const complexityOPtions = {
@@ -61,18 +61,25 @@ export default class userValidation {
     const { error } = joi.validate({ ...req.body }, schema);
     if (!error) next();
     else {
-      response(res, error.details[0].context.label, 400);
+      res.status(400).json(new ApiResponse(false, 400, error.details[0].context.label));
     }
   }
 
   /**
    *  Dummy callback function for validation tests
+   * Use this function as a placeholder for controllers
+   * during testing of validations whenever the controller
+   * being validated for is not yet implemented
+   *
+   * e.g: @ route:-
+   * serRouter.post('/auth/signup', userValidation.signup, userValidation.dummy);
    * @param {object} req request from endpoint
    * @param {object} res - response of method
    * @return {object} - returns an object
    */
   static dummy(req, res) {
     try {
+      // outdated response values, dummy parameter used for testing only
       response(res, 'success', 200);
     } catch (error) {
       response(res, error, 500);

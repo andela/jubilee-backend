@@ -39,9 +39,11 @@ describe('Auth route', () => {
       };
 
       const response = await request.post('/api/auth/signup').send(user);
-      expect(response).to.has.status(200);
+      // NOTE: logging response body for testing. Will be removed dduring production
+      console.log(`LOG TAG 1: ${response.body}`);
+      expect(response).to.has.status(201);
       expect(response.body).to.be.a('object');
-      expect(response.body.status).to.equal(200);
+      expect(response.body.status).to.equal(201);
     });
     
     it('should signup successfully with a status of 201', async () => {
@@ -57,10 +59,13 @@ describe('Auth route', () => {
         city: faker.address.city(),
         state: faker.address.state(),
         birthdate: faker.date.past(),
-        phoneNumber: faker.phone.phoneNumber()
+        phoneNumber: '00000000000',
       };
 
       const response = await request.post('/api/auth/signup').send(user);
+      // NOTE: logging response body for testing. Will be removed dduring production
+      console.log(user);
+      console.log(response.body);
       expect(response.body.status).to.equal(201);
       expect(response.body.data).to.be.a('object');
       expect(response.body.data.token).to.be.a('string');
