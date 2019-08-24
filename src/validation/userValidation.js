@@ -33,9 +33,9 @@ export default class userValidation {
   static async signup(req, res, next) {
     // joi parameters to test against user inputs
     const schema = {
-      firstName: joi.string().min(3).max(15).required()
+      firstName: joi.string().min(3).max(25).required()
         .label('first name is too short'),
-      lastName: joi.string().min(3).max(15).required()
+      lastName: joi.string().min(3).max(25).required()
         .label('last name is too short'),
       email: joi.string().email().required()
         .label('invalid email format'),
@@ -45,11 +45,11 @@ export default class userValidation {
         .label('please input gender'),
       street: joi.string().min(5).max(20).required()
         .label('please input a street'),
-      city: joi.string().min(3).max(20).required()
+      city: joi.string().min(3).max(25).required()
         .label('please input a city'),
-      state: joi.string().min(3).max(20).required()
+      state: joi.string().min(3).max(25).required()
         .label('please input a state'),
-      country: joi.string().min(3).max(15).required()
+      country: joi.string().min(3).max(50).required()
         .label('please input a country'),
       birthdate: joi.date().iso().required()
         .label('please input a valid date format'),
