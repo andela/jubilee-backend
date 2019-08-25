@@ -3,13 +3,18 @@
     "info": {
         "version": "1.0",
         "title": "Barefoot Nomad",
-        "description": ""
+        "description": "Barefoot Nomad - Making company travel and accomodation easy and convenient."
     },
-    "schemes": [
-        "https"
-    ],
+    "servers": [
+        {
+          "url": "http://localhost:3000/"
+        },
+        {
+          "url": "https://jubilee-backend-staging.herokuapp.com/"
+        }
+      ],
     "host": "",
-    "basePath": "/api/v1",
+    "basePath": "/api",
     "securityDefinitions": {
         "Bearer": {
             "description": "Standard Authorization header using the bearer scheme. Example: \"bearer {token}\"",
@@ -29,10 +34,10 @@
         }
     ],
     "paths": {
-        "/users": {
+        "/auth/signup": {
             "post": {
-                "description": "#",
-                "summary": "#",
+                "description": "Registers a User",
+                "summary": "Creates a new user on the system",
                 "tags": [
                     "Auth"
                 ],
@@ -67,6 +72,43 @@
                 }
             }
         },
+        "/auth/verify": {
+            "get": {
+              "description": "The endpoint verifies a new user's verification link and marks the user account as verified if successful",
+              "summary": "Marks User account as verified",
+              "tags": [
+                "Auth"
+              ],
+              "parameters": [
+                {
+                  "name": "token",
+                  "in": "query",
+                  "schema": {
+                    "type": "string"
+                  },
+                  "example": "eyJhbGciOiJIUzI1NiJ9.Mg.hbsvkNj_kZvQYNtZxa4r2GXoNRLq1q4xC9qSq48Dwhw"
+                }
+              ],
+              "responses": {
+                "500": {
+                  "description": "Internal Server Error"
+                },
+                "400": {
+                  "description": "Invalid Token/User does not exist",
+                  "content": {
+                    "application/json; charset=utf-8": {
+                      "schema": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "200": {
+                  "description": "Account verification success"
+                }
+              }
+            }
+          },
         "/users/login": {
             "post": {
                 "description": "#",
@@ -190,7 +232,7 @@
                 "title": "Signup Request",
                 "type": "object",
                 "properties": {
-                    "username": {
+                    "firstName": {
                         "description": "Username of the user",
                         "type": "string"
                     },
@@ -201,15 +243,69 @@
                     "password": {
                         "description": "The Password of the user",
                         "type": "string"
+                    },
+                    "birthdate": {
+                        "description": "The date of birth of user",
+                        "type": "date"
+                    },
+                    "companyName": {
+                        "description": "The user's company name",
+                        "type": "string"
+                    },
+                    "preferredCurrency": {
+                        "description": "The user's currency preference",
+                        "type": "string"
+                    },
+                    "street": {
+                        "description": "The user's street address",
+                        "type": "string"
+                    },
+                    "city": {
+                        "description": "The user's city address",
+                        "type": "string"
+                    },
+                    "state": {
+                        "description": "The user's state address",
+                        "type": "string"
+                    },
+                    "country": {
+                        "description": "The user's country address",
+                        "type": "string"
+                    },
+                    "zip": {
+                        "description": "The user's zip code",
+                        "type": "string"
+                    },
+                    "phoneNumber": {
+                        "description": "The user's phone number",
+                        "type": "string"
+                    },
+                    "role": {
+                        "description": "The user's role",
+                        "type": "string"
+                    },
+                    "department": {
+                        "description": "The user's department",
+                        "type": "string"
                     }
+
                 },
                 "example": {
-                    "username": "Mike",
-                    "email": "mike@example.com",
-                    "password": "password123"
-                },
+                    "firstName": "King",
+                    "lastName": "David",
+                    "email": "barefootnomad@gmail.com",
+                    "country": "Nigeria",
+                    "companyName": "Andela",
+                    "password": "Elija455h",
+                    "gender": "male",
+                    "street": "20, Board Street",
+                    "city": "ikeja",
+                    "state": "Lagos",
+                    "birthdate": "2010-01-01",
+                    "phoneNumber": "08063345598"
+                  },
                 "required": [
-                    "username, email, password"
+                    "firstName, lastName, email"
                 ]
             },
             "loginRequest": {

@@ -7,20 +7,25 @@ import env from '../config/env-config';
 const basename = path.basename(__filename);
 const environ = env.NODE_ENV || 'development';
 const config = sequelizeConfig[environ];
+
 const db = {};
 let sequelize;
 if (config.prodDatabaseURI) {
   sequelize = new Sequelize(config.prodDatabaseURI, config);
 }
 
-
 if (environ === 'test') config.logging = false;
-sequelize = new Sequelize(config.database, config.username, config.password, config);
+sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  config
+);
 
-
-fs
-  .readdirSync(__dirname)
-  .filter((file) => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
+fs.readdirSync(__dirname)
+  .filter(
+    (file) => file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
+  )
   .forEach((file) => {
     const model = sequelize.import(path.join(__dirname, file));
     db[model.name] = model;

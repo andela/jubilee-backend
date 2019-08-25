@@ -6,25 +6,29 @@ const { ADMIN_EMAIL, SENDGRID_KEY } = env;
 sendgrid.setApiKey(SENDGRID_KEY);
 
 /**
- *Contains methods for sending Emails
+ * Contains methods for sending Emails
  *
  * @class Mailer
  */
 class Mailer {
   /**
- * Sends an account verification link to a user's email
- * @param {Request} req request object
- * @param {object} options mail options
- * @param {string} options.email Recipient email address
- * @param {string} options.firstName Recipient firstName
- * @returns {Promise<boolean>} resolves as true if mail was successfully sent
- * or false if otherwise
- * @memberof Mailer
- */
+   * Sends an account verification link to a user's email
+   * @param {Request} req - Request object.
+   * @param {object} options - Mail options.
+   * @param {string} options.email - Recipient email address.
+   * @param {string} options.firstName - Recipient firstName.
+   * @returns {Promise<boolean>} - Resolves as true if mail was successfully sent
+   * or false if otherwise.
+   * @memberof Mailer
+   */
   static async sendVerificationEmail(req, {
     id, email, firstName, role
   }) {
-    const verificationLink = Helpers.generateVerificationLink(req, { id, firstName, role });
+    const verificationLink = Helpers.generateVerificationLink(req, {
+      id,
+      firstName,
+      role
+    });
     const mail = {
       to: email,
       from: ADMIN_EMAIL,

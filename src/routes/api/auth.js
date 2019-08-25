@@ -2,9 +2,9 @@ import { Router } from 'express';
 import { Auth } from '../../controllers';
 
 const router = Router();
-const { register, verifyEmail } = Auth;
+const { signUp, verifyEmail } = Auth;
 
-router.post('/register', register);
+router.post('/signup', signUp);
 router.get('/verify', verifyEmail);
 
 export default router;

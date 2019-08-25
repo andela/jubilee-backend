@@ -1,7 +1,6 @@
 import '@babel/polyfill';
 import express from 'express';
 import bodyParser from 'body-parser';
-import session from 'express-session';
 import cors from 'cors';
 import errorhandler from 'errorhandler';
 import morgan from 'morgan';
@@ -9,12 +8,10 @@ import methodOverride from 'method-override';
 import env from './config/env-config';
 import routes from './routes';
 
-
 const isProduction = env.NODE_ENV === 'production';
 
 // Create global app object
 const app = express();
-const port = process.env.PORT || 3000;
 
 app.use(cors());
 
@@ -25,17 +22,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(methodOverride());
-
-
-app.use(
-  session({
-    secret: 'barefoot',
-    cookie: { maxAge: 60000 },
-    resave: false,
-    saveUninitialized: false
-  })
-);
-app.all('*', (req, res) => res.send({ message: 'route not found' }));
 
 if (!isProduction) {
   app.use(errorhandler());
