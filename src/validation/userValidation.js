@@ -89,7 +89,6 @@ export default class userValidation {
     try {
       // outdated response values, dummy parameter used for testing only
       res.status(200).json(new ApiResponse(true, 200, 'Success'));
-      response(res, 'success', 200);
     } catch (error) {
       const status = error.status || 500;
       res.status(status).json(new ApiResponse(false, status, error.message));
