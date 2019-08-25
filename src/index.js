@@ -1,5 +1,6 @@
 import '@babel/polyfill';
 import express from 'express';
+import passport from 'passport';
 import cors from 'cors';
 import errorhandler from 'errorhandler';
 import morgan from 'morgan';
@@ -21,6 +22,7 @@ app.use(morgan('dev'));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(passport.initialize());
 
 app.use(methodOverride());
 

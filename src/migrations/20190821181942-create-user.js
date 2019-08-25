@@ -25,7 +25,7 @@ module.exports = {
     },
     preferredCurrency: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
       defaultValue: 'Naira'
     },
     email: {
@@ -52,7 +52,7 @@ module.exports = {
     },
     country: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: true
     },
     zip: {
       type: Sequelize.STRING,
@@ -64,7 +64,7 @@ module.exports = {
     },
     companyName: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     password: {
       type: Sequelize.STRING,
@@ -72,21 +72,33 @@ module.exports = {
     },
     role: {
       type: Sequelize.STRING,
-      allowNull: false,
+      allowNull: true,
       defaultValue: 'user'
     },
     isVerified: {
       type: Sequelize.BOOLEAN,
-      allowNull: false,
+      allowNull: true,
       defaultValue: false
+    },
+    username: {
+      type: Sequelize.STRING,
+      unique: true,
     },
     facebookId: {
       type: Sequelize.STRING,
       allowNull: true,
+      unique: true,
     },
     googleId: {
       type: Sequelize.STRING,
-      allowNull: true
+      allowNull: true,
+      unique: true,
+    },
+    profileImage: {
+      type: Sequelize.STRING
+    },
+    provider: {
+      type: Sequelize.STRING
     },
     department: {
       type: Sequelize.STRING,
