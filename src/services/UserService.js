@@ -47,4 +47,27 @@ export default class UserService {
   static find(email) {
     return User.findOne({ where: { email } });
   }
+
+  /**
+   * Update user password in the database
+   *
+   * @param {string} password - New user password to be updated in database
+   * @param {string} email - The user email for identification in database
+   * @returns {Promise<object>} A promise object with user detail.
+   */
+  static updatePassword(password, email) {
+    const hashPassword = hashSync(password, genSaltSync(10));
+    return database.User.update({ password: hashPassword },
+      { where: { email }, returning: true });
+  }
+
+  /**
+   * Finds user in the database
+   *
+   * @param {string} email - The user to find by email in the database
+   * @returns {Promise<object>} A promise object with user detail.
+   */
+  static find(email) {
+    return database.User.findOne({ where: { email } });
+  }
 }

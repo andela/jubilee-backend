@@ -18,13 +18,17 @@ class ResetPassword {
      * @memberof ResetPassword
      */
   static checkParameters(req, res, next) {
-    const result = validate(req.body, (req.body.email) ? passwordResetEmailSchema
-      : changePasswordSchema);
-    if (result.error !== null) {
-      const { message } = result.error.details[0];
-      return res.status(400).json(new ApiResponse(false, 400, message));
+    try {
+      const result = validate(req.body, (req.body.email) ? passwordResetEmailSchema
+        : changePasswordSchema);
+      if (result.error !== null) {
+        const { message } = result.error.details[0];
+        return res.status(400).json(new ApiResponse(false, 400, message));
+      }
+      next();
+    } catch (err) {
+      res.status(err.status || 500).json(new ApiResponse(false, err.status || 500, err.message));
     }
-    next();
   }
 }
 
