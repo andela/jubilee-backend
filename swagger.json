@@ -225,6 +225,44 @@
                     }
                 }
             }
+        },
+        "/auth/reset-password": {
+            "post": {
+                "description": "Send a password reset email to the user",
+                "summary": "User can reset password",
+                "tags": [
+                    "Auth"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                      "in": "body",
+                      "name": "email",
+                      "required": true,
+                      "description": "The user email for password reset",
+                      "schema": {
+                        "$ref": "#/requestBody/resetPasswordRequest"
+                      }
+                    }
+                  ],
+                "responses": {
+                    "200": {
+                        "description": "Check your email for password reset link"
+                    },
+                    "400": {
+                      "description": "Email is required || Email must be valid"
+                    },
+                    "404": {
+                        "description": "User with email does not exist"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
         }
     },
         "requestBody": {
@@ -361,7 +399,20 @@
                     "image": "Example",
                     "password": "Example"
                 }
-            }
+            },
+            "resetPasswordRequest": {
+                "title": "Password Reset Request",
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "description": "Email address of the user user",
+                    "type": "string"
+                  }
+                },
+                "example": {
+                    "email": "johndoe@example.com"
+                }
+              }
         }
     }
     
