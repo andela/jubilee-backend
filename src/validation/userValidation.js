@@ -1,10 +1,10 @@
 import joi from '@hapi/joi';
 import passwordComplexity from 'joi-password-complexity';
-import { response, ApiResponse } from '../utils';
+import { ApiResponse } from '../utils';
 import UserService from '../services/index';
 
 // password complexity object
-const complexityOPtions = {
+const complexityOptions = {
   min: 8,
   max: 250,
   lowerCase: 1,
@@ -39,7 +39,7 @@ export default class userValidation {
         .label('last name is too short'),
       email: joi.string().email().required()
         .label('invalid email format'),
-      password: new passwordComplexity(complexityOPtions).required()
+      password: new passwordComplexity(complexityOptions).required()
         .label('invalid password format'),
       gender: joi.string().valid('male', 'female').required()
         .label('please input gender'),
@@ -80,7 +80,7 @@ export default class userValidation {
    * being validated for is not yet implemented
    *
    * e.g: @ route:-
-   * serRouter.post('/auth/signup', userValidation.signup, userValidation.dummy);
+   * userRouter.post('/auth/signup', userValidation.signup, userValidation.dummy);
    * @param {object} req request from endpoint
    * @param {object} res - response of method
    * @return {object} - returns an object
@@ -88,9 +88,11 @@ export default class userValidation {
   static dummy(req, res) {
     try {
       // outdated response values, dummy parameter used for testing only
+      res.status(200).json(new ApiResponse(true, 200, 'Success'));
       response(res, 'success', 200);
     } catch (error) {
-      response(res, error, 500);
+      const status = error.status || 500;
+      res.status(status).json(new ApiResponse(false, status, error.message));
     }
   }
 }
