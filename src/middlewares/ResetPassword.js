@@ -1,4 +1,4 @@
-import { changePasswordSchema, passwordResetEmailSchema } from '../validation/validators';
+import { changePasswordSchema, passwordResetEmailSchema } from '../validation/resetPassword';
 import { ApiResponse } from '../utils/index';
 import Helpers from '../utils/helpers';
 
