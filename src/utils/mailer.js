@@ -1,6 +1,9 @@
 import sendgrid from '@sendgrid/mail';
 import env from '../config/env-config';
+<<<<<<< HEAD
 import Helpers from './helpers';
+=======
+>>>>>>> refactor(sendgrid): refactor sendgrid setup
 
 const { ADMIN_EMAIL, SENDGRID_KEY } = env;
 sendgrid.setApiKey(SENDGRID_KEY);
