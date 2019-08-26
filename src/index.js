@@ -1,6 +1,5 @@
 import '@babel/polyfill';
 import express from 'express';
-import bodyParser from 'body-parser';
 import cors from 'cors';
 import errorhandler from 'errorhandler';
 import morgan from 'morgan';
@@ -18,8 +17,8 @@ app.use(cors());
 // Normal express config defaults
 app.use(morgan('dev'));
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.use(methodOverride());
 
