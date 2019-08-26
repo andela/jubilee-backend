@@ -1,7 +1,6 @@
 import joi from '@hapi/joi';
 import passwordComplexity from 'joi-password-complexity';
-import { ApiResponse } from '../utils';
-import UserService from '../services/index';
+import { ApiResponse, ApiError } from '../utils';
 
 // password complexity object
 const complexityOptions = {
@@ -25,52 +24,43 @@ export default class userValidation {
   /**
      * Validates user paramenters upon registration
      *
-     * @param {object} req - The request from the endpoint.
-     * @param {object} res - The response returned by the method.
-     * @param {object} next - the returned values going into the next operation.
+     * @param {object} userObject - The user response object
      * @returns {object} - returns an object (error or response).
      */
-  static async signup(req, res, next) {
+  static async signup(userObject) {
     // joi parameters to test against user inputs
     const schema = {
       firstName: joi.string().min(3).max(25).required()
-        .label('first name is too short'),
+        .label('Please enter a valid firstname \n the field must not be empty and it must be more than 2 letters'),
       lastName: joi.string().min(3).max(25).required()
-        .label('last name is too short'),
+        .label('Please enter a valid lastname \n the field must not be empty and it must be more than 2 letters'),
       email: joi.string().email().required()
-        .label('invalid email format'),
+        .label('Please enter a valid company email address'),
       password: new passwordComplexity(complexityOptions).required()
-        .label('invalid password format'),
+        .label('Password is required. \n It should be more than 8 characters, and should include at least a capital letter, and a number'),
       gender: joi.string().valid('male', 'female').required()
-        .label('please input gender'),
-      street: joi.string().min(5).max(20).required()
-        .label('please input a street'),
+        .label('please input a gender (male or female'),
+      street: joi.string().min(2).max(20).required()
+        .label('Please input a street name'),
       city: joi.string().min(3).max(25).required()
-        .label('please input a city'),
+        .label('Please input a city name'),
       state: joi.string().min(3).max(25).required()
-        .label('please input a state'),
+        .label('Please input a state name'),
       country: joi.string().min(3).max(50).required()
-        .label('please input a country'),
+        .label('Please input a country'),
       birthdate: joi.date().iso().required()
-        .label('please input a valid date format'),
+        .label('Please input a valid date format: yy-mm-dd'),
       phoneNumber: joi.string().regex(/^[0-9+\(\)#\.\s\/ext-]+$/).required()
-        .label('phone number must be 11 digits'),
+        .label('Please input a valid phone number'),
       companyName: joi.string().min(3).max(40).required()
-        .label('please add your company name'),
+        .label('Please add your company name'),
     };
     // Once user inputs are validated, move into server
-    const { error } = joi.validate({ ...req.body }, schema);
+    const { error } = joi.validate({ ...userObject }, schema);
     if (error) {
-      res.status(400).json(new ApiResponse(false, 400, error.details[0].context.label));
-    } else {
-      // check if user exists in database
-      const user = await UserService.find(req.body.email);
-      if (!user) {
-        next();
-      } else {
-        res.status(409).json(new ApiResponse(false, 409, `User with email: "${req.body.email}" already exists`));
-      }
+      throw new ApiError(400, error.details[0].context.label);
     }
+    return true;
   }
 
   /**
