@@ -8,11 +8,9 @@
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
     "migrate:reset": "cross-env NODE_ENV=test sequelize db:migrate:undo:all",
     "migrate": "cross-env NODE_ENV=test sequelize db:migrate",
-    "start:dev": "npm run initdb && nodemon --exec babel-node ./src/index.js",
+    "start:dev": "nodemon --exec babel-node ./src/index.js",
     "start": "node dist/index.js",
     "build": "babel src -d dist",
-    "initdb": "babel-node ./src/database/init.js",
-    "initdb:test": "cross-env NODE_ENV=test babel-node ./src/database/init.js",
     "prestart": "sequelize db:migrate"
   },
   "repository": {
