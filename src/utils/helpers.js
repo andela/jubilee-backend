@@ -46,13 +46,13 @@ class Helpers {
    * @param { Request } req - Request object
    * @param { object } options - Contains user's data to be signed within Token.
    * @param { string } options.id - User's unique ID.
-   * @param { string } options.firstName - User's first name.
+   * @param { string } options.email - User's email.
    * @param { string } options.role - User's role.
    * @memberof Helpers
    * @returns {URL} - Verification link.
    */
-  static generateVerificationLink(req, { id, firstName, role }) {
-    const token = Helpers.generateToken({ id, firstName, role });
+  static generateVerificationLink(req, { id, email, role }) {
+    const token = Helpers.generateToken({ id, email, role });
     const host = req.hostname === 'localhost' ? `${req.hostname}:${PORT}` : req.hostname;
     return `${req.protocol}://${host}/api/auth/verify?token=${token}`;
   }
@@ -65,7 +65,7 @@ class Helpers {
  * @returns {string} - Encrypted password.
  */
   static hashPassword(password) {
-    return bcrypt.hashSync(password, 10);
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   }
 
   /**
@@ -78,6 +78,43 @@ class Helpers {
  */
   static comparePassword(password, hash) {
     return bcrypt.compareSync(password, hash);
+  }
+
+  /**
+ * Generates a JSON response for success scenarios.
+ * @static
+ * @param {Response} res - Response object.
+ * @param {object} data - The payload.
+ * @param {number} code -  HTTP Status code.
+ * @memberof Helpers
+ * @returns {JSON} - A JSON success response.
+ */
+  static successResponse(res, data, code = 200) {
+    return res.status(code).json({
+      status: 'success',
+      data
+    });
+  }
+
+  /**
+ * Generates a JSON response for failure scenarios.
+ * @static
+ * @param {Response} res - Response object.
+ * @param {object} options - The payload.
+ * @param {number} options.code -  HTTP Status code, default is 500.
+ * @param {string} options.message -  Error message.
+ * @param {object|array  } options.errors -  A collection of  error message.
+ * @memberof Helpers
+ * @returns {JSON} - A JSON failure response.
+ */
+  static errorResponse(res, { code = 500, message = 'Some error occurred while processing your Request', errors }) {
+    return res.status(code).json({
+      status: 'fail',
+      error: {
+        message,
+        errors
+      }
+    });
   }
 }
 

@@ -26,7 +26,7 @@ class Mailer {
   }) {
     const verificationLink = Helpers.generateVerificationLink(req, {
       id,
-      firstName,
+      email,
       role
     });
     const mail = {

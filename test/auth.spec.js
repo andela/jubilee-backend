@@ -8,7 +8,6 @@ import Helpers from '../src/utils/helpers';
 const { generateToken } = Helpers;
 
 chai.use(chaiHttp);
-
 let newlyCreatedUser = {};
 describe('Auth route endpoints', () => {
   it('should signup successfully with a status of 201', async () => {
@@ -31,7 +30,7 @@ describe('Auth route endpoints', () => {
       .request(server)
       .post('/api/auth/signup')
       .send(user);
-    expect(response.body.status).to.equal(201);
+    expect(response).to.have.status(201);
     expect(response.body.data).to.be.a('object');
     expect(response.body.data.token).to.be.a('string');
     expect(response.body.data.firstName).to.be.a('string');
@@ -69,23 +68,23 @@ describe('GET /api/auth/verify?token', () => {
 
   it('should return an error response if verification token is not provided', async () => {
     const response = await chai.request(server).get('/api/auth/verify?token=');
-    const { body: { message } } = response;
+    const { body: { error } } = response;
     expect(response).to.have.status(400);
-    expect(message).to.equal('Invalid token, verification unsuccessful');
+    expect(error.message).to.equal('Invalid token, verification unsuccessful');
   });
 
   it('should return an error response if verification token is not valid', async () => {
     const response = await chai.request(server).get('/api/auth/verify?token=73783489d.eue4.78');
-    const { body: { message } } = response;
+    const { body: { error } } = response;
     expect(response).to.have.status(400);
-    expect(message).to.equal('Invalid token, verification unsuccessful');
+    expect(error.message).to.equal('Invalid token, verification unsuccessful');
   });
 
   it("should return an error response if the verification link contains details of a user that doesn't exist", async () => {
     const token = generateToken({ id: 49 });
     const response = await chai.request(server).get(`/api/auth/verify?token=${token}`);
-    const { body: { message } } = response;
+    const { body: { error } } = response;
     expect(response).to.have.status(400);
-    expect(message).to.equal('no user found to verify');
+    expect(error.message).to.equal('no user found to verify');
   });
 });

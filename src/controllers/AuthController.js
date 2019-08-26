@@ -1,8 +1,8 @@
 import { UserService } from '../services';
-import { Helpers, UserResponse, ApiResponse } from '../utils';
+import { Helpers, UserResponse } from '../utils';
 import Mailer from '../utils/mailer';
 
-const { verifyToken } = Helpers;
+const { verifyToken, successResponse, errorResponse } = Helpers;
 const { sendVerificationEmail } = Mailer;
 const { create, updateById } = UserService;
 /**
@@ -25,14 +25,10 @@ class Auth {
       const { body } = req;
       const user = await create({ ...body });
       const userResponse = new UserResponse(user);
-      const isSent = await sendVerificationEmail(req, user);
-      res
-        .status(201)
-        .json(
-          new ApiResponse(true, 201, { ...userResponse, emailSent: isSent })
-        );
+      const isSent = await sendVerificationEmail(req, { ...userResponse });
+      return successResponse(res, { ...userResponse, emailSent: isSent }, 201);
     } catch (error) {
-      res.status(500).json(new ApiResponse(false));
+      errorResponse(res, {});
     }
   }
 
@@ -51,26 +47,16 @@ class Auth {
       const decoded = verifyToken(token);
       const user = await updateById({ isVerified: true }, decoded.id);
       const userResponse = new UserResponse(user);
-      res.status(200).json(new ApiResponse(true, 200, { ...userResponse }));
+      successResponse(res, { ...userResponse });
     } catch (e) {
       if (e.message === 'Invalid Token') {
-        return res
-          .status(400)
-          .json(
-            new ApiResponse(
-              false,
-              400,
-              'Invalid token, verification unsuccessful'
-            )
-          );
+        return errorResponse(res, { code: 400, message: 'Invalid token, verification unsuccessful' });
       }
 
       if (e.message === 'Not Found') {
-        return res
-          .status(400)
-          .json(new ApiResponse(false, 400, 'no user found to verify'));
+        return errorResponse(res, { code: 400, message: 'no user found to verify' });
       }
-      res.status(500).json(new ApiResponse(false));
+      errorResponse(res, {});
     }
   }
 }

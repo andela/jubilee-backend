@@ -11,7 +11,7 @@ export default class UserResponse {
    */
   constructor(user) {
     this.id = user.id;
-    this.token = Helpers.generateToken({ email: user.email });
+    this.token = Helpers.generateToken({ email: user.email, id: user.id, role: user.role });
     this.firstName = user.firstName;
     this.lastName = user.lastName;
     this.email = user.email;
