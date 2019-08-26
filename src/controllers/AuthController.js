@@ -2,7 +2,9 @@ import { UserService } from '../services';
 import { Helpers, UserResponse } from '../utils';
 import Mailer from '../utils/mailer';
 
-const { verifyToken, successResponse, errorResponse } = Helpers;
+const {
+  generateToken, verifyToken, successResponse, errorResponse
+} = Helpers;
 const { sendVerificationEmail } = Mailer;
 const { create, updateById } = UserService;
 /**
@@ -24,6 +26,7 @@ class Auth {
     try {
       const { body } = req;
       const user = await create({ ...body });
+      user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       const userResponse = new UserResponse(user);
       const isSent = await sendVerificationEmail(req, { ...userResponse });
       return successResponse(res, { ...userResponse, emailSent: isSent }, 201);
