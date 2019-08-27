@@ -1,4 +1,4 @@
-import UserService from './userService';
+import userService from './userService';
 
 
-export default UserService;
+export default userService;

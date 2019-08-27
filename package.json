@@ -7,8 +7,9 @@
     "test": "export NODE_ENV=test || set NODE_ENV=test && nyc --reporter=html --reporter=text mocha --timeout 10000 -c test --require @babel/register --exit",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
     "start:dev": "export NODE_ENV=development || set NODE_ENV=development && nodemon --exec babel-node ./src/index.js",
-    "migrate:reset": "babel-node ./node_modules/.bin/sequelize db:migrate:undo:all",
-    "migrate": "sequelize db:migrate"
+    "migrate:reset": "sequelize db:migrate:undo:all",
+    "migrate": "sequelize db:migrate",
+    "seed": "sequelize db:seed:all"
   },
   "repository": {
     "type": "git",

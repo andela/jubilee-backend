@@ -48,8 +48,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(port, () => {
-  console.info(`Listening on port ${port}`);
+// finally, let's start our server...
+const server = app.listen(port, () => {
+  console.log(`Listening on port ${server.address().port}`);
 });
 
-export default app;
+export default server;

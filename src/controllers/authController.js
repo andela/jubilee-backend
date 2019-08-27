@@ -1,7 +1,7 @@
-import UserService from '../services';
+import userService from '../services';
 import { ApiResponse, UserResponse, helpers } from '../utils';
 
-const { userLogin } = UserService;
+const { userLogin } = userService;
 /**
  * User controller class that implements crud operation in the database
  */
@@ -17,7 +17,7 @@ export default class UserController {
     try {
       const user = req.body;
 
-      const createdUser = await UserService.create(user);
+      const createdUser = await userService.create(user);
       const userResponse = new UserResponse(createdUser);
       res.status(201).json(new ApiResponse(true, 201, userResponse));
     } catch (error) {
