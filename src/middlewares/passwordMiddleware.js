@@ -1,8 +1,7 @@
 import { changePasswordSchema, passwordResetEmailSchema } from '../validation/passwordValidator';
-import { ApiResponse } from '../utils/index';
-import Helpers from '../utils/helpers';
+import { Helpers } from '../utils';
 
-const { validate } = Helpers;
+const { validate, errorResponse } = Helpers;
 /**
  * Collection of methods for ResetPassword
  * @class ResetPassword
@@ -23,11 +22,11 @@ class ResetPassword {
         : changePasswordSchema);
       if (result.error !== null) {
         const { message } = result.error.details[0];
-        return res.status(400).json(new ApiResponse(false, 400, message));
+        return errorResponse(res, { code: 400, message });
       }
       next();
     } catch (err) {
-      res.status(err.status || 500).json(new ApiResponse(false, err.status || 500, err.message));
+      errorResponse(res, { code: 500, message: err.message });
     }
   }
 }

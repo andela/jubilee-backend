@@ -1,3 +1,3 @@
-import userMiddleware from './userMiddleware';
+import ResetPassword from './passwordMiddleware';
 
-export default userMiddleware;
+export { ResetPassword };
