@@ -5,52 +5,22 @@ import faker from 'faker';
 import app from '../src/index';
 import { helpers } from '../src/utils';
 import database from '../src/models';
-import Auth from '../src/utils/auth';
-import app from '../src/index';
 
 chai.use(chaiHttp);
 console.log(process.env.NODE_ENV);
 const { expect } = chai;
 let request;
-const user = {
-  firstName: 'Adebayo',
-  lastName: 'Daramola',
-  birthdate: '1986-09-21',
-  preferredLanguage: 'EN',
-  preferredCurrency: 'Naira',
-  email: 'ade.steve@gmail.com',
-  gender: 'Male',
-  street: 'Backstreet',
-  city: 'Ilupeju',
-  state: 'Lagos',
-  country: 'Nigeria',
-  zip: '100001',
-  phoneNo: '2347080445678',
-  companyName: 'Andela',
-  password: Auth.hash('testing'),
-  company: 'Andela',
-  role: 'Senior',
-  isVerified: false,
-  facebookId: 'Nil',
-  googleId: 'Nil',
-  department: 'admin',
-  lineManager: 'Lati',
-  createdAt: new Date(),
-  updatedAt: new Date()
-};
-
-beforeEach(() => {
-  request = chai.request(app);
-});
 
 describe('Auth route', () => {
   before(async () => {
+    request = chai.request(app).keepOpen();
     await database.sequelize.sync({ force: true });
   });
 
   after(async () => {
     await database.sequelize.drop();
     await database.sequelize.sync();
+    request.close();
   });
 
   const user = {

@@ -1,15 +1,24 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+<<<<<<< HEAD
 import env from '../config/env-config';
 
 const { SECRET, PORT } = env;
+=======
+
+const { SECRET } = process.env;
+>>>>>>> b9d330d3c5eae113b2dbea528d57216e2ca73903
 
 /**
  *Contains Helper methods
  *
  * @class Helpers
  */
+<<<<<<< HEAD
 class Helpers {
+=======
+export default class Helpers {
+>>>>>>> b9d330d3c5eae113b2dbea528d57216e2ca73903
   /**
  *  Synchronously sign the given payload into a JSON Web Token string.
  * @static
@@ -41,6 +50,7 @@ class Helpers {
   }
 
   /**
+<<<<<<< HEAD
    * Generates email verification link
    * @static
    * @param { Request } req - Request object
@@ -58,6 +68,8 @@ class Helpers {
   }
 
   /**
+=======
+>>>>>>> b9d330d3c5eae113b2dbea528d57216e2ca73903
  * Hashes a password
  * @static
  * @param {string} password - Password to encrypt.
@@ -76,6 +88,7 @@ class Helpers {
  * @memberof Helpers
  * @returns {boolean} - returns true if there is a match and false otherwise.
  */
+<<<<<<< HEAD
   static comparePassword(password, hash) {
     return bcrypt.compareSync(password, hash);
   }
@@ -119,3 +132,9 @@ class Helpers {
 }
 
 export default Helpers;
+=======
+  static compare(password, hash) {
+    return bcrypt.compareSync(password, hash);
+  }
+}
+>>>>>>> b9d330d3c5eae113b2dbea528d57216e2ca73903

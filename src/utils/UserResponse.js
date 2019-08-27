@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+import helpers from './helpers';
+>>>>>>> b9d330d3c5eae113b2dbea528d57216e2ca73903
 
 /**
  * Model response for user detail
@@ -10,7 +14,11 @@ export default class UserResponse {
    */
   constructor(user) {
     this.id = user.id;
+<<<<<<< HEAD
     this.token = user.token;
+=======
+    this.token = helpers.generateToken({ email: user.email });
+>>>>>>> b9d330d3c5eae113b2dbea528d57216e2ca73903
     this.firstName = user.firstName;
     this.lastName = user.lastName;
     this.email = user.email;

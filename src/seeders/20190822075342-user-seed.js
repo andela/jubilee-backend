@@ -1,7 +1,7 @@
 import { helpers } from '../utils';
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: (queryInterface) => {
     return queryInterface.bulkInsert('Users', [{
       firstName: 'Adebayo',
       lastName: 'Daramola',
@@ -29,7 +29,7 @@ module.exports = {
       updatedAt: new Date()
     }], {});
   },
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface) => {
     return queryInterface.bulkDelete('Users', [{
       email: 'ade.steve@gmail.com'
     }], {});

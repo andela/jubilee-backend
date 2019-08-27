@@ -9,9 +9,15 @@ const { User } = db;
  */
 export default class UserService {
   /**
+<<<<<<< HEAD
    * Saves user in the database
    * @static
    * @param {object} user - The user to be saved in the database.
+=======
+   * @description Saves user in the database
+   *
+   * @param {object} user - The user to be saved in the database
+>>>>>>> b9d330d3c5eae113b2dbea528d57216e2ca73903
    * @returns {Promise<object>} A promise object with user detail.
    * @memberof UserService
    */
@@ -36,6 +42,17 @@ export default class UserService {
     const [rowaffected, [user]] = await User.update(userData, { returning: true, where: { id } });
     if (!rowaffected) throw new Error('Not Found');
     return user;
+  }
+
+  /**
+ * @description Sign-in existing user
+ * @param {object} email user's registered email
+ * @returns {Promise<object>} A promise object with user detail.
+ */
+  static userLogin(email) {
+    return database.User.findOne({
+      where: { email }
+    });
   }
 
   /**
