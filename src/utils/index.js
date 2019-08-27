@@ -1,5 +1,5 @@
-import ApiError from './apiError';
-import UserResponse from './userResponse';
+import ApiError from './ApiError';
+import UserResponse from './UserResponse';
 import Helpers from './helpers';
 import Mailer from './mailer';
 

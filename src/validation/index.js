@@ -1,3 +1,3 @@
-import dotenv from 'dotenv';
+import userValidation from './userValidation';
 
-dotenv.config();
+export default userValidation;

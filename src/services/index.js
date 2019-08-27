@@ -1,4 +1,4 @@
-import UserService from './userService';
-import BookingService from './bookingService';
+import UserService from './UserService';
+import BookingService from './BookingService';
 
 export { UserService, BookingService };
