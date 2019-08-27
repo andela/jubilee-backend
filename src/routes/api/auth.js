@@ -3,7 +3,10 @@ import { Auth } from '../../controllers';
 import userMiddleware from '../../middlewares';
 
 const router = Router();
-const { signUp, verifyEmail } = Auth;
+const {
+  signUp, verifyEmail, sendResetPasswordEmail, resetPassword, verifyPasswordResetLink
+} = Auth;
+const { checkParameters } = ResetPassword;
 
 router.post('/signup', userMiddleware.onSignup, signUp);
 router.get('/verify', verifyEmail);

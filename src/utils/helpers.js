@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import Joi from '@hapi/joi';
 import bcrypt from 'bcryptjs';
 import env from '../config/env-config';
 
