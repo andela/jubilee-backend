@@ -5,6 +5,9 @@
         "title": "Barefoot Nomad",
         "description": "Barefoot Nomad - Making company travel and accomodation easy and convenient."
     },
+    "schemes": [
+        "https"
+    ],
     "servers": [
         {
           "url": "http://localhost:3000/"
@@ -109,7 +112,7 @@
               }
             }
           },
-        "/users/login": {
+          "/auth/login": {
             "post": {
                 "description": "#",
                 "summary": "#",
@@ -135,8 +138,8 @@
                     "200": {
                         "description": "Login successful"
                     },
-                    "400": {
-                        "description": "Invalid email or password"
+                    "401": {
+                        "description": "Invalid login details"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -313,7 +316,7 @@
                 "type": "object",
                 "properties": {
                     "email": {
-                        "description": "Email address of the user user",
+                        "description": "Email address of the user",
                         "type": "string"
                     },
                     "password": {
@@ -322,7 +325,7 @@
                     }
                 },
                 "example": {
-                    "email": "mike@example.com",
+                    "email": "efe.yusuf@andela.com",
                     "password": "password123"
                 },
                 "required": [

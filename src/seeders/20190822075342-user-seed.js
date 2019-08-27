@@ -1,5 +1,4 @@
-'use strict';
-import Auth from '../utils/auth';
+import { helpers } from '../utils';
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -18,7 +17,7 @@ module.exports = {
       zip: '100001',
       phoneNo: '2347080445678',
       companyName: 'Andela',
-      password: Auth.hash('testing'),
+      password: helpers.hash('testing'),
       company: 'Andela',
       role: 'Senior',
       isVerified: false,
