@@ -1,5 +1,5 @@
 import UserService from '../services';
-import { ApiResponse, UserResponse } from '../utils';
+import { ApiResponse, UserResponse, helpers } from '../utils';
 
 const { userLogin } = UserService;
 /**
@@ -28,14 +28,26 @@ export default class UserController {
 
   /**
   *  Login an existing user
-  * 
+  *
   * @param {object} req request object
   * @param {object} res reponse object
   * @returns {object} JSON response
   */
   static async loginUser(req, res) {
     try {
-      return await userLogin(req.body, res);
+      const { email, password } = req.body;
+      const user = await userLogin(email);
+      if (!user) {
+        const msg = 'Invalid login details';
+        return res.status(401).json(new ApiResponse(false, 401, msg));
+      }
+      if (!helpers.compare(password, user.password)) {
+        const msg = 'Invalid login details';
+        return res.status(401).json(new ApiResponse(false, 401, msg));
+      }
+      const loginResponse = new UserResponse(user);
+      // const { token } = loginResponse;
+      return res.status(200).json(new ApiResponse(true, 200, loginResponse));
     } catch (error) {
       const status = error.status || 500;
       res.status(status).json(new ApiResponse(false, status, error.message));

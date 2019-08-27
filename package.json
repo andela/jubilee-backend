@@ -4,11 +4,11 @@
   "description": "Barefoot Nomad - Making company travel and accomodation easy and convinient. =======",
   "main": "index.js",
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text mocha --timeout 10000 -c test --require @babel/register --exit",
+    "test": "export NODE_ENV=test || set NODE_ENV=test && nyc --reporter=html --reporter=text mocha --timeout 10000 -c test --require @babel/register --exit",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
-    "start:dev": "nodemon --exec babel-node ./src/index.js",
+    "start:dev": "export NODE_ENV=development || set NODE_ENV=development && nodemon --exec babel-node ./src/index.js",
     "migrate:reset": "babel-node ./node_modules/.bin/sequelize db:migrate:undo:all",
-    "migrate": "babel-node ./node_modules/.bin/sequelize db:migrate"
+    "migrate": "sequelize db:migrate"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
     "@babel/polyfill": "^7.4.4",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
     "cors": "^2.8.4",
     "dotenv": "^8.0.0",
     "ejs": "^2.6.1",

@@ -13,11 +13,10 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+
 // routes
 app.use(routes);
-app.get('/', (req, res) =>
-  res.status(200).send({ message: 'welcome to BN: jubilee-team' })
-);
+app.get('/', (req, res) => res.status(200).send({ message: 'welcome to BN: jubilee-team' }));
 app.all('*', (req, res) => res.send({ message: 'route not found' }));
 
 // error handlers
