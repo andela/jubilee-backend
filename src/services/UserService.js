@@ -45,6 +45,6 @@ export default class UserService {
    * @returns {Promise<object>} A promise object with user detail if user exists.
    */
   static find(email) {
-    return database.User.findOne({ where: { email } });
+    return User.findOne({ where: { email } });
   }
 }

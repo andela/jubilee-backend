@@ -1,7 +1,10 @@
 import userValidation from '../validation/index';
-import { ApiResponse } from '../utils';
-import UserService from '../services/index';
+import { Helpers } from '../utils';
+import { UserService } from '../services/index';
 
+const {
+  errorResponse
+} = Helpers;
 /**
  * Middleware for input validations
  */
@@ -15,18 +18,17 @@ export default class ValidationMiddleware {
      */
   static async onSignup(req, res, next) {
     try {
-      const validated = await userValidation.signup(req.body);
+      const validated = await userValidation.signup(req.body, res);
       if (validated) {
         const user = await UserService.find(req.body.email);
         if (!user) {
           next();
         } else {
-          res.status(409).json(new ApiResponse(false, 409, `User with email: "${req.body.email}" already exists`));
+          errorResponse(res, { code: 409, message: `User with email: "${req.body.email}" already exists` });
         }
       }
     } catch (error) {
-      res.status(error.status || 500)
-        .json(new ApiResponse(false, error.status || 500, error.message));
+      errorResponse(res, { code: 400, message: error.details[0].context.label });
     }
   }
 }

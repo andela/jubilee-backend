@@ -1,6 +1,10 @@
 import joi from '@hapi/joi';
 import passwordComplexity from 'joi-password-complexity';
-import { ApiResponse, ApiError } from '../utils';
+import { Helpers } from '../utils';
+
+const {
+  successResponse, errorResponse
+} = Helpers;
 
 // password complexity object
 const complexityOptions = {
@@ -24,10 +28,11 @@ export default class userValidation {
   /**
      * Validates user paramenters upon registration
      *
-     * @param {object} userObject - The user response object
+     * @param {object} userObject - The user object
+     * @param {object} res - The user response object
      * @returns {object} - returns an object (error or response).
      */
-  static async signup(userObject) {
+  static async signup(userObject, res) {
     // joi parameters to test against user inputs
     const schema = {
       firstName: joi.string().min(3).max(25).required()
@@ -58,7 +63,8 @@ export default class userValidation {
     // Once user inputs are validated, move into server
     const { error } = joi.validate({ ...userObject }, schema);
     if (error) {
-      throw new ApiError(400, error.details[0].context.label);
+      // throw errorResponse(res, { code: 400, message: error.details[0].context.label });
+      throw error;
     }
     return true;
   }
@@ -78,10 +84,10 @@ export default class userValidation {
   static dummy(req, res) {
     try {
       // outdated response values, dummy parameter used for testing only
-      res.status(200).json(new ApiResponse(true, 200, 'Success'));
+      successResponse(res, 'Success', 200);
     } catch (error) {
       const status = error.status || 500;
-      res.status(status).json(new ApiResponse(false, status, error.message));
+      errorResponse(res, { code: status, message: error.message });
     }
   }
 }

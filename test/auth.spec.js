@@ -19,7 +19,7 @@ describe('Auth route endpoints', () => {
       companyName: faker.company.companyName(),
       country: faker.address.country(),
       gender: 'male',
-      street: faker.address.streetAddress(),
+      street: 'ajayi estate',
       city: faker.address.city(),
       state: faker.address.state(),
       birthdate: faker.date.past(),
@@ -43,17 +43,6 @@ describe('Auth route endpoints', () => {
     expect(response).to.have.status(201);
     expect(data.isVerified).to.equal(false);
     expect(data.emailSent).to.equal(true);
-  });
-
-  it('should return a response that indicates verification link was not sent whenever a mail is not sent upon successful registration', async () => {
-    const user2 = { ...newUser };
-    user2.email = 'notvalid';
-    const response = await chai.request(server).post('/api/auth/signup').send(user2);
-    const { body: { data } } = response;
-    newlyCreatedUser = { ...data };
-    expect(response).to.have.status(201);
-    expect(data.isVerified).to.equal(false);
-    expect(data.emailSent).to.equal(false);
   });
 });
 describe('GET /api/auth/verify?token', () => {
@@ -86,5 +75,107 @@ describe('GET /api/auth/verify?token', () => {
     const { body: { error } } = response;
     expect(response).to.have.status(400);
     expect(error.message).to.equal('no user found to verify');
+  });
+
+  // my tests
+  it('should pass upon successfull validation', async () => {
+    const user = {
+      email: 'tony@gmail.com',
+      firstName: 'Tony',
+      lastName: 'Marshall',
+      password: 'tmonarqA1.',
+      companyName: 'Jubilee',
+      country: 'NIgeria',
+      gender: 'male',
+      street: 'Abage',
+      city: 'Lagos',
+      state: 'Imo',
+      birthdate: '2019-08-20',
+      phoneNumber: '00000000000',
+    };
+
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup')
+      .send(user);
+    expect(response).to.has.status(201);
+    expect(response.body).to.be.a('object');
+    expect(response.body.status).to.equal('success');
+  });
+  it('should fail upon missing parameters during validation', async () => {
+    const user = {
+      firstName: 'Tony',
+      lastName: 'Marshall',
+      password: 'tmonarqA1.',
+      companyName: 'Jubilee',
+      country: 'NIgeria',
+      gender: 'male',
+      street: 'Abage',
+      city: 'Lagos',
+      state: 'Imo',
+      birthdate: '2019-08-20',
+      phoneNumber: '00000000000',
+    };
+
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup')
+      .send(user);
+    expect(response).to.has.status(400);
+    expect(response.body).to.be.a('object');
+    expect(response.body.status).to.equal('fail');
+  });
+
+  it('should signup successfully with a status of 201', async () => {
+    const user = {
+      email: faker.internet.email(),
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      password: faker.internet.password(15, false),
+      companyName: faker.company.companyName(),
+      country: faker.address.country(),
+      gender: 'male',
+      street: faker.address.streetAddress(),
+      city: faker.address.city(),
+      state: faker.address.state(),
+      birthdate: faker.date.past(),
+      phoneNumber: faker.phone.phoneNumber()
+    };
+
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup')
+      .send(user);
+    expect(response.body.status).to.equal('success');
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.token).to.be.a('string');
+    expect(response.body.data.firstName).to.be.a('string');
+    expect(response.body.data.lastName).to.be.a('string');
+  });
+  it('should fail upon signup if user exists', async () => {
+    const user = {
+      email: 'tony@gmail.com',
+      firstName: 'Tony',
+      lastName: 'Marshall',
+      password: 'tmonarqA1.',
+      companyName: 'Jubilee',
+      country: 'NIgeria',
+      gender: 'male',
+      street: 'Abage',
+      city: 'Lagos',
+      state: 'Imo',
+      birthdate: '2019-08-20',
+      phoneNumber: faker.phone.phoneNumber(),
+    };
+
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup')
+      .send(user);
+    expect(response).to.has.status(409);
+    expect(response.body.status).to.equal('fail');
+    expect(response.body).to.be.a('object');
+    expect(response.body).to.be.a('object');
+    expect(response.body.error.message).to.be.a('string');
   });
 });
