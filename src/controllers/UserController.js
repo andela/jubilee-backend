@@ -1,27 +1,8 @@
-import UserService from '../services/index';
-import { ApiResponse, UserResponse } from '../utils/index';
-
 /**
- * User controller class that implements crud operation in the database
+ * A collection of methods that controls user's interaction via the User routes
+ *
+ * @class UserController
  */
-export default class UserController {
-  /**
-   * Gets user object from the request and saves it in the database
-   *
-   * @param {object} req - The request from the endpoint.
-   * @param {object} res - The response returned by the method.
-   * @returns {object} A response object with the registered user and a JWT.
-   */
-  static async createUser(req, res) {
-    try {
-      const user = req.body;
+class UserController {}
 
-      const createdUser = await UserService.create(user);
-      const userResponse = new UserResponse(createdUser);
-      res.status(201).json(new ApiResponse(true, 201, userResponse));
-    } catch (error) {
-      const status = error.status || 500;
-      res.status(status).json(new ApiResponse(false, status, error.message));
-    }
-  }
-}
+export default UserController;

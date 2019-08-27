@@ -1,6 +1,6 @@
 language: node_js
 node_js:
- - "stable"
+  - 'stable'
 cache:
   directories:
     - node_modules
@@ -9,8 +9,9 @@ services:
 before_script:
   - psql -c 'create database jubilee_test;' -U postgres
 script:
- - npm install
- - npm run migrate
- - npm run coveralls
+  - npm i -g sequelize-cli
+  - npm install
+  - npm test
+  - npm run coveralls
 notifications:
   email: false

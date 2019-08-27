@@ -1,38 +1,37 @@
 import fs from 'fs';
 import path from 'path';
 import Sequelize from 'sequelize';
-import dotenv from 'dotenv';
-
 import sequelizeConfig from '../config/config';
+import env from '../config/env-config';
 
-dotenv.config();
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = sequelizeConfig[env];
+const environ = env.NODE_ENV || 'development';
+const config = sequelizeConfig[environ];
+
 const db = {};
 let sequelize;
 if (config.prodDatabaseURI) {
-  sequelize = new Sequelize(process.env[config.prodDatabaseURI], config);
-} else {
-  sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
-  );
+  sequelize = new Sequelize(config.prodDatabaseURI, config);
 }
+
+if (environ === 'test') config.logging = false;
+sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  config
+);
 
 fs.readdirSync(__dirname)
   .filter(
-    file =>
-      file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
+    (file) => file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
   )
-  .forEach(file => {
+  .forEach((file) => {
     const model = sequelize.import(path.join(__dirname, file));
     db[model.name] = model;
   });
 
-Object.keys(db).forEach(modelName => {
+Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
@@ -41,4 +40,4 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;
+export default db;

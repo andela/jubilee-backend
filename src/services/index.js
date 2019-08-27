@@ -1,3 +1,4 @@
-import UserService from './UserService';
+import UserService from './userService';
+import BookingService from './bookingService';
 
-export default UserService;
+export { UserService, BookingService };

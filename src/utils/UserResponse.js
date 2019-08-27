@@ -1,4 +1,3 @@
-import TokenMiddleware from '../middlewares/index';
 
 /**
  * Model response for user detail
@@ -11,7 +10,7 @@ export default class UserResponse {
    */
   constructor(user) {
     this.id = user.id;
-    this.token = TokenMiddleware.generateToken(user.email);
+    this.token = user.token;
     this.firstName = user.firstName;
     this.lastName = user.lastName;
     this.email = user.email;
