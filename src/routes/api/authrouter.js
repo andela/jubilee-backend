@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import passport from '../../config/passport';
 import { socialAuthController } from '../../controllers';
+import { facebookApiMock, googleApiMock } from '../../middlewares';
 
 const authRouter = Router();
 
@@ -13,5 +14,8 @@ authRouter.get('/google', passport.authenticate('google', { scope: ['email', 'pr
 authRouter.get('/google/callback',
   passport.authenticate('google'),
   socialAuthController.googleAuth);
+
+authRouter.post('/mockFacebook', facebookApiMock, socialAuthController.facebookAuth);
+authRouter.post('/mockGoogle', googleApiMock, socialAuthController.googleAuth);
 
 export default authRouter;
