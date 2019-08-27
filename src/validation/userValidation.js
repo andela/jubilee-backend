@@ -32,7 +32,7 @@ export default class userValidation {
      * @param {object} res - The user response object
      * @returns {object} - returns an object (error or response).
      */
-  static async signup(userObject, res) {
+  static async signup(userObject) {
     // joi parameters to test against user inputs
     const schema = {
       firstName: joi.string().min(3).max(25).required()

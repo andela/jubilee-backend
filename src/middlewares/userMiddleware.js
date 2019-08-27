@@ -18,7 +18,7 @@ export default class ValidationMiddleware {
      */
   static async onSignup(req, res, next) {
     try {
-      const validated = await userValidation.signup(req.body, res);
+      const validated = await userValidation.signup(req.body);
       if (validated) {
         const user = await UserService.find(req.body.email);
         if (!user) {

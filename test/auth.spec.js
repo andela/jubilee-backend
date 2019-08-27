@@ -44,38 +44,6 @@ describe('Auth route endpoints', () => {
     expect(data.isVerified).to.equal(false);
     expect(data.emailSent).to.equal(true);
   });
-});
-describe('GET /api/auth/verify?token', () => {
-  it('should successfully verify an existing user if the token is valid', async () => {
-    const { id, firstName, role } = newlyCreatedUser;
-    const token = generateToken({ id, firstName, role });
-    const response = await chai.request(server).get(`/api/auth/verify?token=${token}`);
-    const { body: { data: { isVerified } } } = response;
-    expect(response).to.have.status(200);
-    expect(isVerified).to.equal(true);
-  });
-
-  it('should return an error response if verification token is not provided', async () => {
-    const response = await chai.request(server).get('/api/auth/verify?token=');
-    const { body: { error } } = response;
-    expect(response).to.have.status(400);
-    expect(error.message).to.equal('Invalid token, verification unsuccessful');
-  });
-
-  it('should return an error response if verification token is not valid', async () => {
-    const response = await chai.request(server).get('/api/auth/verify?token=73783489d.eue4.78');
-    const { body: { error } } = response;
-    expect(response).to.have.status(400);
-    expect(error.message).to.equal('Invalid token, verification unsuccessful');
-  });
-
-  it("should return an error response if the verification link contains details of a user that doesn't exist", async () => {
-    const token = generateToken({ id: 49 });
-    const response = await chai.request(server).get(`/api/auth/verify?token=${token}`);
-    const { body: { error } } = response;
-    expect(response).to.have.status(400);
-    expect(error.message).to.equal('no user found to verify');
-  });
 
   // my tests
   it('should pass upon successfull validation', async () => {
@@ -177,5 +145,37 @@ describe('GET /api/auth/verify?token', () => {
     expect(response.body).to.be.a('object');
     expect(response.body).to.be.a('object');
     expect(response.body.error.message).to.be.a('string');
+  });
+});
+describe('GET /api/auth/verify?token', () => {
+  it('should successfully verify an existing user if the token is valid', async () => {
+    const { id, firstName, role } = newlyCreatedUser;
+    const token = generateToken({ id, firstName, role });
+    const response = await chai.request(server).get(`/api/auth/verify?token=${token}`);
+    const { body: { data: { isVerified } } } = response;
+    expect(response).to.have.status(200);
+    expect(isVerified).to.equal(true);
+  });
+
+  it('should return an error response if verification token is not provided', async () => {
+    const response = await chai.request(server).get('/api/auth/verify?token=');
+    const { body: { error } } = response;
+    expect(response).to.have.status(400);
+    expect(error.message).to.equal('Invalid token, verification unsuccessful');
+  });
+
+  it('should return an error response if verification token is not valid', async () => {
+    const response = await chai.request(server).get('/api/auth/verify?token=73783489d.eue4.78');
+    const { body: { error } } = response;
+    expect(response).to.have.status(400);
+    expect(error.message).to.equal('Invalid token, verification unsuccessful');
+  });
+
+  it("should return an error response if the verification link contains details of a user that doesn't exist", async () => {
+    const token = generateToken({ id: 49 });
+    const response = await chai.request(server).get(`/api/auth/verify?token=${token}`);
+    const { body: { error } } = response;
+    expect(response).to.have.status(400);
+    expect(error.message).to.equal('no user found to verify');
   });
 });
