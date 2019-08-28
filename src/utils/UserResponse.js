@@ -28,8 +28,6 @@ export default class UserResponse {
     this.lineManager = user.lineManager;
     this.preferredCurrency = user.preferredCurrency;
     this.preferredLanguage = user.preferredLanguage;
-    this.googleId = user.googleId;
-    this.facebookId = user.facebookId;
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
   }

@@ -1,5 +1,6 @@
 import '@babel/polyfill';
 import express from 'express';
+import passport from 'passport';
 import cors from 'cors';
 import errorhandler from 'errorhandler';
 import morgan from 'morgan';
@@ -21,6 +22,7 @@ app.use(morgan('dev'));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(passport.initialize());
 
 app.use(methodOverride());
 
@@ -71,6 +73,10 @@ app.use((err, req, res, next) => {
     }
   });
 });
+// routes
+app.use(routes);
+app.get('/', (req, res) => res.status(200).send({ message: 'welcome to BN: jubilee-team' }));
+app.all('*', (req, res) => res.send({ message: 'route not found' }));
 
 // finally, let's start our server...
 const server = app.listen(process.env.PORT || 3000, () => {

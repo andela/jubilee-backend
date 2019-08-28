@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: 'Naira'
       },
+      username: {
+        type: DataTypes.STRING,
+        unique: true,
+      },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -30,14 +34,12 @@ module.exports = (sequelize, DataTypes) => {
       phoneNumber: { type: DataTypes.STRING, allowNull: true },
       companyName: { type: DataTypes.STRING, allowNull: true },
       password: { type: DataTypes.STRING, allowNull: true },
-      role: { type: DataTypes.STRING, allowNull: false, defaultValue: 'user' },
+      role: { type: DataTypes.STRING, allowNull: true, defaultValue: 'user' },
       isVerified: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
         defaultValue: false
       },
-      facebookId: { type: DataTypes.STRING, allowNull: true },
-      googleId: { type: DataTypes.STRING, allowNull: true },
       department: { type: DataTypes.STRING, allowNull: true },
       lineManager: { type: DataTypes.STRING, allowNull: true }
     },

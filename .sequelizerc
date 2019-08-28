@@ -14,3 +14,4 @@ module.exports = isProduction ? {
   "seeders-path": path.resolve('./src/seeders'),
   "migrations-path": path.resolve('./src/migrations')
 };
+

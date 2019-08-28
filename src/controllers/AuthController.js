@@ -170,6 +170,27 @@ class Auth {
       errorResponse(res, {});
     }
   }
+
+  /**
+   * create with facebook data
+   *
+   * @static
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @memberof SocialLogin
+   * @returns {object} - response body
+   *
+   */
+  static async socialLogin(req, res) {
+    try {
+      const user = await UserService.socialLogin(req.user);
+      user.token = generateToken({ email: user.email, id: user.id, role: user.role });
+      const userResponse = new UserResponse(user);
+      Helpers.successResponse(res, userResponse, 200);
+    } catch (error) {
+      Helpers.errorResponse(res, { code: error.statusCode, message: error.message });
+    }
+  }
 }
 
 export default Auth;

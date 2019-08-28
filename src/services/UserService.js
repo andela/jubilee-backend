@@ -1,4 +1,4 @@
-import { Helpers } from '../utils';
+import { Helpers, ApiError } from '../utils';
 import db from '../models';
 
 const { hashPassword } = Helpers;
@@ -39,7 +39,16 @@ export default class UserService {
   }
 
   /**
-   * 
+   * Finds user in the database
+   *
+   * @param {object} email - The user email
+   * @returns {Promise<object>} A promise object with user detail if user exists.
+   */
+  static async find(email) {
+    return User.findOne({ where: { email } });
+  }
+
+  /**
    * Update user password in the database
    *
    * @param {string} password - New user password to be updated in database
@@ -54,14 +63,28 @@ export default class UserService {
   }
 
   /**
-   * Finds user in the database
+   * signin with users google or facebook data
    *
-   * @param {string} email - The user to find by email in the database
-   * @returns {Promise<object>} A promise object with user detail.
+   * @static
+   * @param {object} userData - user data
+   * @memberof UserService
+   * @returns {object} - the user data object
+   *
    */
-  static async find(email) {
-    const user = await User.findOne({ where: { email } });
-    return user;
+  static async socialLogin(userData) {
+    try {
+      const existingUser = await db.User.findOne({
+        where: {
+          email: userData.emails[0].value
+        }
+      });
+      if (!existingUser) {
+        throw new ApiError(403, 'You need to signup to use this feature');
+      }
+      return existingUser.dataValues;
+    } catch (error) {
+      throw new ApiError(500, error.message);
+    }
   }
 
   /**
