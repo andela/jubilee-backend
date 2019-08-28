@@ -1,10 +1,10 @@
 import joi from '@hapi/joi';
 import passwordComplexity from 'joi-password-complexity';
-import { Helpers } from '../utils';
+import { helpers } from '../utils';
 
 const {
   successResponse, errorResponse
-} = Helpers;
+} = helpers;
 
 // password complexity object
 const complexityOptions = {

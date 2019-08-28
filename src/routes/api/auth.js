@@ -1,17 +1,17 @@
 import { Router } from 'express';
 import passport from '../../config/passport';
-import { Auth } from '../../controllers';
+import { authController } from '../../controllers';
 import { rightEmail, wrongEmail } from '../../../test/features';
 import {
-  ResetPassword, authMiddleware,
+  passwordMiddleware, authMiddleware,
 } from '../../middlewares';
 
 const router = Router();
 const {
   signUp, verifyEmail, sendResetPasswordEmail, resetPassword, verifyPasswordResetLink,
   loginUser, socialLogin, logout
-} = Auth;
-const { checkParameters } = ResetPassword;
+} = authController;
+const { checkParameters } = passwordMiddleware;
 
 router.post('/signup', authMiddleware.onSignup, signUp);
 router.get('/verify', verifyEmail);

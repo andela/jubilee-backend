@@ -1,7 +1,7 @@
-import { Helpers, ApiError } from '../utils';
+import { helpers, ApiError } from '../utils';
 import db from '../models';
 
-const { hashPassword } = Helpers;
+const { hashPassword } = helpers;
 const { User } = db;
 
 /**

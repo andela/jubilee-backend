@@ -1,10 +1,10 @@
 import authValidation from '../validation/index';
-import { Helpers } from '../utils';
-import { UserService } from '../services/index';
+import { helpers } from '../utils';
+import { userService } from '../services/index';
 
 const {
   errorResponse
-} = Helpers;
+} = helpers;
 /**
  * Middleware for input validations
  */
@@ -20,7 +20,7 @@ export default class authMiddleware {
     try {
       const validated = await authValidation.signup(req.body);
       if (validated) {
-        const user = await UserService.find(req.body.email);
+        const user = await userService.find(req.body.email);
         if (!user) {
           next();
         } else {

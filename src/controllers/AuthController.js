@@ -1,21 +1,21 @@
-import { UserService } from '../services';
+import { userService } from '../services';
 import {
-  Helpers, UserResponse, Mailer, ApiError
+  helpers, UserResponse, mailer, ApiError
 } from '../utils';
 
 const {
   generateToken, verifyToken, successResponse, errorResponse, comparePassword,
-} = Helpers;
-const { sendVerificationEmail, sendResetMail } = Mailer;
+} = helpers;
+const { sendVerificationEmail, sendResetMail } = mailer;
 const {
   create, updateById, updatePassword, find, userLogin,
-} = UserService;
+} = userService;
 /**
  * A collection of methods that controls authentication responses.
  *
  * @class Auth
  */
-class Auth {
+class AuthController {
   /**
    * Registers a new user.
    *
@@ -183,12 +183,12 @@ class Auth {
    */
   static async socialLogin(req, res) {
     try {
-      const user = await UserService.socialLogin(req.user);
+      const user = await userService.socialLogin(req.user);
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       const userResponse = new UserResponse(user);
-      Helpers.successResponse(res, userResponse, 200);
+      helpers.successResponse(res, userResponse, 200);
     } catch (error) {
-      Helpers.errorResponse(res, { code: error.statusCode, message: error.message });
+      helpers.errorResponse(res, { code: error.statusCode, message: error.message });
     }
   }
 
@@ -210,4 +210,4 @@ class Auth {
   }
 }
 
-export default Auth;
+export default AuthController;

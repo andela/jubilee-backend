@@ -1,12 +1,12 @@
 import { changePasswordSchema, passwordResetEmailSchema } from '../validation/passwordValidator';
-import { Helpers } from '../utils';
+import { helpers } from '../utils';
 
-const { validate, errorResponse } = Helpers;
+const { validate, errorResponse } = helpers;
 /**
  * Collection of methods for ResetPassword
  * @class ResetPassword
  */
-class ResetPassword {
+class PasswordMiddleware {
   /**
      * Middleware for password reset form
      *
@@ -31,4 +31,4 @@ class ResetPassword {
   }
 }
 
-export default ResetPassword;
+export default PasswordMiddleware;
