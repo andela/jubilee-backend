@@ -117,6 +117,16 @@ class Helpers {
       }
     });
   }
+
+  /**
+ * Validates a value using the given Joi schema
+ * @param {object} value
+ * @param {Joi.SchemaLike} schema
+ * @returns {Promise} Validation result
+ */
+  static validate(value, schema) {
+    return Joi.validate(value, schema, { abortEarly: false, allowUnknown: true });
+  }
 }
 
 export default Helpers;
