@@ -4,10 +4,10 @@
   "description": "Barefoot Nomad - Making company travel and accomodation easy and convenient. =======",
   "main": "index.js",
   "scripts": {
-    "test": "npm run migrate:reset && npm run migrate && cross-env NODE_ENV=test nyc --reporter=text --reporter=html mocha --timeout 10000 -c --require @babel/register --exit",
+    "test": "cross-env NODE_ENV=test npm run migrate:reset && cross-env NODE_ENV=test  npm run migrate && cross-env NODE_ENV=test nyc --reporter=text --reporter=html mocha --timeout 10000 -c --require @babel/register --exit",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
-    "migrate:reset": "cross-env NODE_ENV=test sequelize db:migrate:undo:all",
-    "migrate": "cross-env NODE_ENV=test sequelize db:migrate",
+    "migrate:reset": "sequelize db:migrate:undo:all",
+    "migrate": "sequelize db:migrate",
     "start:dev": "nodemon --exec babel-node ./src/index.js",
     "start": "node dist/index.js",
     "build": "babel src -d dist",
@@ -29,6 +29,7 @@
     "@sendgrid/mail": "^6.4.0",
     "bcryptjs": "^2.4.3",
     "@hapi/joi": "^15.1.1",
+    "@types/hapi__joi": "^15.0.3",
     "cors": "^2.8.4",
     "cross-env": "^5.2.0",
     "dotenv": "^8.0.0",
@@ -46,6 +47,7 @@
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "password-hash": "^1.2.2",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "request": "^2.87.0",
@@ -55,6 +57,7 @@
     "underscore": "^1.9.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
     "@babel/preset-env": "^7.5.5",

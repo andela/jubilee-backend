@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import Joi from '@hapi/joi';
 import bcrypt from 'bcryptjs';
 import env from '../config/env-config';
 
@@ -115,6 +116,16 @@ class Helpers {
         errors
       }
     });
+  }
+
+  /**
+ * Validates a value using the given Joi schema
+ * @param {object} value
+ * @param {Joi.SchemaLike} schema
+ * @returns {Promise} Validation result
+ */
+  static validate(value, schema) {
+    return Joi.validate(value, schema, { abortEarly: false, allowUnknown: true });
   }
 }
 

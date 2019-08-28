@@ -45,5 +45,33 @@ class Mailer {
       return false;
     }
   }
+
+  /**
+ * Sends a password reset link to a user's email
+ *
+ * @param {object} options mail options
+ * @param {string} options.email Recipient email address
+ * @param {string} options.firstName Recipient firstName
+ * @param {string} options.resetPasswordLink Password reset link
+ * @returns {Promise} Sendgrid response
+ * @memberof Mailer
+ */
+  static async sendResetMail({ email, firstName, resetPasswordLink }) {
+    const mail = {
+      to: email,
+      from: ADMIN_EMAIL,
+      templateId: 'd-dd8d3babd4b842b28e3ebf03cfdc4c90',
+      dynamic_template_data: {
+        firstName,
+        resetPasswordLink
+      }
+    };
+    try {
+      await sendgrid.send(mail);
+      return true;
+    } catch (e) {
+      return e.message;
+    }
+  }
 }
 export default Mailer;

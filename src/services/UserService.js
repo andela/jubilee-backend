@@ -47,4 +47,29 @@ export default class UserService {
   static find(email) {
     return User.findOne({ where: { email } });
   }
+
+  /**
+   * Update user password in the database
+   *
+   * @param {string} password - New user password to be updated in database
+   * @param {string} email - The user email for identification in database
+   * @returns {Promise<object>} A promise object with user detail.
+   */
+  static async updatePassword(password, email) {
+    const hashedPassword = hashPassword(password);
+    const result = await User.update({ password: hashedPassword },
+      { where: { email }, returning: true });
+    return result;
+  }
+
+  /**
+   * Finds user in the database
+   *
+   * @param {string} email - The user to find by email in the database
+   * @returns {Promise<object>} A promise object with user detail.
+   */
+  static async find(email) {
+    const user = await User.findOne({ where: { email } });
+    return user;
+  }
 }

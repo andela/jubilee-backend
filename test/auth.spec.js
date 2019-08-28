@@ -9,6 +9,7 @@ const { generateToken } = Helpers;
 
 chai.use(chaiHttp);
 let newlyCreatedUser = {};
+let newUserPasswordReset;
 describe('Auth route endpoints', () => {
   it('should signup successfully with a status of 201', async () => {
     const user = {
@@ -35,6 +36,7 @@ describe('Auth route endpoints', () => {
     expect(response.body.data.token).to.be.a('string');
     expect(response.body.data.firstName).to.be.a('string');
     expect(response.body.data.lastName).to.be.a('string');
+    newUserPasswordReset = user;
   });
   it("should send a verification link to a user's email upon successful registration", async () => {
     const response = await chai.request(server).post('/api/auth/signup').send(newUser);
@@ -94,32 +96,6 @@ describe('Auth route endpoints', () => {
     expect(response.body.status).to.equal('fail');
   });
 
-  it('should signup successfully with a status of 201', async () => {
-    const user = {
-      email: faker.internet.email(),
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      password: faker.internet.password(15, false),
-      companyName: faker.company.companyName(),
-      country: faker.address.country(),
-      gender: 'male',
-      street: faker.address.streetAddress(),
-      city: faker.address.city(),
-      state: faker.address.state(),
-      birthdate: faker.date.past(),
-      phoneNumber: faker.phone.phoneNumber()
-    };
-
-    const response = await chai
-      .request(server)
-      .post('/api/auth/signup')
-      .send(user);
-    expect(response.body.status).to.equal('success');
-    expect(response.body.data).to.be.a('object');
-    expect(response.body.data.token).to.be.a('string');
-    expect(response.body.data.firstName).to.be.a('string');
-    expect(response.body.data.lastName).to.be.a('string');
-  });
   it('should fail upon signup if user exists', async () => {
     const user = {
       email: 'tony@gmail.com',
@@ -177,5 +153,80 @@ describe('GET /api/auth/verify?token', () => {
     const { body: { error } } = response;
     expect(response).to.have.status(400);
     expect(error.message).to.equal('no user found to verify');
+  });
+  describe('Reset Password route', () => {
+    it('should send an email containing reset password link with a status of 200', async () => {
+      const user = {
+        email: newUserPasswordReset.email
+      };
+      const response = await chai.request(server).post('/api/auth/reset-password/').send(user);
+      expect(response).to.have.status(200);
+      expect(response.body.data).to.be.a('string');
+    });
+
+    it('should throw error of 404, user email does not exist in database', async () => {
+      const user = {
+        email: faker.internet.email()
+      };
+
+      const response = await chai.request(server).post('/api/auth/reset-password/').send(user);
+      expect(response).to.have.status(404);
+      expect(response.error.message).to.be.a('string');
+    });
+
+    it('should return an error response if password reset link token is not valid', async () => {
+      const response = await chai.request(server).get('/api/auth/reset-password?token=8767668');
+      expect(response).to.have.status(500);
+      expect(response.error.message).to.be.a('string');
+    });
+
+    it('should return an error response if password reset link token is not provided', async () => {
+      const response = await chai.request(server).get('/api/auth/reset-password?token=');
+      expect(response).to.have.status(500);
+      expect(response.error.message).to.be.a('string');
+    });
+
+    it('should successfully verify the password reset link', async () => {
+      const { id, firstName, email } = newUserPasswordReset;
+      const token = generateToken({ id, firstName, email });
+      const response = await chai.request(server).get(`/api/auth/reset-password?token=${token}`);
+      expect(response).to.have.status(200);
+      expect(response.body.data).to.be.a('string');
+    });
+
+    it('should return an error of 400, the password does not match', async () => {
+      const testPassword = faker.internet.password(15, false);
+      const password = {
+        password: testPassword,
+        confirmPassword: faker.internet.password(15, false)
+      };
+
+      const response = await chai.request(server).post(`/api/auth/password/reset/${newUserPasswordReset.email}`).send(password);
+      expect(response).to.have.status(400);
+      expect(response.error.message).to.be.a('string');
+    });
+
+    it('should return an error of 404 when a user intentionally input a wrong email', async () => {
+      const testPassword = faker.internet.password(15, false);
+      const password = {
+        password: testPassword,
+        confirmPassword: testPassword
+      };
+
+      const response = await chai.request(server).post(`/api/auth/password/reset/${faker.internet.email()}`).send(password);
+      expect(response).to.have.status(404);
+      expect(response.error.message).to.be.a('string');
+    });
+    it('should reset user password successfully', async () => {
+      const testPassword = faker.internet.password(15, false);
+      const password = {
+        password: testPassword,
+        confirmPassword: testPassword
+      };
+
+      const response = await chai.request(server).post(`/api/auth/password/reset/${newUserPasswordReset.email}`).send(password);
+      expect(response).to.have.status(200);
+      expect(response.body.data).to.be.a('string');
+    });
   });
 });
