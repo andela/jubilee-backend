@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { Auth } from '../../controllers';
-import userMiddleware from '../../middlewares';
+import { ResetPassword, userMiddleware } from '../../middlewares';
 
 const router = Router();
 const {
@@ -10,5 +10,8 @@ const { checkParameters } = ResetPassword;
 
 router.post('/signup', userMiddleware.onSignup, signUp);
 router.get('/verify', verifyEmail);
+router.post('/reset-password/', checkParameters, sendResetPasswordEmail);
+router.get('/reset-password', verifyPasswordResetLink);
+router.post('/password/reset/:email', checkParameters, resetPassword);
 
 export default router;
