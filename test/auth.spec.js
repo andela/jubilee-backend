@@ -258,7 +258,7 @@ describe('POST /api/auth/login', () => {
     expect(response.body.error.message).to.be.equal('Invalid login details');
   });
 
-  it('should return 401 error if login details is invalid', async () => {
+  it('should return 401 error if user does not exist in the database', async () => {
     const login = {
       email: 'kylewalker123@yahoo.com',
       password: 'password'
