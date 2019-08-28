@@ -1,11 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
-  const supplier = sequelize.define('supplier', {
-    companyName: DataTypes.STRING,
-    companyAddress: DataTypes.STRING,
-    categoryOfServices: DataTypes.STRING
+  const Supplier = sequelize.define('Supplier', {
+    supplierName: { type: DataTypes.STRING, allowNull: false },
+    supplierAddress: { type: DataTypes.STRING, allowNull: false },
+    categoryOfServices: { type: DataTypes.STRING, allowNull: false }
   }, {});
-  supplier.associate = function(models) {
-    // associations can be defined here
+  Supplier.associate = (models) => {
+    Supplier.hasMany(models.User, {
+      foreignKey: 'supplierId',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
   };
-  return supplier;
+  return Supplier;
 };
