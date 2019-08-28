@@ -18,8 +18,8 @@ module.exports = {
     )
   ]),
   down: (queryInterface, Sequelize) => Promise.all([
-    queryInterface.removeColumn('Users', 'categoryOfServiceId'),
-    queryInterface.addColumn('categoryOfServices', {
+    queryInterface.removeColumn('Suppliers', 'categoryOfServiceId'),
+    queryInterface.addColumn('Suppliers', 'categoryOfServices', {
       allowNull: false,
       type: Sequelize.STRING
     }),

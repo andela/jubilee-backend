@@ -10,5 +10,5 @@ module.exports = {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE'
   }),
-  down: (queryInterface) => queryInterface.removeColun('Users', 'supplierId')
+  down: (queryInterface) => queryInterface.removeColumn('Users', 'supplierId')
 };
