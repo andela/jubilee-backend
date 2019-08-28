@@ -4,11 +4,11 @@ import {
 } from '../utils';
 
 const {
-  generateToken, verifyToken, successResponse, errorResponse
+  generateToken, verifyToken, successResponse, errorResponse, comparePassword,
 } = Helpers;
 const { sendVerificationEmail, sendResetMail } = Mailer;
 const {
-  create, updateById, updatePassword, find
+  create, updateById, updatePassword, find, userLogin,
 } = UserService;
 /**
  * A collection of methods that controls authentication responses.
@@ -32,6 +32,8 @@ class Auth {
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       const userResponse = new UserResponse(user);
       const isSent = await sendVerificationEmail(req, { ...userResponse });
+      const { token } = userResponse;
+      res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, { ...userResponse, emailSent: isSent }, 201);
     } catch (error) {
       errorResponse(res, {});
@@ -139,6 +141,33 @@ class Auth {
     } catch (err) {
       const status = err.status || 500;
       errorResponse(res, { code: status, message: `Verification unsuccessful, ${err.message}` });
+    }
+  }
+
+  /**
+  *  Login an existing user
+  *
+  * @param {object} req request object
+  * @param {object} res reponse object
+  * @returns {object} JSON response
+  */
+  static async loginUser(req, res) {
+    try {
+      const { email, password } = req.body;
+      const user = await userLogin(email);
+      if (!user) {
+        return errorResponse(res, { code: 401, message: 'Invalid login details' });
+      }
+      if (!comparePassword(password, user.password)) {
+        return errorResponse(res, { code: 401, message: 'Invalid login details' });
+      }
+      user.token = generateToken({ email: user.email, id: user.id, role: user.role });
+      const loginResponse = new UserResponse(user);
+      const { token } = loginResponse;
+      res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
+      successResponse(res, { ...loginResponse });
+    } catch (error) {
+      errorResponse(res, {});
     }
   }
 }

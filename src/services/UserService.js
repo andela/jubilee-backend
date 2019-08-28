@@ -39,16 +39,7 @@ export default class UserService {
   }
 
   /**
-   * Finds user in the database
-   *
-   * @param {object} email - The user email
-   * @returns {Promise<object>} A promise object with user detail if user exists.
-   */
-  static find(email) {
-    return User.findOne({ where: { email } });
-  }
-
-  /**
+   * 
    * Update user password in the database
    *
    * @param {string} password - New user password to be updated in database
@@ -71,5 +62,16 @@ export default class UserService {
   static async find(email) {
     const user = await User.findOne({ where: { email } });
     return user;
+  }
+
+  /**
+ * @description Sign-in existing user
+ * @param {object} email user's registered email
+ * @returns {Promise<object>} A promise object with user detail.
+ */
+  static userLogin(email) {
+    return User.findOne({
+      where: { email }
+    });
   }
 }

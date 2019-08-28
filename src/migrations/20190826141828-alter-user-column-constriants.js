@@ -1,6 +1,8 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => Promise.all([
+    queryInterface.changeColumn('Users', 'firstName', { type: Sequelize.STRING, allowNull: false }),
+    queryInterface.changeColumn('Users', 'lastName', { type: Sequelize.STRING, allowNull: false  }),
     queryInterface.changeColumn('Users', 'birthdate', { type: Sequelize.DATE, allowNull: true }),
     queryInterface.changeColumn('Users', 'preferredLanguage', { type: Sequelize.STRING, allowNull: true, defaultValue: 'EN' }),
     queryInterface.changeColumn('Users', 'preferredCurrency', { type: Sequelize.STRING, allowNull: true, defaultValue: 'Naira' }),

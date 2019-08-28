@@ -230,3 +230,42 @@ describe('GET /api/auth/verify?token', () => {
     });
   });
 });
+describe('POST /api/auth/login', () => {
+  it('should signin successfully with a status of 200', async () => {
+    const { email, password } = newUser;
+    const login = {
+      email,
+      password,
+    };
+    const response = await chai.request(server).post('/api/auth/login').send(login);
+    expect(response).to.have.status(200);
+    expect(response.body.status).to.equal('success');
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.token).to.be.a('string');
+    expect(response.body.data.firstName).to.be.a('string');
+    expect(response.body.data.lastName).to.be.a('string');
+  });
+
+  it('should return 401 if password is invalid', async () => {
+    const { email } = newlyCreatedUser;
+    const login = {
+      email,
+      password: 'password',
+    };
+    const response = await chai.request(server).post('/api/auth/login').send(login);
+    expect(response.body.status).to.equal('fail');
+    expect(response).to.have.status(401);
+    expect(response.body.error.message).to.be.equal('Invalid login details');
+  });
+
+  it('should return 401 error if user does not exist in the database', async () => {
+    const login = {
+      email: 'kylewalker123@yahoo.com',
+      password: 'password'
+    };
+    const response = await chai.request(server).post('/api/auth/login').send(login);
+    expect(response.body.status).to.equal('fail');
+    expect(response.status).to.equal(401);
+    expect(response.body.error.message).to.be.equal('Invalid login details');
+  });
+});
