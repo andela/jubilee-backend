@@ -57,13 +57,11 @@ export default class UserService {
    * signin with users google or facebook data
    *
    * @static
-   * @param {object} req - request object
-   * @param {object} res - response object
-   * @memberof SocialLogin
+   * @param {object} userData - user data
+   * @memberof UserService
    * @returns {object} - the user data object
    *
    */
-
   static async socialLogin(userData) {
     try {
       const existingUser = await db.User.findOne({
