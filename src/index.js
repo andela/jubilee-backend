@@ -4,6 +4,7 @@ import cors from 'cors';
 import errorhandler from 'errorhandler';
 import morgan from 'morgan';
 import methodOverride from 'method-override';
+import cookieParser from 'cookie-parser';
 import env from './config/env-config';
 import routes from './routes';
 
@@ -13,6 +14,7 @@ const isProduction = env.NODE_ENV === 'production';
 const app = express();
 
 app.use(cors());
+app.use(cookieParser());
 
 // Normal express config defaults
 app.use(morgan('dev'));
