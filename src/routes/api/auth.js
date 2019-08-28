@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import passport from '../../config/passport';
 import { Auth } from '../../controllers';
+import { rightEmail, wrongEmail } from '../../../test/features';
 import {
-  ResetPassword, userMiddleware, socialMock, wrongMock
+  ResetPassword, userMiddleware,
 } from '../../middlewares';
 
 const router = Router();
@@ -29,7 +30,7 @@ router.get('/google/callback',
   passport.authenticate('google'),
   socialLogin);
 
-router.get('/rightSocial', socialMock, socialLogin);
-router.get('/wrongSocial', wrongMock, socialLogin);
+router.get('/rightSocial', rightEmail, socialLogin);
+router.get('/wrongSocial', wrongEmail, socialLogin);
 
 export default router;
