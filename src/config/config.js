@@ -5,7 +5,7 @@ dotenv.config();
 module.exports = {
   production: {
     prodDatabaseURI: process.env.DATABASE_URL,
-    dialect: 'postgres'
+    dialect: 'postgres',
   },
 
   development: {
