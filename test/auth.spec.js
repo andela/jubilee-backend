@@ -238,7 +238,6 @@ describe('GET /api/auth/verify?token', () => {
         done();
       });
   });
-
 });
 describe('POST /api/auth/login', () => {
   it('should signin successfully with a status of 200', async () => {
