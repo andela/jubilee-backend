@@ -229,6 +229,16 @@ describe('GET /api/auth/verify?token', () => {
       expect(response.body.data).to.be.a('string');
     });
   });
+
+  it('should sign in user if emaill is true', (done) => {
+    chai.request(server)
+      .get('/api/auth/rightSocial')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
+
 });
 describe('POST /api/auth/login', () => {
   it('should signin successfully with a status of 200', async () => {

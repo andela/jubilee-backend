@@ -1,8 +1,6 @@
 import ResetPassword from './passwordMiddleware';
 import userMiddleware from './userMiddleware';
-import facebookApiMock from './social/facebookApiMock';
-import googleApiMock from './social/googleApiMock';
+import wrongMock from './social/wrongMock';
+import socialMock from './social/socialMock';
 
-export {
-  ResetPassword, userMiddleware, facebookApiMock, googleApiMock
-};
+export { ResetPassword, wrongMock, socialMock, userMiddleware };

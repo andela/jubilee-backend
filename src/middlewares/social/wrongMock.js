@@ -23,7 +23,7 @@ export default (req, res, next) => {
     ],
     emails: [
       {
-        value: 'jubilee.barefootnomad@gmail.com'
+        value: 'jubilee_barefootnomad@gmail.com'
       }
     ],
     provider: req.body.provider,

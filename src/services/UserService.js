@@ -1,4 +1,4 @@
-import { Helpers } from '../utils';
+import { Helpers, ApiError } from '../utils';
 import db from '../models';
 
 const { hashPassword } = Helpers;
@@ -54,14 +54,30 @@ export default class UserService {
   }
 
   /**
-   * Finds user in the database
+   * signin with users google or facebook data
    *
-   * @param {string} email - The user to find by email in the database
-   * @returns {Promise<object>} A promise object with user detail.
+   * @static
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @memberof SocialLogin
+   * @returns {object} - the user data object
+   *
    */
-  static async find(email) {
-    const user = await User.findOne({ where: { email } });
-    return user;
+
+  static async socialLogin(userData) {
+    try {
+      const existingUser = await db.User.findOne({
+        where: {
+          email: userData.emails[0].value
+        }
+      });
+      if (!existingUser) {
+        throw new ApiError(403, 'You need to signup to use this feature');
+      }
+      return existingUser.dataValues;
+    } catch (error) {
+      throw new ApiError(500, error.message);
+    }
   }
 
   /**
