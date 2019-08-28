@@ -1,4 +1,4 @@
-import userValidation from '../validation/index';
+import authValidation from '../validation/index';
 import { Helpers } from '../utils';
 import { UserService } from '../services/index';
 
@@ -8,7 +8,7 @@ const {
 /**
  * Middleware for input validations
  */
-export default class ValidationMiddleware {
+export default class authMiddleware {
 /**
      * Middleware method for user validation during signup/registration
      * @param {object} req - The request from the endpoint.
@@ -18,7 +18,7 @@ export default class ValidationMiddleware {
      */
   static async onSignup(req, res, next) {
     try {
-      const validated = await userValidation.signup(req.body);
+      const validated = await authValidation.signup(req.body);
       if (validated) {
         const user = await UserService.find(req.body.email);
         if (!user) {

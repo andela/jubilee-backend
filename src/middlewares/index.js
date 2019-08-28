@@ -1,6 +1,6 @@
 import ResetPassword from './passwordMiddleware';
-import userMiddleware from './userMiddleware';
+import authMiddleware from './authMiddleware';
 
 export {
-  ResetPassword, userMiddleware
+  ResetPassword, authMiddleware
 };
