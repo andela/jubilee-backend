@@ -11,7 +11,7 @@ const config = sequelizeConfig[environ];
 const db = {};
 let sequelize;
 if (config.prodDatabaseURI) {
-  sequelize = new Sequelize(config.prodDatabaseURI, config);
+  sequelize = new Sequelize(config.prodDatabaseURI);
 }
 
 if (environ === 'test') config.logging = false;

@@ -31,6 +31,7 @@ class Auth {
       const isSent = await sendVerificationEmail(req, { ...userResponse });
       return successResponse(res, { ...userResponse, emailSent: isSent }, 201);
     } catch (error) {
+      console.log(error.stack)
       errorResponse(res, {});
     }
   }
