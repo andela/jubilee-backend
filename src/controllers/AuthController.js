@@ -25,7 +25,7 @@ class AuthController {
    * @returns { JSON } A JSON response with the registered user's details and a JWT.
    * @memberof Auth
    */
-  static async signUp(req, res) {
+  static async signup(req, res) {
     try {
       const { body } = req;
       const user = await create({ ...body });
@@ -62,7 +62,7 @@ class AuthController {
       }
 
       if (e.message === 'Not Found') {
-        return errorResponse(res, { code: 400, message: 'no user found to verify' });
+        return errorResponse(res, { code: 400, message: 'No user found to verify' });
       }
       errorResponse(res, {});
     }

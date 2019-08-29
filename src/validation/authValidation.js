@@ -32,7 +32,7 @@ export default class authValidation {
      * @param {object} res - The user response object
      * @returns {object} - returns an object (error or response).
      */
-  static async signup(userObject) {
+  static async userSignup(userObject) {
     // joi parameters to test against user inputs
     const schema = {
       firstName: joi.string().min(3).max(25).required()
@@ -64,6 +64,38 @@ export default class authValidation {
     const { error } = joi.validate({ ...userObject }, schema);
     if (error) {
       // throw errorResponse(res, { code: 400, message: error.details[0].context.label });
+      throw error;
+    }
+    return true;
+  }
+
+  /**
+     * Validates supplier paramenters upon registration
+     *
+     * @param {object} supplierObject - The supplier object
+     * @param {object} res - The supplier response object
+     * @returns {object} - returns an object (error or response).
+     */
+  static async supplierSignup(supplierObject) {
+    const schema = {
+      firstName: joi.string().min(3).max(25).required()
+        .label('Please enter a valid firstname \n the field must not be empty and it must be more than 2 letters'),
+      lastName: joi.string().min(3).max(25).required()
+        .label('Please enter a valid lastname \n the field must not be empty and it must be more than 2 letters'),
+      email: joi.string().email().required()
+        .label('Please enter a valid company email address'),
+      password: new passwordComplexity(complexityOptions).required()
+        .label('Password is required. \n It should be more than 8 characters, and should include at least a capital letter, and a number'),
+      phoneNumber: joi.string().regex(/^[0-9+\(\)#\.\s\/ext-]+$/).required()
+        .label('Please input a valid phone number'),
+      companyName: joi.string().min(3).max(40).required()
+        .label('Please add your company name'),
+      companyAddress: joi.string().min(3).max(40).required()
+        .label('Please add your company address'),
+      categoryOfService: joi.valid([1, 2, 3, 4, 5]).required()
+    };
+    const { error } = joi.validate({ ...supplierObject }, schema);
+    if (error) {
       throw error;
     }
     return true;
