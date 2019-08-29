@@ -20,7 +20,7 @@ export default class authMiddleware {
     try {
       const validated = await authValidation.userSignup(req.body);
       if (validated) {
-        const user = await userService.find(req.body.email);
+        const user = await userService.find({ email: req.body.email });
         if (!user) {
           next();
         } else {
@@ -43,7 +43,7 @@ export default class authMiddleware {
     try {
       const validated = await authValidation.supplierSignup(req.body);
       if (validated) {
-        const supplier = await userService.find(req.body.email);
+        const supplier = await userService.find({ email: req.body.email });
         if (!supplier) {
           next();
         } else {
