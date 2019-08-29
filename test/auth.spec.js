@@ -2,7 +2,7 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import faker from 'faker';
 import server from '../src';
-import { newUser } from './dummies';
+import { newUser, newSupplier } from './dummies';
 import Helpers from '../src/utils/helpers';
 
 const { generateToken } = Helpers;
@@ -11,7 +11,7 @@ chai.use(chaiHttp);
 let newlyCreatedUser = {};
 let newUserPasswordReset;
 describe('Auth route endpoints', () => {
-  it('should signup successfully with a status of 201', async () => {
+  it('should signup a user successfully with a status of 201', async () => {
     const user = {
       email: faker.internet.email(),
       firstName: faker.name.firstName(),
@@ -38,6 +38,52 @@ describe('Auth route endpoints', () => {
     expect(response.body.data.lastName).to.be.a('string');
     newUserPasswordReset = user;
   });
+
+  it('should successfully signup a supplier with status 201', async () => {
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup/supplier')
+      .send(newSupplier);
+    expect(response).to.have.status(201);
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.user.token).to.be.a('string');
+    expect(response.body.data.user.firstName).to.be.a('string');
+    expect(response.body.data.user.lastName).to.be.a('string');
+  });
+
+  it('should return validation error when supplied a wrong category of service id', async () => {
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup/supplier')
+      .send({ ...newSupplier, categoryOfServiceId: 5 });
+    expect(response).to.have.status(400);
+    expect(response.body.status).to.equal('fail');
+    expect(response.body.error).to.be.a('object');
+    expect(response.body.error.message).to.equal('Please enter a valid categoryOfServiceId');
+  });
+
+  it('should return validation error when supplied an empty email', async () => {
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup/supplier')
+      .send({ ...newSupplier, email: '' });
+    expect(response).to.have.status(400);
+    expect(response.body.status).to.equal('fail');
+    expect(response.body.error).to.be.a('object');
+    expect(response.body.error.message).to.equal('Please enter a valid company email address');
+  });
+
+  it('should return an integrity error when supplied an existing user\'s email', async () => {
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup/supplier')
+      .send(newSupplier);
+    expect(response).to.have.status(409);
+    expect(response.body.status).to.equal('fail');
+    expect(response.body.error).to.be.a('object');
+    expect(response.body.error.message).to.equal(`User with email: "${newSupplier.email}" already exists`);
+  });
+
   it("should send a verification link to a user's email upon successful registration", async () => {
     const response = await chai.request(server).post('/api/auth/signup/user').send(newUser);
     const { body: { data } } = response;
