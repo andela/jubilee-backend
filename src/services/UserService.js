@@ -86,15 +86,4 @@ export default class UserService {
       throw new ApiError(500, error.message);
     }
   }
-
-  /**
- * @description Sign-in existing user
- * @param {object} email user's registered email
- * @returns {Promise<object>} A promise object with user detail.
- */
-  static userLogin(email) {
-    return User.findOne({
-      where: { email }
-    });
-  }
 }

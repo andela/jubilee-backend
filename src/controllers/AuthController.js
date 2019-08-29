@@ -8,7 +8,7 @@ const {
 } = helpers;
 const { sendVerificationEmail, sendResetMail } = mailer;
 const {
-  create, updateById, updatePassword, find, userLogin,
+  create, updateById, updatePassword, find,
 } = userService;
 /**
  * A collection of methods that controls authentication responses.
@@ -79,7 +79,7 @@ class AuthController {
   static async sendResetPasswordEmail(req, res) {
     try {
       const { email } = req.body;
-      const user = await find(email);
+      const user = await find({ email });
       if (!user) {
         throw new ApiError(404, 'User account does not exist');
       }
@@ -154,7 +154,7 @@ class AuthController {
   static async loginUser(req, res) {
     try {
       const { email, password } = req.body;
-      const user = await userLogin(email);
+      const user = await find({ email });
       if (!user) {
         return errorResponse(res, { code: 401, message: 'Invalid login details' });
       }

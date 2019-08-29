@@ -19,8 +19,9 @@ export default class authMiddleware {
   static async onUserSignup(req, res, next) {
     try {
       const validated = await authValidation.userSignup(req.body);
+      const { email } = req.body;
       if (validated) {
-        const user = await userService.find({ email: req.body.email });
+        const user = await userService.find({ email });
         if (!user) {
           next();
         } else {
@@ -42,8 +43,9 @@ export default class authMiddleware {
   static async onSupplierSignup(req, res, next) {
     try {
       const validated = await authValidation.supplierSignup(req.body);
+      const { email } = req.body;
       if (validated) {
-        const supplier = await userService.find({ email: req.body.email });
+        const supplier = await userService.find({ email });
         if (!supplier) {
           next();
         } else {

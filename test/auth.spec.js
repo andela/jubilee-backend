@@ -152,7 +152,7 @@ describe('GET /api/auth/verify?token', () => {
     const response = await chai.request(server).get(`/api/auth/verify?token=${token}`);
     const { body: { error } } = response;
     expect(response).to.have.status(400);
-    expect(error.message).to.equal('no user found to verify');
+    expect(error.message).to.equal('No user found to verify');
   });
   describe('Reset Password route', () => {
     it('should send an email containing reset password link with a status of 200', async () => {
