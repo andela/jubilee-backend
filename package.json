@@ -4,14 +4,16 @@
   "description": "Barefoot Nomad - Making company travel and accomodation easy and convenient. =======",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test npm run migrate:reset && cross-env NODE_ENV=test  npm run migrate && cross-env NODE_ENV=test nyc --reporter=text --reporter=html mocha --timeout 10000 -c --require @babel/register --exit",
+    "test": "cross-env NODE_ENV=test nyc --reporter=text --reporter=html mocha --timeout 10000 -c --require @babel/register --exit",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
     "migrate:reset": "sequelize db:migrate:undo:all",
     "migrate": "sequelize db:migrate",
+    "seed": "sequelize db:seed:all",
     "start:dev": "nodemon --exec babel-node ./src/index.js",
     "start": "NODE_ENV=production  node dist/index.js",
     "build": "babel src -d dist",
-    "prestart": "NODE_ENV=production sequelize db:migrate"
+    "prestart": "NODE_ENV=production sequelize db:migrate",
+    "pretest": "cross-env NODE_ENV=test npm run migrate:reset && cross-env NODE_ENV=test  npm run migrate && NODE_ENV=test npm run seed"
   },
   "repository": {
     "type": "git",

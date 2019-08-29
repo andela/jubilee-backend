@@ -67,7 +67,6 @@ class AuthController {
       res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, { user, supplier, emailSent }, 201);
     } catch (error) {
-      console.log(error)
       errorResponse(res, {});
     }
   }

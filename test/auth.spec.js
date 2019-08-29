@@ -29,7 +29,7 @@ describe('Auth route endpoints', () => {
 
     const response = await chai
       .request(server)
-      .post('/api/auth/userSignup')
+      .post('/api/auth/signup/user')
       .send(user);
     expect(response).to.have.status(201);
     expect(response.body.data).to.be.a('object');
@@ -39,7 +39,7 @@ describe('Auth route endpoints', () => {
     newUserPasswordReset = user;
   });
   it("should send a verification link to a user's email upon successful registration", async () => {
-    const response = await chai.request(server).post('/api/auth/userSignup').send(newUser);
+    const response = await chai.request(server).post('/api/auth/signup/user').send(newUser);
     const { body: { data } } = response;
     newlyCreatedUser = { ...data };
     expect(response).to.have.status(201);
@@ -66,7 +66,7 @@ describe('Auth route endpoints', () => {
 
     const response = await chai
       .request(server)
-      .post('/api/auth/userSignup')
+      .post('/api/auth/signup/user')
       .send(user);
     expect(response).to.has.status(201);
     expect(response.body).to.be.a('object');
@@ -89,7 +89,7 @@ describe('Auth route endpoints', () => {
 
     const response = await chai
       .request(server)
-      .post('/api/auth/userSignup')
+      .post('/api/auth/signup/user')
       .send(user);
     expect(response).to.has.status(400);
     expect(response.body).to.be.a('object');
@@ -114,7 +114,7 @@ describe('Auth route endpoints', () => {
 
     const response = await chai
       .request(server)
-      .post('/api/auth/userSignup')
+      .post('/api/auth/signup/user')
       .send(user);
     expect(response).to.has.status(409);
     expect(response.body.status).to.equal('fail');

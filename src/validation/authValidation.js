@@ -92,7 +92,8 @@ export default class authValidation {
         .label('Please add your company name'),
       companyAddress: joi.string().min(3).max(40).required()
         .label('Please add your company address'),
-      categoryOfServiceId: joi.valid([1, 2, 3, 4, 5]).required()
+      categoryOfServiceId: joi.valid([1, 2]).required()
+        .label('Please enter a valid categoryOfServiceId')
     };
     const { error } = joi.validate({ ...supplierObject }, schema);
     if (error) {

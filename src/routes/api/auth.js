@@ -18,8 +18,8 @@ const {
 } = authController;
 const { checkParameters } = passwordMiddleware;
 
-router.post('/userSignup', authMiddleware.onUserSignup, userSignup);
-router.post('/supplierSignup', authMiddleware.onSupplierSignup, supplierSignup);
+router.post('/signup/user', authMiddleware.onUserSignup, userSignup);
+router.post('/signup/supplier', authMiddleware.onSupplierSignup, supplierSignup);
 router.get('/verify', verifyEmail);
 router.post('/login', loginUser);
 router.post('/reset-password/', checkParameters, sendResetPasswordEmail);
