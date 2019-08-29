@@ -8,12 +8,18 @@ import {
 
 const router = Router();
 const {
+<<<<<<< HEAD
   signup, verifyEmail, sendResetPasswordEmail, resetPassword, verifyPasswordResetLink,
   loginUser, socialLogin, logout
+=======
+  userSignup, supplierSignup, verifyEmail, sendResetPasswordEmail, resetPassword, verifyPasswordResetLink,
+  loginUser, socialLogin
+>>>>>>> feature(supplier): add endpoint for supplier signup and modify failing test cases
 } = authController;
 const { checkParameters } = passwordMiddleware;
 
-router.post('/signup', authMiddleware.onUserSignup, signup);
+router.post('/userSignup', authMiddleware.onUserSignup, userSignup);
+router.post('/supplierSignup', authMiddleware.onSupplierSignup, supplierSignup);
 router.get('/verify', verifyEmail);
 router.post('/login', loginUser);
 router.post('/reset-password/', checkParameters, sendResetPasswordEmail);

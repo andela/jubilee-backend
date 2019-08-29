@@ -1,14 +1,14 @@
-import { userService } from '../services';
+import { userService, supplierService } from '../services';
 import {
   helpers, UserResponse, mailer, ApiError
 } from '../utils';
 
 const {
-  generateToken, verifyToken, successResponse, errorResponse, comparePassword,
+  generateToken, verifyToken, successResponse, errorResponse, comparePassword
 } = helpers;
 const { sendVerificationEmail, sendResetMail } = mailer;
 const {
-  create, updateById, updatePassword, find,
+  create, updateById, updatePassword, find
 } = userService;
 /**
  * A collection of methods that controls authentication responses.
@@ -25,7 +25,7 @@ class AuthController {
    * @returns { JSON } A JSON response with the registered user's details and a JWT.
    * @memberof Auth
    */
-  static async signup(req, res) {
+  static async userSignup(req, res) {
     try {
       const { body } = req;
       const user = await create({ ...body });
@@ -35,6 +35,37 @@ class AuthController {
       const { token } = userResponse;
       res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, { ...userResponse, emailSent: isSent }, 201);
+    } catch (error) {
+      errorResponse(res, {});
+    }
+  }
+
+  /**
+   * Registers a new supplier.
+   *
+   * @static
+   * @param {Request} req - The request from the endpoint.
+   * @param {Response} res - The response returned by the method.
+   * @returns { JSON } A JSON response with the registered user's details, company details & a JWT.
+   * @memberof Auth
+   */
+  static async supplierSignup(req, res) {
+    try {
+      const {
+        companyName, companyAddress, categoryOfServiceId, firstName,
+        lastName, email, password, phoneNumber
+      } = req.body;
+      const supplier = await supplierService
+        .create({ companyName, companyAddress, categoryOfServiceId });
+      let user = await userService.create({
+        firstName, lastName, email, password, phoneNumber
+      });
+      user.token = generateToken({ email: user.email, id: user.id, role: user.role });
+      user = new UserResponse(user);
+      const emailSent = await sendVerificationEmail(req, user);
+      const { token } = user;
+      res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
+      return successResponse(res, { user, supplier, emailSent }, 201);
     } catch (error) {
       errorResponse(res, {});
     }
