@@ -51,21 +51,16 @@ class AuthController {
    */
   static async supplierSignup(req, res) {
     try {
-      const {
-        companyName, companyAddress, categoryOfServiceId, firstName,
-        lastName, email, password, phoneNumber
-      } = req.body;
-      const supplier = await supplierService
-        .create({ companyName, companyAddress, categoryOfServiceId });
+      const [companyData, userData] = helpers.splitSupplierData(req.body);
+      let supplier = await supplierService.create(companyData);
       const { id: supplierId } = supplier;
-      let user = await userService.create({
-        firstName, lastName, email, password, phoneNumber, supplierId
-      });
+      let user = await userService.create({ ...userData, supplierId });
+      const companyToken = generateToken({ companyId: supplierId, defaultRoleId: 8, companyType: 'supplier' });
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
+      supplier = await supplierService.update({ companyToken }, supplierId);
       user = extractUserData(user);
       const emailSent = await sendVerificationEmail(req, user);
-      const { token } = user;
-      res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
+      res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, { user, supplier, emailSent }, 201);
     } catch (error) {
       errorResponse(res, {});

@@ -153,6 +153,25 @@ class Helpers {
   }
 
   /**
+ * Splits supplier object into comapany data and user data
+ * @static
+ * @param {object} supplierObject - The supplier object sent as request body.
+ * @memberof Helpers
+ * @returns { array } - An array containing both company data and user data.
+ */
+  static splitSupplierData(supplierObject) {
+    const {
+      companyName, companyAddress, categoryOfServiceId, firstName,
+      lastName, email, password, phoneNumber
+    } = supplierObject;
+    const companyData = { companyName, companyAddress, categoryOfServiceId };
+    const userData = {
+      firstName, lastName, email, password, phoneNumber
+    };
+    return [companyData, userData];
+  }
+
+  /**
  * Validates a value using the given Joi schema
  * @param {object} value
  * @param {Joi.SchemaLike} schema

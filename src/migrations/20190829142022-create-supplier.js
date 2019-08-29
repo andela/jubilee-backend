@@ -14,6 +14,10 @@ module.exports = {
       allowNull: false,
       type: Sequelize.STRING
     },
+    companyToken: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
     categoryOfServiceId: {
       type: Sequelize.INTEGER,
       allowNull: false,
