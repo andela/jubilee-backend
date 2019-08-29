@@ -1,10 +1,10 @@
 import { userService, supplierService } from '../services';
 import {
-  helpers, UserResponse, mailer, ApiError
+  helpers, mailer, ApiError
 } from '../utils';
 
 const {
-  generateToken, verifyToken, successResponse, errorResponse, comparePassword
+  generateToken, verifyToken, successResponse, errorResponse, extractUserData, comparePassword
 } = helpers;
 const { sendVerificationEmail, sendResetMail } = mailer;
 const {
@@ -30,7 +30,7 @@ class AuthController {
       const { body } = req;
       const user = await create({ ...body });
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
-      const userResponse = new UserResponse(user);
+      const userResponse = extractUserData(user);
       const isSent = await sendVerificationEmail(req, { ...userResponse });
       const { token } = userResponse;
       res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
@@ -61,7 +61,7 @@ class AuthController {
         firstName, lastName, email, password, phoneNumber
       });
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
-      user = new UserResponse(user);
+      user = extractUserData(user);
       const emailSent = await sendVerificationEmail(req, user);
       const { token } = user;
       res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
@@ -85,7 +85,7 @@ class AuthController {
       const { token } = req.query;
       const decoded = verifyToken(token);
       const user = await updateById({ isVerified: true }, decoded.id);
-      const userResponse = new UserResponse(user);
+      const userResponse = extractUserData(user);
       successResponse(res, { ...userResponse });
     } catch (e) {
       if (e.message === 'Invalid Token') {
@@ -193,7 +193,7 @@ class AuthController {
         return errorResponse(res, { code: 401, message: 'Invalid login details' });
       }
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
-      const loginResponse = new UserResponse(user);
+      const loginResponse = extractUserData(user);
       const { token } = loginResponse;
       res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
       successResponse(res, { ...loginResponse });
@@ -216,7 +216,7 @@ class AuthController {
     try {
       const user = await userService.socialLogin(req.user);
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
-      const userResponse = new UserResponse(user);
+      const userResponse = extractUserData(user);
       helpers.successResponse(res, userResponse, 200);
     } catch (error) {
       helpers.errorResponse(res, { code: error.statusCode, message: error.message });

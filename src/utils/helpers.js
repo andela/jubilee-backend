@@ -119,6 +119,39 @@ class Helpers {
   }
 
   /**
+ * Extracts a new user object from the one supplied
+ * @static
+ * @param {object} user - The user data from which a new user object will be extracted.
+ * @memberof Helpers
+ * @returns { object } - The new extracted user object.
+ */
+  static extractUserData(user) {
+    return {
+      id: user.id,
+      token: user.token,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      gender: user.gender,
+      street: user.street,
+      city: user.city,
+      state: user.state,
+      country: user.country,
+      bithdate: user.birthdate,
+      phoneNumber: user.phoneNumber,
+      companyName: user.companyName,
+      isVerified: user.isVerified,
+      role: user.role,
+      department: user.department,
+      lineManager: user.lineManager,
+      preferredCurrency: user.preferredCurrency,
+      preferredLanguage: user.preferredLanguage,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
+    };
+  }
+
+  /**
  * Validates a value using the given Joi schema
  * @param {object} value
  * @param {Joi.SchemaLike} schema
