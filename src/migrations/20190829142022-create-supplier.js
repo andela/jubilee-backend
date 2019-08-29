@@ -14,9 +14,15 @@ module.exports = {
       allowNull: false,
       type: Sequelize.STRING
     },
-    categoryOfServices: {
+    categoryOfServiceId: {
+      type: Sequelize.INTEGER,
       allowNull: false,
-      type: Sequelize.STRING
+      references: {
+        model: 'CategoryOfServices',
+        key: 'id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     createdAt: {
       allowNull: false,
