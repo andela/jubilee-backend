@@ -9,7 +9,7 @@ import {
 const router = Router();
 const {
   signUp, verifyEmail, sendResetPasswordEmail, resetPassword, verifyPasswordResetLink,
-  loginUser, socialLogin
+  loginUser, socialLogin, logout
 } = Auth;
 const { checkParameters } = ResetPassword;
 
@@ -19,6 +19,7 @@ router.post('/login', loginUser);
 router.post('/reset-password/', checkParameters, sendResetPasswordEmail);
 router.get('/reset-password', verifyPasswordResetLink);
 router.post('/password/reset/:email', checkParameters, resetPassword);
+router.get('/logout', logout);
 
 router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 router.get('/facebook/callback',

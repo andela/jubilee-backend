@@ -191,6 +191,23 @@ class Auth {
       Helpers.errorResponse(res, { code: error.statusCode, message: error.message });
     }
   }
+
+  /**
+   *  successfully logout a user
+   * @static
+   * @param {Request} req - The request from the endpoint.
+   * @param {Response} res - The response returned by the method.
+   * @returns { JSON } - A JSON object containing success or failure details.
+   * @memberof Auth
+   */
+  static logout(req, res) {
+    try {
+      res.clearCookie('token', { httpOnly: true });
+      return successResponse(res, { code: 200, message: 'You have been successfully logged out' });
+    } catch (error) {
+      errorResponse(res, { message: error.message });
+    }
+  }
 }
 
 export default Auth;

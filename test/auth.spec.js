@@ -246,6 +246,7 @@ describe('POST /api/auth/login', () => {
       email,
       password,
     };
+
     const response = await chai.request(server).post('/api/auth/login').send(login);
     expect(response).to.have.status(200);
     expect(response.body.status).to.equal('success');
@@ -276,5 +277,12 @@ describe('POST /api/auth/login', () => {
     expect(response.body.status).to.equal('fail');
     expect(response.status).to.equal(401);
     expect(response.body.error.message).to.be.equal('Invalid login details');
+  });
+});
+
+describe('GET /api/auth/logout', () => {
+  it('should logout a user successfully', async () => {
+    const response = await chai.request(server).get('/api/auth/logout').send();
+    expect(response).to.have.status(200);
   });
 });
