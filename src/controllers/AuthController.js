@@ -57,8 +57,9 @@ class AuthController {
       } = req.body;
       const supplier = await supplierService
         .create({ companyName, companyAddress, categoryOfServiceId });
+      const { id: supplierId } = supplier;
       let user = await userService.create({
-        firstName, lastName, email, password, phoneNumber
+        firstName, lastName, email, password, phoneNumber, supplierId
       });
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       user = extractUserData(user);

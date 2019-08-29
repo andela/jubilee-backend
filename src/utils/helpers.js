@@ -140,6 +140,7 @@ class Helpers {
       bithdate: user.birthdate,
       phoneNumber: user.phoneNumber,
       companyName: user.companyName,
+      supplierId: user.supplierId,
       isVerified: user.isVerified,
       role: user.role,
       department: user.department,
