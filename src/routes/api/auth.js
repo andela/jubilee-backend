@@ -13,7 +13,7 @@ const {
 } = authController;
 const { checkParameters } = passwordMiddleware;
 
-router.post('/signup', authMiddleware.onSignup, signup);
+router.post('/signup', authMiddleware.onUserSignup, signup);
 router.get('/verify', verifyEmail);
 router.post('/login', loginUser);
 router.post('/reset-password/', checkParameters, sendResetPasswordEmail);

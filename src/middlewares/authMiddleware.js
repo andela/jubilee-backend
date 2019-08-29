@@ -13,15 +13,38 @@ export default class authMiddleware {
      * Middleware method for user validation during signup/registration
      * @param {object} req - The request from the endpoint.
      * @param {object} res - The response returned by the method.
-     * @param {object} next - the returned values going into the next operation.
-     * @returns {object} - returns an object (error or response).
+     * @param {object} next - Call the next operation.
+     * @returns {object} - Returns an object (error or response).
      */
-  static async onSignup(req, res, next) {
+  static async onUserSignup(req, res, next) {
     try {
-      const validated = await authValidation.signup(req.body);
+      const validated = await authValidation.userSignup(req.body);
       if (validated) {
         const user = await userService.find(req.body.email);
         if (!user) {
+          next();
+        } else {
+          errorResponse(res, { code: 409, message: `User with email: "${req.body.email}" already exists` });
+        }
+      }
+    } catch (error) {
+      errorResponse(res, { code: 400, message: error.details[0].context.label });
+    }
+  }
+
+  /**
+     * Middleware method for supplier validation during signup/registration
+     * @param {object} req - The request from the endpoint.
+     * @param {object} res - The response returned by the method.
+     * @param {object} next - Call the next operation.
+     * @returns {object} - Returns an object (error or response).
+     */
+  static async onSupplierSignup(req, res, next) {
+    try {
+      const validated = await authValidation.supplierSignup(req.body);
+      if (validated) {
+        const supplier = await userService.find(req.body.email);
+        if (!supplier) {
           next();
         } else {
           errorResponse(res, { code: 409, message: `User with email: "${req.body.email}" already exists` });
