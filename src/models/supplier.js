@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Supplier = sequelize.define('Supplier', {
-    supplierName: { type: DataTypes.STRING, allowNull: false },
-    supplierAddress: { type: DataTypes.STRING, allowNull: false },
+    companyName: { type: DataTypes.STRING, allowNull: false },
+    companyAddress: { type: DataTypes.STRING, allowNull: false },
     categoryOfServiceId: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -6,11 +6,11 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    supplierName: {
+    companyName: {
       allowNull: false,
       type: Sequelize.STRING
     },
-    supplierAddress: {
+    companyAddress: {
       allowNull: false,
       type: Sequelize.STRING
     },
