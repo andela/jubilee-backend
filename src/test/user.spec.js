@@ -5,6 +5,7 @@ import server from '../index';
 
 chai.use(chaiHttp);
 let newlyCreatedUser;
+let token;
 describe('User Route Endpoints', () => {
   it('should signup successfully with a status of 201', async () => {
     const user = {
@@ -32,13 +33,23 @@ describe('User Route Endpoints', () => {
     expect(response.body.data.firstName).to.be.a('string');
     expect(response.body.data.lastName).to.be.a('string');
     newlyCreatedUser = response.body.data;
+    token = response.body.data.token;
   });
   describe('GET REQUESTS', () => {
     it('should successfully populate the user data on the profile with a status of 200', async () => {
       const { id } = newlyCreatedUser;
-      const response = await chai.request(server).get(`/api/users/profile/${id}`);
+      const response = await chai.request(server).get(`/api/users/profile/${id}`)
+        .set('authorization', `Bearer ${token}`);
       const { body: { data } } = response;
       expect(response).to.have.status(200);
+      expect(data).to.equal('works');
+    });
+    it('should return error of 404, the user not found', async () => {
+      const id = 2131121313;
+      const response = await chai.request(server).get(`/api/users/profile/${id}`)
+        .set('authorization', `Bearer ${token}`);
+      const { body: { data } } = response;
+      expect(response).to.have.status(401);
       expect(data).to.equal('works');
     });
   });
@@ -57,7 +68,8 @@ describe('User Route Endpoints', () => {
         birthdate: faker.date.past(),
         phoneNumber: faker.phone.phoneNumber()
       };
-      const response = await chai.request(server).patch(`/api/users/profile/${id}/update`).send(user);
+      const response = await chai.request(server).patch(`/api/users/profile/${id}/update`).send(user)
+        .set('authorization', `Bearer ${token}`);
       const { body: { data } } = response;
       expect(response).to.have.status(200);
       expect(data).to.equal('works');

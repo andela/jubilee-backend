@@ -180,6 +180,16 @@ class Helpers {
   static validate(value, schema) {
     return Joi.validate(value, schema, { abortEarly: false, allowUnknown: true });
   }
+
+  /**
+ * Checks token from request header for user authentication
+ * @param {object} req - The request from the endpoint
+ * @returns {Token} Token
+ */
+  static checkToken(req) {
+    const token = req.headers.authorization.split(' ')[1] || req.headers.authorization || req.headers['x-access-token'] || req.headers.token || req.body.token;
+    return token;
+  }
 }
 
 export default Helpers;
