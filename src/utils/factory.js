@@ -13,7 +13,9 @@ class FactoryBuilder {
   static categoryOfServices(data) {
     Factory.define('categoryOfServices')
       .attr('categoryName', 'categoryName')
-      .attr('categoryDescription', 'categoryDescription');
+      .attr('categoryDescription', 'categoryDescription')
+      .attr('createdAt', new Date())
+      .attr('updatedAt', new Date());
     return Factory.build('categoryOfServices', data);
   }
 }

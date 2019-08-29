@@ -1,26 +1,23 @@
-'use strict';
+import FactoryBuilder from '../utils/factory';
 
-module.exports = {
-  up: (queryInterface, Sequelize) => {
-    /*
-      Add altering commands here.
-      Return a promise to correctly handle asynchronicity.
+const categoryOfServicesArray = [
+  FactoryBuilder.categoryOfServices({
+    categoryName: 'Accommodation services',
+    categoryDescription: 'Provide hospitality services',
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }),
+  FactoryBuilder.categoryOfServices({
+    categoryName: 'Meet and greet services',
+    categoryDescription: 'Provide meet and greet services',
+    createdAt: new Date(),
+    updatedAt: new Date()
+  })
+];
 
-      Example:
-      return queryInterface.bulkInsert('People', [{
-        name: 'John Doe',
-        isBetaMember: false
-      }], {});
-    */
-  },
 
-  down: (queryInterface, Sequelize) => {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
+export default {
+  up: (queryInterface) => queryInterface.bulkInsert('CategoryOfServices', categoryOfServicesArray, {}),
 
-      Example:
-      return queryInterface.bulkDelete('People', null, {});
-    */
-  }
+  down: (queryInterface) => queryInterface.bulkDelete('CategoryOfServices', null, {})
 };
