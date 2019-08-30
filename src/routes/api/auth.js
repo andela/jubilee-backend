@@ -8,12 +8,14 @@ import {
 
 const router = Router();
 const {
-  signUp, verifyEmail, sendResetPasswordEmail, resetPassword, verifyPasswordResetLink,
-  loginUser, socialLogin, logout
+  signUp, companySignUp, verifyEmail, sendResetPasswordEmail, resetPassword, 
+  verifyPasswordResetLink, loginUser, socialLogin, logout
 } = Auth;
 const { checkParameters } = ResetPassword;
+const { onCompanySignup } = userMiddleware;
 
 router.post('/signup', userMiddleware.onSignup, signUp);
+router.post('/signup/company', onCompanySignup, companySignUp);
 router.get('/verify', verifyEmail);
 router.post('/login', loginUser);
 router.post('/reset-password/', checkParameters, sendResetPasswordEmail);
