@@ -1,12 +1,17 @@
-import { UserService, SupplierService } from '../services';
+import { UserService, SupplierService, CompanyService } from '../services';
 import {
-  helpers, mailer, ApiError
+  Helpers, Mailer, ApiError
 } from '../utils';
 
+
 const {
-  generateToken, verifyToken, successResponse, errorResponse, extractUserData, comparePassword
-} = helpers;
-const { sendVerificationEmail, sendResetMail } = mailer;
+  generateToken, verifyToken, successResponse, errorResponse,
+  extractUserData, comparePassword, splitCompanyData,
+  hashPassword
+} = Helpers;
+const { createCompany } = CompanyService;
+const { sendVerificationEmail, sendResetMail } = Mailer;
+
 const {
   create, updateById, updatePassword, find
 } = UserService;
@@ -53,7 +58,7 @@ class AuthController {
    */
   static async supplierSignup(req, res) {
     try {
-      const [companyData, userData] = helpers.splitSupplierData(req.body);
+      const [companyData, userData] = Helpers.splitSupplierData(req.body);
       let supplier = await SupplierService.create(companyData);
       const { id: supplierId } = supplier;
       let user = await UserService.create({ ...userData, supplierId });
@@ -78,26 +83,19 @@ class AuthController {
    * @returns { JSON } A JSON response with the registered company's details and a JWT.
    * @memberof Auth
    */
-  static async companySignup(req, res) {
+  static async companySignUp(req, res) {
     try {
-      const { body: {
- companyName, companyAddress, email, firstName, lastName, planId, sizeId 
-} } = req;
-      const company = await createCompany({
- companyName, companyAddress, planId, sizeId 
-});
-      let admin = await create({
- firstName, lastName, email, companyId: company.id 
-});
-      company.token = generateToken({ type: company.type, companyId: company.id, roleId: company.roleId });
-      admin.token = generateToken({ email: admin.email, id: admin.id, role: admin.role });
-      admin = new UserResponse(admin);
-      const isSent = await sendVerificationEmail(req, { ...admin, ...company });
-      const { token } = admin;
-      res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
-      return successResponse(res, { ...admin, company, emailSent: isSent }, 201);
+      const [companyInfo, userInfo] = splitCompanyData(req.body);
+      userInfo.password = hashPassword(userInfo.password);
+      const [company, user] = await createCompany(companyInfo, userInfo);
+      company.token = generateToken({ type: 'company', companyId: company.id, roleId: 1 });
+      user.token = generateToken({ email: user.email, id: user.id, role: 4 });
+      const admin = extractUserData(user);
+      const isSent = await sendVerificationEmail(req, { ...admin });
+      res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
+      return successResponse(res, { admin, company, emailSent: isSent }, 201);
     } catch (error) {
-      errorResponse(res, {});
+      errorResponse(res, { message: error.message });
     }
   }
 
@@ -244,12 +242,12 @@ class AuthController {
    */
   static async socialLogin(req, res) {
     try {
-      const user = await userService.socialLogin(req.user);
+      const user = await UserService.socialLogin(req.user);
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       const userResponse = extractUserData(user);
-      helpers.successResponse(res, userResponse, 200);
+      Helpers.successResponse(res, userResponse, 200);
     } catch (error) {
-      helpers.errorResponse(res, { code: error.statusCode, message: error.message });
+      Helpers.errorResponse(res, { code: error.statusCode, message: error.message });
     }
   }
 
