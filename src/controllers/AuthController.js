@@ -15,10 +15,6 @@ const { sendVerificationEmail, sendResetMail, sendWelcomeEmail } = Mailer;
 const {
   create, updateById, updatePassword, find, socialLogin,
 } = UserService;
-<<<<<<< HEAD
-=======
-// const { createCompany } = companyService;
->>>>>>> feat(company-signup): add company signup controller and validation
 
 const { assign } = RoleService;
 const { update } = supplierService;
@@ -65,7 +61,6 @@ class AuthController {
   }
 
   /**
-<<<<<<< HEAD
    * Registers a new supplier.
    *
    * @static
@@ -93,8 +88,6 @@ class AuthController {
   }
 
   /**
-=======
->>>>>>> feat(company-signup): add company signup controller and validation
    * Registers a new company.
    *
    * @static
@@ -103,7 +96,6 @@ class AuthController {
    * @returns { JSON } A JSON response with the registered company's details and a JWT.
    * @memberof Auth
    */
-<<<<<<< HEAD
   static async companySignUp(req, res) {
     try {
       const [companyInfo, userInfo] = splitCompanyData(req.body);
@@ -116,22 +108,8 @@ class AuthController {
       const isSent = await sendWelcomeEmail(req, { companyToken, ...admin });
       res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, { admin, company, emailSent: isSent }, 201);
-=======
-  static async companySignup(req, res) {
-    try {
-      const { body: { companyName, companyAddress, email, firstName, lastName, planId, sizeId } } = req;
-      const company = await createCompany({ companyName, companyAddress, planId, sizeId });
-      let admin = await create({ firstName, lastName, email, companyId: company.id });
-      company.token = generateToken({ type: company.type, companyId: company.id, roleId: company.roleId });
-      admin.token = generateToken({ email: admin.email, id: admin.id, role: admin.role });
-      admin = new UserResponse(admin);
-      const isSent = await sendVerificationEmail(req, { ...admin, ...company });
-      const { token } = admin;
-      res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
-      return successResponse(res, { ...admin, company, emailSent: isSent }, 201);
->>>>>>> feat(company-signup): add company signup controller and validation
     } catch (error) {
-      errorResponse(res, {});
+      errorResponse(res, { message: error.message });
     }
   }
 
