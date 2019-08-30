@@ -9,13 +9,9 @@ const environ = env.NODE_ENV || 'development';
 const config = sequelizeConfig[environ];
 
 const db = {};
-let sequelize;
-if (config.prodDatabaseURI) {
-  sequelize = new Sequelize(config.prodDatabaseURI, config);
-}
 
 if (environ === 'test') config.logging = false;
-sequelize = new Sequelize(
+const sequelize = new Sequelize(
   config.database,
   config.username,
   config.password,
