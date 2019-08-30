@@ -114,7 +114,6 @@ export default class authValidation {
     // Once user inputs are validated, move into server
     const { error } = joi.validate({ ...userObject }, schema);
     if (error) {
-      // throw errorResponse(res, { code: 400, message: error.details[0].context.label });
       throw error;
     }
     return true;
@@ -152,8 +151,11 @@ export default class authValidation {
     // Once user inputs are validated, move into server
     const { error } = joi.validate({ ...userObject }, schema);
     if (error) {
+<<<<<<< HEAD:src/validation/authValidation.js
       // throw errorResponse(res, { code: 400, message: error.details[0].context.label });
 >>>>>>> feat(company-signup): add company signup controller and validation:src/validation/userValidation.js
+=======
+>>>>>>> feature(update): update swagger documentation:src/validation/userValidation.js
       throw error;
     }
     return true;
