@@ -6,7 +6,7 @@ const {
   errorResponse
 } = Helpers;
 const { companySignup } = userValidation;
-const { find } = UserService;
+
 
 /**
  * Middleware for input validations
@@ -47,12 +47,11 @@ export default class ValidationMiddleware {
     try {
       const validated = await companySignup(req.body);
       if (validated) {
-        const admin = await find(email);
+        const admin = await UserService.find(email);
         if (!admin) {
-          next();
-        } else {
-          errorResponse(res, { code: 409, message: `Admin with email: "${email}" already exists` });
+          return next();
         }
+        if (admin.companyId) { errorResponse(res, { code: 409, message: `Admin with email: "${email}" already exists for a company` }); }
       }
     } catch (error) {
       errorResponse(res, { code: 400, message: error.details[0].context.label });

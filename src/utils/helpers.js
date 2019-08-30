@@ -127,6 +127,27 @@ class Helpers {
   static validate(value, schema) {
     return Joi.validate(value, schema, { abortEarly: false, allowUnknown: true });
   }
+
+  /**
+ * Splits company object into company data and user data
+ * @static
+ * @param {object} companyInfo - The company object sent as request body.
+ * @memberof Helpers
+ * @returns { array } - An array containing both company data and user data.
+ */
+  static splitCompanyData(companyInfo) {
+    const {
+      companyName, companyAddress, companyPlanId, companySizeId, firstName,
+      lastName, email, password
+    } = companyInfo;
+    const companyData = {
+      companyName, companyAddress, companyPlanId, companySizeId
+    };
+    const userData = {
+      firstName, lastName, email, password
+    };
+    return [companyData, userData];
+  }
 }
 
 export default Helpers;
