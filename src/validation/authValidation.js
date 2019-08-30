@@ -70,6 +70,7 @@ export default class authValidation {
   }
 
   /**
+<<<<<<< HEAD:src/validation/authValidation.js
      * Validates supplier paramenters upon registration
      *
      * @param {object} supplierObject - The supplier object
@@ -78,14 +79,62 @@ export default class authValidation {
      */
   static async supplierSignup(supplierObject) {
     const schema = {
-      firstName: joi.string().min(3).max(25).required()
-        .label('Please enter a valid firstname \n the field must not be empty and it must be more than 2 letters'),
-      lastName: joi.string().min(3).max(25).required()
-        .label('Please enter a valid lastname \n the field must not be empty and it must be more than 2 letters'),
+=======
+     * Validates user paramenters upon registration
+     *
+     * @param {object} userObject - The user object
+     * @param {object} res - The user response object
+     * @returns {object} - returns an object (error or response).
+     */
+  static async companySignup(userObject) {
+    // joi parameters to test against user inputs
+    const schema = {
       email: joi.string().email().required()
         .label('Please enter a valid company email address'),
       password: new passwordComplexity(complexityOptions).required()
         .label('Password is required. \n It should be more than 8 characters, and should include at least a capital letter, and a number'),
+>>>>>>> feat(company-signup): add company signup controller and validation:src/validation/userValidation.js
+      firstName: joi.string().min(3).max(25).required()
+        .label('Please enter a valid firstname \n the field must not be empty and it must be more than 2 letters'),
+      lastName: joi.string().min(3).max(25).required()
+        .label('Please enter a valid lastname \n the field must not be empty and it must be more than 2 letters'),
+<<<<<<< HEAD:src/validation/authValidation.js
+=======
+      companyName: joi.string().min(3).max(40).required()
+        .label('Please add your company name'),
+      companySize: joi.number().integer().positive().required()
+        .label('Please enter a valid company size'),
+      planType: joi.string().valid('silver', 'gold', 'platinum').required()
+        .label('please input a plan (silver, gold or platinum'),
+      companyAddress: joi.string().min(10).max(60).regex(/^[\w',-\\/.\s]*$/)
+        .required()
+        .label('Please enter a valid address that is within 10 to 60 letters long'),
+    };
+    // Once user inputs are validated, move into server
+    const { error } = joi.validate({ ...userObject }, schema);
+    if (error) {
+      // throw errorResponse(res, { code: 400, message: error.details[0].context.label });
+      throw error;
+    }
+    return true;
+  }
+
+  /**
+     * Validates user paramenters upon registration
+     *
+     * @param {object} userObject - The user object
+     * @param {object} res - The user response object
+     * @returns {object} - returns an object (error or response).
+     */
+  static async userLogin(userObject) {
+    // joi parameters to test against user inputs
+    const schema = {
+>>>>>>> feat(company-signup): add company signup controller and validation:src/validation/userValidation.js
+      email: joi.string().email().required()
+        .label('Please enter a valid company email address'),
+      password: new passwordComplexity(complexityOptions).required()
+        .label('Password is required. \n It should be more than 8 characters, and should include at least a capital letter, and a number'),
+<<<<<<< HEAD:src/validation/authValidation.js
       phoneNumber: joi.string().regex(/^[0-9+\(\)#\.\s\/ext-]+$/).required()
         .label('Please input a valid phone number'),
       companyName: joi.string().min(3).max(40).required()
@@ -97,6 +146,13 @@ export default class authValidation {
     };
     const { error } = joi.validate({ ...supplierObject }, schema);
     if (error) {
+=======
+    };
+    // Once user inputs are validated, move into server
+    const { error } = joi.validate({ ...userObject }, schema);
+    if (error) {
+      // throw errorResponse(res, { code: 400, message: error.details[0].context.label });
+>>>>>>> feat(company-signup): add company signup controller and validation:src/validation/userValidation.js
       throw error;
     }
     return true;

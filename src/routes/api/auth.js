@@ -9,12 +9,15 @@ import {
 const router = Router();
 const {
   userSignup, supplierSignup, verifyEmail, sendResetPasswordEmail, resetPassword,
-  verifyPasswordResetLink, loginUser, socialLogin, logout
+  verifyPasswordResetLink, loginUser, socialLogin, logout, companySignUp
 } = authController;
+
+const { onCompanySignup } = authMiddleware;
 const { checkParameters } = passwordMiddleware;
 
 router.post('/signup/user', authMiddleware.onUserSignup, userSignup);
 router.post('/signup/supplier', authMiddleware.onSupplierSignup, supplierSignup);
+router.post('/signup/company', onCompanySignup, companySignUp);
 router.get('/verify', verifyEmail);
 router.post('/login', loginUser);
 router.post('/reset-password/', checkParameters, sendResetPasswordEmail);

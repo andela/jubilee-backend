@@ -25,5 +25,15 @@ export const newSupplier = {
   password: faker.internet.password(15, false),
   phoneNumber: faker.phone.phoneNumber()
 };
+export const newCompany = {
+  firstName: faker.name.firstName(),
+  lastName: faker.name.lastName(),
+  email: faker.internet.email(),
+  password: faker.internet.password(15, false),
+  companyName: faker.company.companyName(),
+  companyAddress: faker.company.secondaryAddress(),
+  sizeId: 2,
+  planId: 3
+}
 
 export const obj = {};
