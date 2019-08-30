@@ -4,7 +4,13 @@ import { userService } from '../services';
 
 const {
   errorResponse, verifyToken, checkToken
+<<<<<<< HEAD
 } = helpers;
+=======
+} = Helpers;
+
+const { companySignup } = authValidation;
+>>>>>>> feature(implement): add company signup functionality
 /**
  * Middleware for input validations
  */
@@ -102,6 +108,29 @@ export default class AuthMiddleware {
     } catch (err) {
       const status = err.status || 500;
       errorResponse(res, { code: status, message: err.message });
+    }
+  }
+
+  /**
+     * Middleware method for company validation during signup/registration
+     * @param {object} req - The request from the endpoint.
+     * @param {object} res - The response returned by the method.
+     * @param {object} next - the returned values going into the next operation.
+     * @returns {object} - returns an object (error or response).
+     */
+  static async onCompanySignup(req, res, next) {
+    const { email } = req.body;
+    try {
+      const validated = await companySignup(req.body);
+      if (validated) {
+        const admin = await UserService.find({ email });
+        if (!admin) {
+          return next();
+        }
+        if (admin.companyId) { errorResponse(res, { code: 409, message: `Admin with email: "${email}" already exists for a company` }); }
+      }
+    } catch (error) {
+      errorResponse(res, { code: 400, message: error.details[0].context.label });
     }
   }
 }

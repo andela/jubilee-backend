@@ -28,7 +28,7 @@ export const newSupplier = {
 export const newCompany = {
   firstName: 'Ago',
   lastName: 'Akin',
-  email: 'daylay6@gmail.com',
+  email: 'daylay32@gmail.com',
   password: faker.internet.password(15, false),
   companyName: faker.company.companyName(),
   companyAddress: '20, Ania street, Ojomo',
