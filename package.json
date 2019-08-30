@@ -13,7 +13,7 @@
     "start": "NODE_ENV=production  node dist/index.js",
     "build": "babel src -d dist",
     "prestart": "NODE_ENV=production sequelize db:migrate",
-    "pretest": "cross-env NODE_ENV=test npm run migrate:reset && cross-env NODE_ENV=test  npm run migrate && NODE_ENV=test npm run seed"
+    "pretest": "cross-env NODE_ENV=test npm run migrate:reset && cross-env NODE_ENV=test  npm run migrate && cross-env NODE_ENV=test npm run seed"
   },
   "repository": {
     "type": "git",
