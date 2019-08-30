@@ -32,7 +32,7 @@ class AuthController {
       const { body } = req;
       const user = await create({ ...body });
       // assign lowest role upon signup
-      const roleAssignment = await assign(user.id, 5);
+      const roleAssignment = await assign(user.id, 1);
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       const userResponse = extractUserData(user);
       const isSent = await sendVerificationEmail(req, { ...userResponse });

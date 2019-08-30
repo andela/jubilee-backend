@@ -116,7 +116,6 @@ describe('Auth route endpoints', () => {
       .send(user);
     expect(response).to.has.status(201);
     expect(response.body).to.be.a('object');
-    console.log(response.body.data);
     expect(response.body.data.roleAssignment).to.be.a('object');
     expect(response.body.status).to.equal('success');
   });
@@ -334,6 +333,43 @@ describe('POST /api/auth/login', () => {
     expect(response.body.status).to.equal('fail');
     expect(response.status).to.equal(401);
     expect(response.body.error.message).to.be.equal('Invalid login details');
+  });
+});
+
+
+describe('PATCH /api/users/role', () => {
+  it('should successfully update user role', async () => {
+    const { id, firstName, role } = newlyCreatedUser;
+    const token = generateToken({ id, firstName, role });
+    const { email } = newUser;
+    const userRole = {
+      email,
+      roleId: 1
+    };
+    const response = await chai
+      .request(server).patch('/api/users/role')
+      .set('Cookie', `token=${token};`)
+      .send(userRole);
+    expect(response).to.have.status(200);
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.userId).to.be.a('number');
+    expect(response.body.data.roleId).to.be.a('number');
+  });
+
+  it('should fail is user does not exist', async () => {
+    const { id, firstName, role } = newlyCreatedUser;
+    const token = generateToken({ id, firstName, role });
+    const userRole = {
+      email: 'daniel@gmail.com',
+      roleId: 1
+    };
+    const response = await chai.request(server)
+      .patch('/api/users/role')
+      .set('Cookie', `token=${token};`)
+      .send(userRole);
+    expect(response.body.status).to.equal('fail');
+    expect(response.status).to.equal(404);
+    expect(response.body.error.message).to.be.equal('User account does not exist');
   });
 });
 

@@ -2,7 +2,7 @@ import { Helpers } from '../utils';
 import { RoleService } from '../services/index';
 
 const {
-  verifyToken, successResponse, errorResponse,
+  verifyToken, errorResponse,
 } = Helpers;
 /**
  * Middleware for input validations
@@ -15,13 +15,16 @@ export default class roleMiddleware {
      * @param {object} next - the returned values going into the next operation.
      * @returns {object} - returns an object (error or response).
      */
-  static async verifyCompanySuperAdmin(req, res) {
+  static async verifyCompanySuperAdmin(req, res, next) {
     try {
-      const { token } = req.headers;
+      const { token } = req.cookies;
       const { id } = verifyToken(token);
       const [{ dataValues: userWithRoles }] = await RoleService.getRoles(id);
-      if (userWithRoles.roles[0].id === 1) {
-        return successResponse(res, { ...userWithRoles }, 201);
+      const roleObject = userWithRoles.roles;
+      const [{ dataValues: unroledRowArray }] = roleObject;
+      const { id: roleId } = unroledRowArray;
+      if (roleId === 1) {
+        return next();
       }
       return errorResponse(res, { code: 401, message: 'You are an unauthorized user' });
     } catch (error) {

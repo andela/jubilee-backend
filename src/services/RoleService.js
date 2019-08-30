@@ -36,4 +36,18 @@ export default class RoleService {
       where: { id }
     });
   }
+
+  /**
+   * Update user role in the database
+   *
+   * @param {integer} userId - The user Id
+   * @param {integer} roleId - The role Id
+   * @returns {Promise<object>} A promise object with user role detail.
+   */
+  static async updateUserRole(userId, roleId) {
+    const [rowaffected, [user]] = await RoleUser.update({ roleId },
+      { returning: true, where: { userId } });
+    if (!rowaffected) throw new Error('Not Found');
+    return user;
+  }
 }
