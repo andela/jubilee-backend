@@ -15,4 +15,15 @@ export const newUser = {
   phoneNumber: '08063345598'
 };
 
+export const newSupplier = {
+  firstName: faker.name.firstName(),
+  lastName: faker.name.lastName(),
+  email: faker.internet.email(),
+  companyName: faker.company.companyName(),
+  companyAddress: faker.address.secondaryAddress(),
+  categoryOfServiceId: 2,
+  password: faker.internet.password(15, false),
+  phoneNumber: faker.phone.phoneNumber()
+};
+
 export const obj = {};

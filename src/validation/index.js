@@ -1,3 +1,3 @@
-import userValidation from './userValidation';
+import authValidation from './authValidation';
 
-export default userValidation;
+export default authValidation;

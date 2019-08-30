@@ -34,7 +34,7 @@
         }
     ],
     "paths": {
-        "/auth/signup": {
+        "/auth/signup/user": {
             "post": {
                 "description": "Registers a User",
                 "summary": "Creates a new user on the system",
@@ -52,13 +52,51 @@
                         "required": true,
                         "description": "This is the request body object containing user information",
                         "schema": {
-                            "$ref": "#/requestBody/signUpRequest"
+                            "$ref": "#/requestBody/userSignupRequest"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "Account created successfully"
+                    },
+                    "400": {
+                        "description": "Please fill in the fields"
+                    },
+                    "409": {
+                        "description": "User with email already exists"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/auth/signup/supplier": {
+            "post": {
+                "description": "Registers a Suppler",
+                "summary": "Creates a new supplier company and add the admin user to the database",
+                "tags": [
+                    "Auth"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "description": "This is the request body object containing supplier information",
+                        "schema": {
+                            "$ref": "#/requestBody/supplierSignupRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Supplier created successfully"
                     },
                     "400": {
                         "description": "Please fill in the fields"
@@ -266,12 +304,16 @@
         }
     },
         "requestBody": {
-            "signUpRequest": {
-                "title": "Signup Request",
+            "userSignupRequest": {
+                "title": "User Signup Request",
                 "type": "object",
                 "properties": {
                     "firstName": {
-                        "description": "Username of the user",
+                        "description": "First name of the user",
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "description": "Last name of the user",
                         "type": "string"
                     },
                     "email": {
@@ -343,7 +385,58 @@
                     "phoneNumber": "08063345598"
                   },
                 "required": [
-                    "firstName, lastName, email"
+                    "firstName, lastName, email, password"
+                ]
+            },
+            "supplierSignupRequest": {
+                "title": "User Signup Request",
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "description": "First name of the Admin",
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "description": "Last name of the Admin",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email of the Admin",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "The Password of the Admin",
+                        "type": "string"
+                    },
+                    "companyAddress": {
+                        "description": "The supplier's company address",
+                        "type": "string"
+                    },
+                    "companyName": {
+                        "description": "The supplier's company name",
+                        "type": "string"
+                    },
+                    "categoryOfServiceId": {
+                        "description": "The supplier's category of service",
+                        "type": "integer"
+                    },
+                    "phoneNumber": {
+                        "description": "The Admin's phone number",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "firstName": "King",
+                    "lastName": "David",
+                    "email": "barefootnomad@gmail.com",
+                    "companyName": "Andela",
+                    "companyAddress": "No 1, clinton str, Lagos, Nigeria",
+                    "categoryOfServiceId": 2,
+                    "password": "Elija455h",
+                    "phoneNumber": "08063345598"
+                  },
+                "required": [
+                    "firstName, lastName, email, companyName, companyAddress, categoryOfService, password"
                 ]
             },
             "loginRequest": {

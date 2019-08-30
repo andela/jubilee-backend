@@ -1,7 +1,7 @@
-import User from './UserController';
-import Auth from './AuthController';
+import userController from './userController';
+import authController from './authController';
 
 export {
-  Auth,
-  User
+  authController,
+  userController
 };
