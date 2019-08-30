@@ -33,6 +33,16 @@ module.exports = (sequelize, DataTypes) => {
       zip: { type: DataTypes.STRING, allowNull: true },
       phoneNumber: { type: DataTypes.STRING, allowNull: true },
       companyName: { type: DataTypes.STRING, allowNull: true },
+      companyId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Company',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
       password: { type: DataTypes.STRING, allowNull: true },
       role: { type: DataTypes.STRING, allowNull: true, defaultValue: 'user' },
       isVerified: {
@@ -45,8 +55,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
-  User.associate = () => {
-    // add model as function parameter and define associations here
+  User.associate = (models) => {
+    User.belongsTo(models.Company, {
+      foreignKey: 'companyId',
+      as: 'company',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
   };
   return User;
 };
