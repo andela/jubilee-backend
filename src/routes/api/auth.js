@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import passport from '../../config/passport';
 import { Auth } from '../../controllers';
-import { rightEmail, wrongEmail } from '../../../test/features';
+import { rightEmail, wrongEmail } from '../../test/features';
 import {
   PasswordMiddleware, AuthMiddleware,
 } from '../../middlewares';

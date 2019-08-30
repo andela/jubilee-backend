@@ -79,10 +79,17 @@ describe('Auth Route Endpoints', () => {
         password: testPassword,
         confirmPassword: testPassword
       };
-
       const response = await chai.request(server).post(`/api/auth/password/reset/${newUserPasswordReset.email}`).send(password);
       expect(response).to.have.status(200);
       expect(response.body.data).to.be.a('string');
+    });
+    it('should sign in user if emaill is true', (done) => {
+      chai.request(server)
+        .get('/api/auth/rightSocial')
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          done();
+        });
     });
   });
   // Remove and Paste Your Previous Test Here
