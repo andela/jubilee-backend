@@ -82,8 +82,10 @@ export default class UserService {
    */
   static async updateAny(updateValues, obj) {
     try {
-      const result = await User.update(updateValues,
-        { where: obj, returning: true });
+      const result = await User.update(
+        updateValues,
+        { where: obj, returning: true }
+      );
       const [bool, [user]] = result;
       if (!bool) throw new ApiError(404, 'Not Found');
       return user.dataValues;

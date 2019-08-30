@@ -2,7 +2,7 @@ import { UserService } from '../services';
 import { Helpers } from '../utils';
 
 const {
-  successResponse, errorResponse, generateToken, extractUserData
+  successResponse, errorResponse, extractUserData
 } = Helpers;
 
 const { findAny, updateAny } = UserService;
@@ -26,7 +26,6 @@ class UserController {
     try {
       const id = req.params.userId;
       const user = await findAny({ id });
-      user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       const userResponse = extractUserData(user);
       successResponse(res, userResponse, 200);
     } catch (error) {
@@ -47,7 +46,6 @@ class UserController {
     try {
       const id = req.params.userId;
       const user = await updateAny(req.body, { id });
-      user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       const userResponse = extractUserData(user);
       successResponse(res, userResponse, 200);
     } catch (error) {

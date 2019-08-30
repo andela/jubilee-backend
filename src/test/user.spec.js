@@ -32,7 +32,8 @@ describe('User Route Endpoints', () => {
     expect(response.body.data.firstName).to.be.a('string');
     expect(response.body.data.lastName).to.be.a('string');
     newlyCreatedUser = response.body.data;
-    token = response.body.data.token;
+    const returnToken = response.body.data.token;
+    token = returnToken;
   });
 });
 
