@@ -94,7 +94,7 @@ describe('Auth route endpoints', () => {
   });
 
   // my tests
-  it('should pass upon successfull validation', async () => {
+  it('should pass upon successfull validation and assign default role', async () => {
     const user = {
       email: 'tony@gmail.com',
       firstName: 'Tony',
@@ -116,6 +116,8 @@ describe('Auth route endpoints', () => {
       .send(user);
     expect(response).to.has.status(201);
     expect(response.body).to.be.a('object');
+    console.log(response.body.data);
+    expect(response.body.data.roleAssignment).to.be.a('object');
     expect(response.body.status).to.equal('success');
   });
   it('should fail upon missing parameters during validation', async () => {

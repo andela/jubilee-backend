@@ -1,18 +1,9 @@
-<<<<<<< HEAD
 import { authValidation } from '../validation';
 import { Helpers, ApiError } from '../utils';
 import { UserService } from '../services';
 
 const {
   errorResponse, verifyToken, checkToken
-=======
-import authValidation from '../validation/index';
-import { Helpers } from '../utils';
-import { UserService } from '../services/index';
-
-const {
-  errorResponse
->>>>>>> refactor(middleware): changed middleware file names to suit convention
 } = Helpers;
 /**
  * Middleware for input validations
@@ -27,7 +18,30 @@ export default class AuthMiddleware {
      */
   static async onUserSignup(req, res, next) {
     try {
-      const validated = await authValidation.userSignup(req.body);
+      // this destructuring was written to make testing easier, as roleId is needed to test
+      // other methods
+      const {
+        firstName, lastName, email, password, gender, street, city, state,
+        country, birthdate, phoneNumber, companyName,
+      } = req.body;
+      const user = {
+        firstName,
+        lastName,
+        email,
+        password,
+        gender,
+        street,
+        city,
+        state,
+        country,
+        birthdate,
+        phoneNumber,
+        companyName,
+      };
+      // it should take all body and split in future. for testing
+      // at this time, it takes only the property it needs
+      // original: const validated = await authValidation.userSignup(req.body);
+      const validated = await authValidation.userSignup(user);
       if (validated) {
         const user = await UserService.find({ email });
         if (!user) {

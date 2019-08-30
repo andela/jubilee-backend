@@ -1,4 +1,4 @@
-import { UserService, SupplierService } from '../services';
+import { userService, supplierService, RoleService } from '../services';
 import {
   Helpers, Mailer, ApiError
 } from '../utils';
@@ -8,8 +8,10 @@ const {
 } = Helpers;
 const { sendVerificationEmail, sendResetMail } = Mailer;
 const {
-  create, updateById, updatePassword, find
-} = UserService;
+  create, updateById, updatePassword, find,
+} = userService;
+
+const { assign } = RoleService;
 /**
  * A collection of methods that controls authentication responses.
  *
@@ -29,12 +31,14 @@ class AuthController {
     try {
       const { body } = req;
       const user = await create({ ...body });
+      // assign lowest role upon signup
+      const roleAssignment = await assign(user.id, 5);
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       const userResponse = extractUserData(user);
       const isSent = await sendVerificationEmail(req, { ...userResponse });
       const { token } = userResponse;
       res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
-      return successResponse(res, { ...userResponse, emailSent: isSent }, 201);
+      return successResponse(res, { ...userResponse, emailSent: isSent, roleAssignment }, 201);
     } catch (error) {
       errorResponse(res, {});
     }
