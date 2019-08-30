@@ -16,14 +16,14 @@ export const newUser = {
 };
 
 export const newCompany = {
-  firstName: faker.name.firstName(),
-  lastName: faker.name.lastName(),
-  email: faker.internet.email(),
+  firstName: 'Ago',
+  lastName: 'Akin',
+  email: 'daylay6@gmail.com',
   password: faker.internet.password(15, false),
   companyName: faker.company.companyName(),
-  companyAddress: faker.company.secondaryAddress(),
-  sizeId: 2,
-  planId: 3
-}
+  companyAddress: '20, Ania street, Ojomo',
+  companySizeId: 2,
+  companyPlanId: 3
+};
 
 export const obj = {};

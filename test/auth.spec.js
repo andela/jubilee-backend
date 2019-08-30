@@ -128,25 +128,23 @@ describe('Auth route endpoints', () => {
     expect(response).to.have.status(201);
     expect(response.body.status).to.equal('success');
     expect(response.body.data).to.be.a('object');
-    expect(response.body.data.company).to.exist(); 
-    expect(response.body.data.token).to.be.a('string');
-    expect(response.body.data.firstName).to.be.a('string');
-    expect(response.body.data.lastName).to.be.a('string'); 
+    expect(response.body.data.admin.token).to.be.a('string');
+    expect(response.body.data.company.token).to.be.a('string');
+    expect(response.body.data.admin.firstName).to.be.a('string');
+    expect(response.body.data.admin.lastName).to.be.a('string');
   });
-
-  it('should return bad error 400 if a required field is missing', async () => {
-    const response = await chai.request(server).post('/api/auth/signup/company').send({ ...newCompany, firstName: '' });
-    expect(response).to.have.status(400);
-    expect(response.body.error).to.be.a('object');
-    expect(response.body.error.message).to.equal('Please enter a valid firstname \n the field must not be empty and it must be more than 2 letters');
-  });
-
   it('should return a conflict error 409 if admin already exists in database', async () => {
     const { email } = newCompany;
     const response = await chai.request(server).post('/api/auth/signup/company').send(newCompany);
     expect(response).to.have.status(409);
     expect(response.body.error).to.be.a('object');
-    expect(response.body.error.message).to.equal(`Admin with email: "${email}" already exists`);
+    expect(response.body.error.message).to.equal(`Admin with email: "${email}" already exists for a company`);
+  });
+  it('should return bad error 400 if a required field is missing', async () => {
+    const response = await chai.request(server).post('/api/auth/signup/company').send({ ...newCompany, firstName: '' });
+    expect(response).to.have.status(400);
+    expect(response.body.error).to.be.a('object');
+    expect(response.body.error.message).to.equal('Please enter a valid firstname \n the field must not be empty and it must be more than 2 letters');
   });
 });
 describe('GET /api/auth/verify?token', () => {

@@ -101,7 +101,6 @@ export default class userValidation {
     // Once user inputs are validated, move into server
     const { error } = joi.validate({ ...userObject }, schema);
     if (error) {
-      // throw errorResponse(res, { code: 400, message: error.details[0].context.label });
       throw error;
     }
     return true;
@@ -125,7 +124,6 @@ export default class userValidation {
     // Once user inputs are validated, move into server
     const { error } = joi.validate({ ...userObject }, schema);
     if (error) {
-      // throw errorResponse(res, { code: 400, message: error.details[0].context.label });
       throw error;
     }
     return true;
