@@ -91,6 +91,14 @@ describe('Auth Route Endpoints', () => {
           done();
         });
     });
+    it('should not be able to sign in user if email is false', (done) => {
+      chai.request(server)
+        .get('/api/auth/wrongSocial')
+        .end((err, res) => {
+          expect(res).to.have.status(403);
+          done();
+        });
+    });
   });
   // Remove and Paste Your Previous Test Here
 });
