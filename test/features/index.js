@@ -1,4 +1,4 @@
-import rightEmail from './socialMockData';
-import wrongEmail from './wrongSocialMockData';
+// import rightEmail from './socialMockData';
+// import wrongEmail from './wrongSocialMockData';
 
-export { rightEmail, wrongEmail };
+// export { rightEmail, wrongEmail };
