@@ -1,20 +1,24 @@
 import { Router } from 'express';
 import passport from '../../config/passport';
-import { authController } from '../../controllers';
+import { AuthController } from '../../controllers';
 import { rightEmail, wrongEmail } from '../../test/features';
 import {
-  passwordMiddleware, authMiddleware
+  PasswordMiddleware, AuthMiddleware
 } from '../../middlewares';
 
 const router = Router();
 const {
   userSignup, supplierSignup, verifyEmail, sendResetPasswordEmail, resetPassword,
-  verifyPasswordResetLink, loginUser, socialLogin, logout
-} = authController;
-const { checkParameters } = passwordMiddleware;
+  verifyPasswordResetLink, loginUser, socialLogin, logout, companySignUp
+} = AuthController;
 
-router.post('/signup/user', authMiddleware.onUserSignup, userSignup);
-router.post('/signup/supplier', authMiddleware.onSupplierSignup, supplierSignup);
+
+const { onCompanySignup } = AuthMiddleware;
+const { checkParameters } = PasswordMiddleware;
+
+router.post('/signup/user', AuthMiddleware.onUserSignup, userSignup);
+router.post('/signup/supplier', AuthMiddleware.onSupplierSignup, supplierSignup);
+router.post('/signup/company', onCompanySignup, companySignUp);
 router.get('/verify', verifyEmail);
 router.post('/login', loginUser);
 router.post('/reset-password/', checkParameters, sendResetPasswordEmail);
