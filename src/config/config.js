@@ -4,7 +4,11 @@ dotenv.config();
 
 module.exports = {
   production: {
-    prodDatabaseURI: process.env.DATABASE_URL,
+    username: process.env.PRO_USERNAME,
+    password: process.env.PRO_PASSWORD,
+    database: process.env.PRO_DATABASE,
+    host: process.env.PRO_HOST,
+    port: process.env.PRO_PORT || 5432,
     dialect: 'postgres',
   },
 
