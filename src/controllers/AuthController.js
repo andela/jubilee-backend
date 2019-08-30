@@ -1,21 +1,25 @@
-import { userService, supplierService, RoleService } from '../services';
+import { UserService, SupplierService, CompanyService } from '../services';
 import {
   helpers, Mailer, ApiError
 } from '../utils';
 
+
 const {
-  generateToken, verifyToken, successResponse, errorResponse, extractUserData, comparePassword,
-  splitSupplierData
-} = helpers;
+  generateToken, verifyToken, successResponse, errorResponse,
+  extractUserData, comparePassword, splitCompanyData,splitSupplierData,
+  hashPassword
+} = Helpers;
+const { createCompany } = CompanyService;
 const { sendVerificationEmail, sendResetMail } = Mailer;
+
 const {
   create, updateById, updatePassword, find, socialLogin,
-} = userService;
+} = UserService;
 
 const { assign } = RoleService;
 const { update } = supplierService;
 const { createCompany } = companyService;
-
+  
 /**
  * A collection of methods that controls authentication responses.
  *
@@ -92,28 +96,19 @@ class AuthController {
    * @returns { JSON } A JSON response with the registered company's details and a JWT.
    * @memberof Auth
    */
-  static async companySignup(req, res) {
+  static async companySignUp(req, res) {
     try {
-      const {
-        body: {
-          companyName, companyAddress, email, firstName, lastName, planId, sizeId
-        }
-      } = req;
-      const company = await createCompany({
-        companyName, companyAddress, planId, sizeId
-      });
-      let admin = await create({
-        firstName, lastName, email, companyId: company.id
-      });
-      company.token = generateToken({ type: company.type, companyId: company.id, roleId: company.roleId });
-      admin.token = generateToken({ email: admin.email, id: admin.id, role: admin.role });
-      admin = new UserResponse(admin);
-      const isSent = await sendVerificationEmail(req, { ...admin, ...company });
-      const { token } = admin;
-      res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
-      return successResponse(res, { ...admin, company, emailSent: isSent }, 201);
+      const [companyInfo, userInfo] = splitCompanyData(req.body);
+      userInfo.password = hashPassword(userInfo.password);
+      const [company, user] = await createCompany(companyInfo, userInfo);
+      company.token = generateToken({ type: 'company', companyId: company.id, roleId: 1 });
+      user.token = generateToken({ email: user.email, id: user.id, role: 4 });
+      const admin = extractUserData(user);
+      const isSent = await sendVerificationEmail(req, { ...admin });
+      res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
+      return successResponse(res, { admin, company, emailSent: isSent }, 201);
     } catch (error) {
-      errorResponse(res, {});
+      errorResponse(res, { message: error.message });
     }
   }
 

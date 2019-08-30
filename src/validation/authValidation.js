@@ -102,10 +102,11 @@ export default class authValidation {
 =======
       companyName: joi.string().min(3).max(40).required()
         .label('Please add your company name'),
-      companySize: joi.number().integer().positive().required()
-        .label('Please enter a valid company size'),
-      planType: joi.string().valid('silver', 'gold', 'platinum').required()
-        .label('please input a plan (silver, gold or platinum'),
+      companySizeId: joi.number().integer().positive().required()
+        .label('please select a company size'),
+      companyPlanId: joi.number().integer().positive()
+        .required()
+        .label('please select a plan (silver, gold or platinum'),
       companyAddress: joi.string().min(10).max(60).regex(/^[\w',-\\/.\s]*$/)
         .required()
         .label('Please enter a valid address that is within 10 to 60 letters long'),

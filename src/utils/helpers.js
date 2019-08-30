@@ -185,6 +185,7 @@ class Helpers {
   /**
  * Checks token from request header for user authentication
  * @param {object} req - The request from the endpoint
+ * @memberof Helpers
  * @returns {Token} Token
  */
   static checkToken(req) {
@@ -194,6 +195,27 @@ class Helpers {
     }
     const token = req.headers.authorization.split(' ')[1] || req.headers.authorization || req.headers['x-access-token'] || req.headers.token || req.body.token;
     return token;
+  }
+
+  /**
+ * Splits company object into company data and user data
+ * @static
+ * @param {object} companyInfo - The company object sent as request body.
+ * @memberof Helpers
+ * @returns { array } - An array containing both company data and user data.
+ */
+  static splitCompanyData(companyInfo) {
+    const {
+      companyName, companyAddress, companyPlanId, companySizeId, firstName,
+      lastName, email, password
+    } = companyInfo;
+    const companyData = {
+      companyName, companyAddress, companyPlanId, companySizeId
+    };
+    const userData = {
+      firstName, lastName, email, password
+    };
+    return [companyData, userData];
   }
 }
 
