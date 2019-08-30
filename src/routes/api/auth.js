@@ -9,7 +9,6 @@ import {
 
 const router = Router();
 const {
-<<<<<<< HEAD
   userSignup, supplierSignup, verifyEmail, sendResetPasswordEmail, resetPassword,
   verifyPasswordResetLink, loginUser, socialLogin, logout, companySignUp
 } = AuthController;
@@ -20,15 +19,6 @@ const { checkParameters } = PasswordMiddleware;
 
 router.post('/signup/user', AuthMiddleware.onUserSignup, userSignup);
 router.post('/signup/supplier', AuthMiddleware.onSupplierSignup, supplierSignup);
-=======
-  signUp, companySignUp, verifyEmail, sendResetPasswordEmail, resetPassword, 
-  verifyPasswordResetLink, loginUser, socialLogin, logout
-} = Auth;
-const { checkParameters } = ResetPassword;
-const { onCompanySignup } = userMiddleware;
-
-router.post('/signup', userMiddleware.onSignup, signUp);
->>>>>>> feat(company-signup): add company signup controller and validation
 router.post('/signup/company', onCompanySignup, companySignUp);
 router.get('/verify', verifyEmail);
 router.post('/login', loginUser);
