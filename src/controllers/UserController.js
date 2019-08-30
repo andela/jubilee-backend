@@ -1,3 +1,12 @@
+import { UserService } from '../services';
+import { Helpers } from '../utils';
+
+const {
+  successResponse, errorResponse, generateToken, extractUserData
+} = Helpers;
+
+const { findAny, updateAny } = UserService;
+
 /**
  * A collection of methods that controls user's interaction via the User routes
  *
@@ -14,7 +23,15 @@ class UserController {
    * @memberof UserController
    */
   static async userProfile(req, res) {
-    res.status(200).json({ data: 'works' });
+    try {
+      const id = req.params.userId;
+      const user = await findAny({ id });
+      user.token = generateToken({ email: user.email, id: user.id, role: user.role });
+      const userResponse = extractUserData(user);
+      successResponse(res, userResponse, 200);
+    } catch (error) {
+      errorResponse(res, { code: error.statusCode, message: error.message });
+    }
   }
 
   /**
@@ -27,7 +44,15 @@ class UserController {
    * @memberof UserController
    */
   static async updateProfile(req, res) {
-    res.status(200).json({ data: 'works' });
+    try {
+      const id = req.params.userId;
+      const user = await updateAny(req.body, { id });
+      user.token = generateToken({ email: user.email, id: user.id, role: user.role });
+      const userResponse = extractUserData(user);
+      successResponse(res, userResponse, 200);
+    } catch (error) {
+      errorResponse(res, { code: error.statusCode, message: error.message });
+    }
   }
 }
 

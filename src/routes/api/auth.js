@@ -3,7 +3,7 @@ import passport from '../../config/passport';
 import { Auth } from '../../controllers';
 import { rightEmail, wrongEmail } from '../../../test/features';
 import {
-  passwordMiddleware, authMiddleware,
+  PasswordMiddleware, AuthMiddleware,
 } from '../../middlewares';
 
 const router = Router();
@@ -11,10 +11,10 @@ const {
   userSignup, supplierSignup, verifyEmail, sendResetPasswordEmail, resetPassword,
   verifyPasswordResetLink, loginUser, socialLogin, logout
 } = Auth;
-const { checkParameters } = passwordMiddleware;
+const { checkParameters } = PasswordMiddleware;
 
-router.post('/signup/user', authMiddleware.onUserSignup, userSignup);
-router.post('/signup/supplier', authMiddleware.onSupplierSignup, supplierSignup);
+router.post('/signup/user', AuthMiddleware.onUserSignup, userSignup);
+router.post('/signup/supplier', AuthMiddleware.onSupplierSignup, supplierSignup);
 router.get('/verify', verifyEmail);
 router.post('/login', loginUser);
 router.post('/reset-password/', checkParameters, sendResetPasswordEmail);

@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import Joi from '@hapi/joi';
 import bcrypt from 'bcryptjs';
 import env from '../config/env-config';
+import ApiError from './ApiError';
 
 const { SECRET, PORT } = env;
 
@@ -187,6 +188,10 @@ class Helpers {
  * @returns {Token} Token
  */
   static checkToken(req) {
+    const { authorization } = req.headers;
+    if (!authorization) {
+      throw new ApiError(401, 'Access denied, Token required');
+    }
     const token = req.headers.authorization.split(' ')[1] || req.headers.authorization || req.headers['x-access-token'] || req.headers.token || req.body.token;
     return token;
   }

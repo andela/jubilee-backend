@@ -1,7 +1,7 @@
-import { helpers, ApiError } from '../utils';
+import { Helpers, ApiError } from '../utils';
 import db from '../models';
 
-const { hashPassword } = helpers;
+const { hashPassword } = Helpers;
 const { User } = db;
 
 /**
@@ -49,6 +49,16 @@ export default class UserService {
   }
 
   /**
+   * Finds user in the database
+   *
+   * @param {object} obj - An object of the key to be serached
+   * @returns {Promise<object>} A promise object with user detail if user exists.
+   */
+  static async findAny(obj) {
+    return User.findOne({ where: obj });
+  }
+
+  /**
    * Update user password in the database
    *
    * @param {string} password - New user password to be updated in database
@@ -61,6 +71,27 @@ export default class UserService {
       { where: { email }, returning: true });
     return result;
   }
+
+  /**
+   * Function for update query
+   *
+   * @param {Object} updateValues - Object of fields to be updated
+   * @param {string} obj - An object of the keys to be searched e.g {id}, {email}
+   * @memberof UserService
+   * @returns {Promise<object>} A promise object with user detail.
+   */
+  static async updateAny(updateValues, obj) {
+    try {
+      const result = await User.update(updateValues,
+        { where: obj, returning: true });
+      const [bool, [user]] = result;
+      if (!bool) throw new ApiError(404, 'Not Found');
+      return user.dataValues;
+    } catch (error) {
+      throw new ApiError(500, `Userservice: update - ${error.message}`);
+    }
+  }
+
 
   /**
    * signin with users google or facebook data
