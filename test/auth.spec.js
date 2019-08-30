@@ -131,26 +131,17 @@ describe('Auth route endpoints', () => {
     expect(response).to.have.status(201);
     expect(response.body.status).to.equal('success');
     expect(response.body.data).to.be.a('object');
-    expect(response.body.data.token).to.be.a('string');
-    expect(response.body.data.firstName).to.be.a('string');
-    expect(response.body.data.lastName).to.be.a('string');
+    expect(response.body.data.admin.token).to.be.a('string');
+    expect(response.body.data.company.token).to.be.a('string');
+    expect(response.body.data.admin.firstName).to.be.a('string');
+    expect(response.body.data.admin.lastName).to.be.a('string');
   });
-
   it('should return a conflict error 409 if admin already exists in database', async () => {
     const { email } = newCompany;
     const response = await chai.request(server).post('/api/auth/signup/company').send(newCompany);
     expect(response).to.have.status(409);
     expect(response.body.error).to.be.a('object');
     expect(response.body.error.message).to.equal(`Admin with email: "${email}" already exists for a company`);
-  });
-
-  it('should successfully verify an existing user if the token is valid', async () => {
-    const { email, id } = newCompany;
-    const token = generateToken({ email, id, role: 4 });
-    const response = await chai.request(server).get(`/api/auth/verify?token=${token}`);
-    const { body: { data: { isVerified } } } = response;
-    expect(response).to.have.status(200);
-    expect(isVerified).to.equal(true);
   });
 
   it('should return an error response if verification token is not provided', async () => {
