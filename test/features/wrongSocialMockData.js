@@ -3,9 +3,9 @@
  * Facebook Mock Data
  */
 
-export default (req, res, next) => {
+const wrongFacebookMock = (req, res, next) => {
   req.user = {
-    id: '1283637238389',
+    id: undefined,
     username: undefined,
     displayName: undefined,
     name: {
@@ -43,8 +43,10 @@ export default (req, res, next) => {
         }
       },
       email: 'jubilee.barefootnomad@gmail.com',
-      id: '1283637238389'
+      id: undefined
     }
   };
   next();
 };
+
+export default wrongFacebookMock;
