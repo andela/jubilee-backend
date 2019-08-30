@@ -2,7 +2,7 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import faker from 'faker';
 import server from '../src';
-import { newUser } from './dummies';
+import { newUser, newCompany } from './dummies';
 import Helpers from '../src/utils/helpers';
 
 const { generateToken } = Helpers;
@@ -121,6 +121,32 @@ describe('Auth route endpoints', () => {
     expect(response.body).to.be.a('object');
     expect(response.body).to.be.a('object');
     expect(response.body.error.message).to.be.a('string');
+  });
+
+  it('should signup a company and return status 201', async () => {
+    const response = await chai.request(server).post('/api/auth/signup/company').send(newCompany);
+    expect(response).to.have.status(201);
+    expect(response.body.status).to.equal('success');
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.company).to.exist(); 
+    expect(response.body.data.token).to.be.a('string');
+    expect(response.body.data.firstName).to.be.a('string');
+    expect(response.body.data.lastName).to.be.a('string'); 
+  });
+
+  it('should return bad error 400 if a required field is missing', async () => {
+    const response = await chai.request(server).post('/api/auth/signup/company').send({ ...newCompany, firstName: '' });
+    expect(response).to.have.status(400);
+    expect(response.body.error).to.be.a('object');
+    expect(response.body.error.message).to.equal('Please enter a valid firstname \n the field must not be empty and it must be more than 2 letters');
+  });
+
+  it('should return a conflict error 409 if admin already exists in database', async () => {
+    const { email } = newCompany;
+    const response = await chai.request(server).post('/api/auth/signup/company').send(newCompany);
+    expect(response).to.have.status(409);
+    expect(response.body.error).to.be.a('object');
+    expect(response.body.error.message).to.equal(`Admin with email: "${email}" already exists`);
   });
 });
 describe('GET /api/auth/verify?token', () => {
