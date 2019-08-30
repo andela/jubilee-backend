@@ -21,7 +21,7 @@ export const newCompany = {
   email: faker.internet.email(),
   password: faker.internet.password(15, false),
   companyName: faker.company.companyName(),
-  companyAddress: faker.company.secondaryAddress(),
+  companyAddress: 'No 20, Ilupeju bus stop',
   sizeId: 2,
   planId: 3
 }

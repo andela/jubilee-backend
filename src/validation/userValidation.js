@@ -93,7 +93,7 @@ export default class userValidation {
         .label('please select a company size'),
       companyPlanId: joi.number().integer().positive()
         .required()
-        .label('please select a plan (silver, gold or platinum'),
+        .label('please select a plan (1:silver, 2:gold or 3:platinum'),
       companyAddress: joi.string().min(10).max(60).regex(/^[\w',-\\/.\s]*$/)
         .required()
         .label('Please enter a valid address that is within 10 to 60 letters long'),
