@@ -27,7 +27,7 @@ export default (req, res, next) => {
       given_name: 'Barefoot',
       family_name: 'Nomad',
       picture: 'https://lh6.googleusercontent.com/-2BlqgBk4Y3M/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rdOsWp-Z4uy0OPYuat0AtpEDMkTOw/photo.jpg',
-      email: 'ejimchisom@gmail.com',
+      email: 'jubilee.barefootnomad@gmail.com',
       email_verified: true,
       locale: 'en'
     }

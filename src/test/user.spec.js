@@ -22,10 +22,9 @@ describe('User Route Endpoints', () => {
       birthdate: faker.date.past(),
       phoneNumber: faker.phone.phoneNumber()
     };
-
     const response = await chai
       .request(server)
-      .post('/api/auth/signup')
+      .post('/api/auth/signup/user')
       .send(user);
     expect(response).to.have.status(201);
     expect(response.body.data).to.be.a('object');

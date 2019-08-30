@@ -1,49 +1,35 @@
 /**
  *
- * Facebook Mock Data
+ * Google Mock Data
  */
 
 export default (req, res, next) => {
   req.user = {
     id: req.body.id,
-    username: undefined,
-    displayName: undefined,
+    displayName: 'Barefoot Nomad',
     name: {
-      familyName: 'Barefoot',
-      givenName: 'Nomad',
-      middleName: undefined
+      familyName: 'Nomad',
+      givenName: 'Barefoot'
     },
-    gender: undefined,
-    profileUrl: undefined,
+    emails: [{ value: 'jubilee_barefootnomad@gmail.com', verified: true }],
     photos: [
       {
         value:
-          'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=1579056305559670&height=50&width=50&ext=1563032609&hash=AeSwH6WuOP66Hnvp'
-      }
-    ],
-    emails: [
-      {
-        value: 'jubilee_barefootnomad@gmail.com'
+          'https://lh6.googleusercontent.com/-2BlqgBk4Y3M/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rdOsWp-Z4uy0OPYuat0AtpEDMkTOw/photo.jpg'
       }
     ],
     provider: req.body.provider,
     _raw:
-    '{"last_name":"Barefoot","first_name":"Nomad","picture":{"data":{"height":50,"is_silhouette":false,"url":"https:\\/\\/platform-lookaside.fbsbx.com\\/platform\\/profilepic\\/?asid=2389951121100538&height=50&width=50&ext=1569372411&hash=AeRp-z6x0OzdHr5z","width":50}},"email":"ejimchisom\\u0040gmail.com","id":"2389951121100538"}',
+    '{\n  "sub": "116080001749246744313",\n  "name": "Barefoot Nomad",\n  "given_name": "Barefoot",\n  "family_name": "Nomad",\n  "picture": "https://lh6.googleusercontent.com/-2BlqgBk4Y3M/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rdOsWp-Z4uy0OPYuat0AtpEDMkTOw/photo.jpg",\n  "email": "jubilee.barefootnomad@gmail.com",\n  "email_verified": true,\n  "locale": "en"\n}',
     _json: {
-      last_name: 'Barefoot',
-      first_name: 'Nomad',
-      picture:
-      {
-        data: {
-          height: 50,
-          is_silhouette: false,
-          url:
-          'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=2389951121100538&height=50&width=50&ext=1569373036&hash=AeRzZOJPwcleMAEO',
-          width: 50
-        }
-      },
-      email: 'jubilee.barefootnomad@gmail.com',
-      id: req.body.id
+      sub: req.body.id,
+      name: 'Barefoot Nomad',
+      given_name: 'Barefoot',
+      family_name: 'Nomad',
+      picture: 'https://lh6.googleusercontent.com/-2BlqgBk4Y3M/AAAAAAAAAAI/AAAAAAAAAAA/ACHi3rdOsWp-Z4uy0OPYuat0AtpEDMkTOw/photo.jpg',
+      email: 'jubilee_barefootnomad@gmail.com',
+      email_verified: true,
+      locale: 'en'
     }
   };
   next();

@@ -284,6 +284,15 @@ describe('GET /api/auth/verify?token', () => {
         done();
       });
   });
+
+  it('should not be able to sign in user if email is false', (done) => {
+    chai.request(server)
+      .get('/api/auth/wrongSocial')
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        done();
+      });
+  });
 });
 describe('POST /api/auth/login', () => {
   it('should signin successfully with a status of 200', async () => {

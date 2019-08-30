@@ -1,13 +1,27 @@
-import { Helpers, ApiError } from '../utils';
-import db from '../models';
+"use strict";
 
-const { hashPassword } = Helpers;
-const { User } = db;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
 
+var _utils = require("../utils");
+
+var _models = _interopRequireDefault(require("../models"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const {
+  hashPassword
+} = _utils.Helpers;
+const {
+  User
+} = _models.default;
 /**
  * UserService class, interface for UserModel
  */
-export default class UserService {
+
+class UserService {
   /**
    * Adds user to the database
    * @static
@@ -17,10 +31,11 @@ export default class UserService {
    */
   static async create(user) {
     user.password = hashPassword(user.password);
-    const { dataValues: newUser } = await User.create(user);
+    const {
+      dataValues: newUser
+    } = await User.create(user);
     return newUser;
   }
-
   /**
    *
    * updates an existing user by ID
@@ -32,32 +47,44 @@ export default class UserService {
    * or a null value if update fails, and an error message if a user is not found
    * @memberof UserService
    */
+
+
   static async updateById(userData, id) {
-    const [rowaffected, [user]] = await User.update(userData, { returning: true, where: { id } });
+    const [rowaffected, [user]] = await User.update(userData, {
+      returning: true,
+      where: {
+        id
+      }
+    });
     if (!rowaffected) throw new Error('Not Found');
     return user;
   }
-
   /**
    * Finds user in the database
    *
    * @param {object} options - An object containing query options
    * @returns {Promise<object>} A promise object with user detail if user exists.
    */
-  static async find(options) {
-    return User.findOne({ where: options });
-  }
 
+
+  static async find(options) {
+    return User.findOne({
+      where: options
+    });
+  }
   /**
    * Finds user in the database
    *
    * @param {object} obj - An object of the key to be serached
    * @returns {Promise<object>} A promise object with user detail if user exists.
    */
-  static async findAny(obj) {
-    return User.findOne({ where: obj });
-  }
 
+
+  static async findAny(obj) {
+    return User.findOne({
+      where: obj
+    });
+  }
   /**
    * Update user password in the database
    *
@@ -65,13 +92,20 @@ export default class UserService {
    * @param {string} email - The user email for identification in database
    * @returns {Promise<object>} A promise object with user detail.
    */
+
+
   static async updatePassword(password, email) {
     const hashedPassword = hashPassword(password);
-    const result = await User.update({ password: hashedPassword },
-      { where: { email }, returning: true });
+    const result = await User.update({
+      password: hashedPassword
+    }, {
+      where: {
+        email
+      },
+      returning: true
+    });
     return result;
   }
-
   /**
    * Function for update query
    *
@@ -80,19 +114,21 @@ export default class UserService {
    * @memberof UserService
    * @returns {Promise<object>} A promise object with user detail.
    */
+
+
   static async updateAny(updateValues, obj) {
     try {
-      const result = await User.update(updateValues,
-        { where: obj, returning: true });
+      const result = await User.update(updateValues, {
+        where: obj,
+        returning: true
+      });
       const [bool, [user]] = result;
-      if (!bool) throw new ApiError(404, 'Not Found');
+      if (!bool) throw new _utils.ApiError(404, 'Not Found');
       return user.dataValues;
     } catch (error) {
-      throw new ApiError(error.status || 500, `Userservice: update - ${error.message}`);
+      throw new _utils.ApiError(error.status || 500, `Userservice: update - ${error.message}`);
     }
   }
-
-
   /**
    * signin with users google or facebook data
    *
@@ -102,19 +138,26 @@ export default class UserService {
    * @returns {object} - the user data object
    *
    */
+
+
   static async socialLogin(userData) {
     try {
-      const existingUser = await db.User.findOne({
+      const existingUser = await _models.default.User.findOne({
         where: {
           email: userData.emails[0].value
         }
       });
+
       if (!existingUser) {
-        throw new ApiError(403, 'You need to signup to use this feature');
+        throw new _utils.ApiError(403, 'You need to signup to use this feature');
       }
+
       return existingUser.dataValues;
     } catch (error) {
-      throw new ApiError(error.status || 500, error.message);
+      throw new _utils.ApiError(error.status || 500, error.message);
     }
   }
+
 }
+
+exports.default = UserService;
