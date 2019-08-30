@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 import { authValidation } from '../validation';
 import { Helpers, ApiError } from '../utils';
 import { UserService } from '../services';
 
 const {
   errorResponse, verifyToken, checkToken
+=======
+import authValidation from '../validation/index';
+import { Helpers } from '../utils';
+import { UserService } from '../services/index';
+
+const {
+  errorResponse
+>>>>>>> refactor(middleware): changed middleware file names to suit convention
 } = Helpers;
 /**
  * Middleware for input validations
@@ -13,13 +22,12 @@ export default class AuthMiddleware {
      * Middleware method for user validation during signup/registration
      * @param {object} req - The request from the endpoint.
      * @param {object} res - The response returned by the method.
-     * @param {object} next - Call the next operation.
-     * @returns {object} - Returns an object (error or response).
+     * @param {object} next - the returned values going into the next operation.
+     * @returns {object} - returns an object (error or response).
      */
   static async onUserSignup(req, res, next) {
     try {
       const validated = await authValidation.userSignup(req.body);
-      const { email } = req.body;
       if (validated) {
         const user = await UserService.find({ email });
         if (!user) {
@@ -29,7 +37,11 @@ export default class AuthMiddleware {
         }
       }
     } catch (error) {
-      errorResponse(res, { code: 400, message: error.details[0].context.label });
+      let status = 500;
+      if (error.details[0].context.label) { status = 400; }
+      errorResponse(res, {
+        code: status, message: error.details[0].context.label || error.message
+      });
     }
   }
 
