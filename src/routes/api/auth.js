@@ -9,7 +9,7 @@ import {
 const router = Router();
 const {
   userSignup, supplierSignup, verifyEmail, sendResetPasswordEmail, resetPassword,
-  verifyPasswordResetLink, loginUser, socialLogin, logout, companySignUp
+  verifyPasswordResetLink, loginUser, logout, companySignUp, socialLogin
 } = authController;
 
 const { onCompanySignup } = authMiddleware;
