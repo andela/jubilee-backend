@@ -2,11 +2,7 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import faker from 'faker';
 import server from '../src';
-<<<<<<< HEAD
 import { newUser, newSupplier, newCompany } from './dummies';
-=======
-import { newUser, newCompany } from './dummies';
->>>>>>> feat(company-signup): add company signup controller and validation
 import Helpers from '../src/utils/helpers';
 
 const { generateToken } = Helpers;
@@ -184,6 +180,7 @@ describe('Auth route endpoints', () => {
     expect(response.body.data).to.be.a('object');
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     expect(response.body.data.admin.token).to.be.a('string');
     expect(response.body.data.company.companyToken).to.be.a('string');
     expect(response.body.data.admin.firstName).to.be.a('string');
@@ -218,6 +215,13 @@ describe('Auth route endpoints', () => {
 <<<<<<< HEAD
 =======
 
+=======
+    expect(response.body.data.admin.token).to.be.a('string');
+    expect(response.body.data.company.token).to.be.a('string');
+    expect(response.body.data.admin.firstName).to.be.a('string');
+    expect(response.body.data.admin.lastName).to.be.a('string');
+  });
+>>>>>>> feature(update): update swagger documentation
   it('should return a conflict error 409 if admin already exists in database', async () => {
     const { email } = newCompany;
     const response = await chai.request(server).post('/api/auth/signup/company').send(newCompany);
@@ -225,6 +229,7 @@ describe('Auth route endpoints', () => {
     expect(response.body.error).to.be.a('object');
     expect(response.body.error.message).to.equal(`Admin with email: "${email}" already exists for a company`);
   });
+<<<<<<< HEAD
 
   it('should successfully verify an existing user if the token is valid', async () => {
     const { email, id } = newCompany;
@@ -233,6 +238,13 @@ describe('Auth route endpoints', () => {
     const { body: { data: { isVerified } } } = response;
     expect(response).to.have.status(200);
     expect(isVerified).to.equal(true);
+=======
+  it('should return bad error 400 if a required field is missing', async () => {
+    const response = await chai.request(server).post('/api/auth/signup/company').send({ ...newCompany, firstName: '' });
+    expect(response).to.have.status(400);
+    expect(response.body.error).to.be.a('object');
+    expect(response.body.error.message).to.equal('Please enter a valid firstname \n the field must not be empty and it must be more than 2 letters');
+>>>>>>> feature(update): update swagger documentation
   });
 
   it('should return an error response if verification token is not provided', async () => {

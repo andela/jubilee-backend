@@ -15,7 +15,6 @@ export const newUser = {
   phoneNumber: '08063345598'
 };
 
-<<<<<<< HEAD
 export const newSupplier = {
   firstName: faker.name.firstName(),
   lastName: faker.name.lastName(),
@@ -36,17 +35,3 @@ export const newCompany = {
   companySizeId: 2,
   companyPlanId: 3
 };
-=======
-export const newCompany = {
-  firstName: faker.name.firstName(),
-  lastName: faker.name.lastName(),
-  email: faker.internet.email(),
-  password: faker.internet.password(15, false),
-  companyName: faker.company.companyName(),
-  companyAddress: 'No 20, Ilupeju bus stop',
-  sizeId: 2,
-  planId: 3
-}
->>>>>>> feat(company-signup): add company signup controller and validation
-
-export const obj = {};

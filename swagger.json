@@ -578,6 +578,57 @@
                     "firstName, lastName, email,password,companySizeId,companyPlanId,companyAddress,companyName"
                 ]
             },
+            "companySignUpRequest": {
+                "title": "Company Signup Request",
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "description": "first name of the Company Admin",
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "description": "Last name of the Company Admin",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email of the user",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "The Password of the user",
+                        "type": "string"
+                    },
+                    "companyName": {
+                        "description": "The user's company name",
+                        "type": "string"
+                    },
+                    "companyAddress": {
+                        "description": "The company's Address",
+                        "type": "string"
+                    },
+                    "companySizeId": {
+                        "description": "The company's Size, between 1-101 and Above,a id reference is passed to the server",
+                        "type": "integer"
+                    },
+                    "companyPlanId": {
+                        "description": "The plan to subscribe, gold,silver or platinum ,a id reference is passed to the server",
+                        "type": "integer"
+                    }
+                },
+                "example": {
+                    "firstName": "Ayodelre",
+                    "lastName": "Akin",
+                    "companySizeId": 1,
+                    "companyPlanId": 2,
+                    "email": "daylay33@gmail.com",
+                    "companyAddress": "30, Ania Street",
+                    "companyName": "Andela",
+                    "password": "Elijah38490"
+                },
+                "required": [
+                    "firstName, lastName, email,password,companySizeId,companyPlanId,companyAddress,companyName"
+                ]
+            },
             "loginRequest": {
                 "title": "Login Request",
                 "type": "object",
