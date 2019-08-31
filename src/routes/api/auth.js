@@ -1,39 +1,41 @@
 import { Router } from 'express';
-import passport from '../../config/passport';
-import { Auth } from '../../controllers';
-import { rightEmail, wrongEmail } from '../../../test/features';
+// import passport from '../../config/passport';
+import { authController } from '../../controllers';
+// import { rightEmail, wrongEmail } from '../../../test/features';
 import {
-  ResetPassword, userMiddleware,
+  passwordMiddleware, authMiddleware,
 } from '../../middlewares';
 
 const router = Router();
 const {
-  signUp, companySignUp, verifyEmail, sendResetPasswordEmail, resetPassword, 
-  verifyPasswordResetLink, loginUser, socialLogin, logout
-} = Auth;
-const { checkParameters } = ResetPassword;
-const { onCompanySignup } = userMiddleware;
+  userSignup, supplierSignup, verifyEmail, sendResetPasswordEmail, resetPassword,
+  verifyPasswordResetLink, loginUser, logout, companySignUp,
+} = authController;
 
-router.post('/signup', userMiddleware.onSignup, signUp);
+const { onCompanySignup, onUserLogin } = authMiddleware;
+const { checkParameters } = passwordMiddleware;
+
+router.post('/signup/user', authMiddleware.onUserSignup, userSignup);
+router.post('/signup/supplier', authMiddleware.onSupplierSignup, supplierSignup);
 router.post('/signup/company', onCompanySignup, companySignUp);
 router.get('/verify', verifyEmail);
-router.post('/login', loginUser);
+router.post('/login', onUserLogin, loginUser);
 router.post('/reset-password/', checkParameters, sendResetPasswordEmail);
 router.get('/reset-password', verifyPasswordResetLink);
 router.post('/password/reset/:email', checkParameters, resetPassword);
 router.get('/logout', logout);
 
-router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
-router.get('/facebook/callback',
-  passport.authenticate('facebook'),
-  socialLogin);
+// router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
+// router.get('/facebook/callback',
+//   passport.authenticate('facebook'),
+//   socialLogin);
 
-router.get('/google', passport.authenticate('google', { scope: ['email'] }));
-router.get('/google/callback',
-  passport.authenticate('google'),
-  socialLogin);
+// router.get('/google', passport.authenticate('google', { scope: ['email'] }));
+// router.get('/google/callback',
+//   passport.authenticate('google'),
+//   socialLogin);
 
-router.get('/rightSocial', rightEmail, socialLogin);
-router.get('/wrongSocial', wrongEmail, socialLogin);
+// router.get('/rightSocial', rightEmail, socialLogin);
+// router.get('/wrongSocial', wrongEmail, socialLogin);
 
 export default router;

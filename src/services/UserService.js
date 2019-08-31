@@ -9,9 +9,9 @@ const { User } = db;
  */
 export default class UserService {
   /**
-   * Saves user in the database
+   * Adds user to the database
    * @static
-   * @param {object} user - The user to be saved in the database.
+   * @param {object} user - The user to be added to the database.
    * @returns {Promise<object>} A promise object with user detail.
    * @memberof UserService
    */
@@ -41,11 +41,11 @@ export default class UserService {
   /**
    * Finds user in the database
    *
-   * @param {object} email - The user email
+   * @param {object} options - An object containing query options
    * @returns {Promise<object>} A promise object with user detail if user exists.
    */
-  static async find(email) {
-    return User.findOne({ where: { email } });
+  static async find(options) {
+    return User.findOne({ where: options });
   }
 
   /**
@@ -85,16 +85,5 @@ export default class UserService {
     } catch (error) {
       throw new ApiError(500, error.message);
     }
-  }
-
-  /**
- * @description Sign-in existing user
- * @param {object} email user's registered email
- * @returns {Promise<object>} A promise object with user detail.
- */
-  static userLogin(email) {
-    return User.findOne({
-      where: { email }
-    });
   }
 }

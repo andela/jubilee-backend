@@ -1,16 +1,19 @@
-import { UserService, CompanyService } from '../services';
+import { UserService, SupplierService, CompanyService } from '../services';
 import {
-  Helpers, UserResponse, Mailer, ApiError
+  Helpers, Mailer, ApiError
 } from '../utils';
 
+
 const {
-  generateToken, verifyToken, successResponse, errorResponse, comparePassword, splitCompanyData,
+  generateToken, verifyToken, successResponse, errorResponse,
+  extractUserData, comparePassword, splitCompanyData,
   hashPassword
 } = Helpers;
 const { createCompany } = CompanyService;
 const { sendVerificationEmail, sendResetMail } = Mailer;
+
 const {
-  create, updateById, updatePassword, find, userLogin,
+  create, updateById, updatePassword, find
 } = UserService;
 // const { createCompany } = companyService;
 
@@ -19,7 +22,7 @@ const {
  *
  * @class Auth
  */
-class Auth {
+class AuthController {
   /**
    * Registers a new user.
    *
@@ -29,16 +32,43 @@ class Auth {
    * @returns { JSON } A JSON response with the registered user's details and a JWT.
    * @memberof Auth
    */
-  static async signUp(req, res) {
+  static async userSignup(req, res) {
     try {
       const { body } = req;
       const user = await create({ ...body });
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
-      const userResponse = new UserResponse(user);
+      const userResponse = extractUserData(user);
       const isSent = await sendVerificationEmail(req, { ...userResponse });
       const { token } = userResponse;
       res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, { ...userResponse, emailSent: isSent }, 201);
+    } catch (error) {
+      errorResponse(res, {});
+    }
+  }
+
+  /**
+   * Registers a new supplier.
+   *
+   * @static
+   * @param {Request} req - The request from the endpoint.
+   * @param {Response} res - The response returned by the method.
+   * @returns { JSON } A JSON response with the registered user's details, company details & a JWT.
+   * @memberof Auth
+   */
+  static async supplierSignup(req, res) {
+    try {
+      const [companyData, userData] = Helpers.splitSupplierData(req.body);
+      let supplier = await SupplierService.create(companyData);
+      const { id: supplierId } = supplier;
+      let user = await UserService.create({ ...userData, supplierId });
+      const companyToken = generateToken({ companyId: supplierId, defaultRoleId: 8, companyType: 'supplier' });
+      user.token = generateToken({ email: user.email, id: user.id, role: user.role });
+      supplier = await SupplierService.update({ companyToken }, supplierId);
+      user = extractUserData(user);
+      const emailSent = await sendVerificationEmail(req, user);
+      res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
+      return successResponse(res, { user, supplier, emailSent }, 201);
     } catch (error) {
       errorResponse(res, {});
     }
@@ -60,7 +90,7 @@ class Auth {
       const [company, user] = await createCompany(companyInfo, userInfo);
       company.token = generateToken({ type: 'company', companyId: company.id, roleId: 1 });
       user.token = generateToken({ email: user.email, id: user.id, role: 4 });
-      const admin = new UserResponse(user);
+      const admin = extractUserData(user);
       const isSent = await sendVerificationEmail(req, { ...admin });
       res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, { admin, company, emailSent: isSent }, 201);
@@ -83,7 +113,7 @@ class Auth {
       const { token } = req.query;
       const decoded = verifyToken(token);
       const user = await updateById({ isVerified: true }, decoded.id);
-      const userResponse = new UserResponse(user);
+      const userResponse = extractUserData(user);
       successResponse(res, { ...userResponse });
     } catch (e) {
       if (e.message === 'Invalid Token') {
@@ -91,7 +121,7 @@ class Auth {
       }
 
       if (e.message === 'Not Found') {
-        return errorResponse(res, { code: 400, message: 'no user found to verify' });
+        return errorResponse(res, { code: 400, message: 'No user found to verify' });
       }
       errorResponse(res, {});
     }
@@ -108,7 +138,7 @@ class Auth {
   static async sendResetPasswordEmail(req, res) {
     try {
       const { email } = req.body;
-      const user = await find(email);
+      const user = await find({ email });
       if (!user) {
         throw new ApiError(404, 'User account does not exist');
       }
@@ -183,7 +213,7 @@ class Auth {
   static async loginUser(req, res) {
     try {
       const { email, password } = req.body;
-      const user = await userLogin(email);
+      const user = await find({ email });
       if (!user) {
         return errorResponse(res, { code: 401, message: 'Invalid login details' });
       }
@@ -191,7 +221,7 @@ class Auth {
         return errorResponse(res, { code: 401, message: 'Invalid login details' });
       }
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
-      const loginResponse = new UserResponse(user);
+      const loginResponse = extractUserData(user);
       const { token } = loginResponse;
       res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
       successResponse(res, { ...loginResponse });
@@ -214,7 +244,7 @@ class Auth {
     try {
       const user = await UserService.socialLogin(req.user);
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
-      const userResponse = new UserResponse(user);
+      const userResponse = extractUserData(user);
       Helpers.successResponse(res, userResponse, 200);
     } catch (error) {
       Helpers.errorResponse(res, { code: error.statusCode, message: error.message });
@@ -239,4 +269,4 @@ class Auth {
   }
 }
 
-export default Auth;
+export default AuthController;

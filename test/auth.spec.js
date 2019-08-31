@@ -2,17 +2,16 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import faker from 'faker';
 import server from '../src';
-import { newUser, newCompany } from './dummies';
+import { newUser, newSupplier, newCompany } from './dummies';
 import Helpers from '../src/utils/helpers';
 
 const { generateToken } = Helpers;
 
 chai.use(chaiHttp);
 let newlyCreatedUser = {};
-let newlyCreatedCompany = {};
 let newUserPasswordReset;
 describe('Auth route endpoints', () => {
-  it('should signup successfully with a status of 201', async () => {
+  it('should signup a user successfully with a status of 201', async () => {
     const user = {
       email: faker.internet.email(),
       firstName: faker.name.firstName(),
@@ -30,7 +29,7 @@ describe('Auth route endpoints', () => {
 
     const response = await chai
       .request(server)
-      .post('/api/auth/signup')
+      .post('/api/auth/signup/user')
       .send(user);
     expect(response).to.have.status(201);
     expect(response.body.data).to.be.a('object');
@@ -39,8 +38,54 @@ describe('Auth route endpoints', () => {
     expect(response.body.data.lastName).to.be.a('string');
     newUserPasswordReset = user;
   });
+
+  it('should successfully signup a supplier with status 201', async () => {
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup/supplier')
+      .send(newSupplier);
+    expect(response).to.have.status(201);
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.user.token).to.be.a('string');
+    expect(response.body.data.user.firstName).to.be.a('string');
+    expect(response.body.data.user.lastName).to.be.a('string');
+  });
+
+  it('should return validation error when supplied a wrong category of service id', async () => {
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup/supplier')
+      .send({ ...newSupplier, categoryOfServiceId: 5 });
+    expect(response).to.have.status(400);
+    expect(response.body.status).to.equal('fail');
+    expect(response.body.error).to.be.a('object');
+    expect(response.body.error.message).to.equal('Please enter a valid categoryOfServiceId');
+  });
+
+  it('should return validation error when supplied an empty email', async () => {
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup/supplier')
+      .send({ ...newSupplier, email: '' });
+    expect(response).to.have.status(400);
+    expect(response.body.status).to.equal('fail');
+    expect(response.body.error).to.be.a('object');
+    expect(response.body.error.message).to.equal('Please enter a valid company email address');
+  });
+
+  it('should return an integrity error when supplied an existing user\'s email', async () => {
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup/supplier')
+      .send(newSupplier);
+    expect(response).to.have.status(409);
+    expect(response.body.status).to.equal('fail');
+    expect(response.body.error).to.be.a('object');
+    expect(response.body.error.message).to.equal(`User with email: "${newSupplier.email}" already exists`);
+  });
+
   it("should send a verification link to a user's email upon successful registration", async () => {
-    const response = await chai.request(server).post('/api/auth/signup').send(newUser);
+    const response = await chai.request(server).post('/api/auth/signup/user').send(newUser);
     const { body: { data } } = response;
     newlyCreatedUser = { ...data };
     expect(response).to.have.status(201);
@@ -67,7 +112,7 @@ describe('Auth route endpoints', () => {
 
     const response = await chai
       .request(server)
-      .post('/api/auth/signup')
+      .post('/api/auth/signup/user')
       .send(user);
     expect(response).to.has.status(201);
     expect(response.body).to.be.a('object');
@@ -90,7 +135,7 @@ describe('Auth route endpoints', () => {
 
     const response = await chai
       .request(server)
-      .post('/api/auth/signup')
+      .post('/api/auth/signup/user')
       .send(user);
     expect(response).to.has.status(400);
     expect(response.body).to.be.a('object');
@@ -115,7 +160,7 @@ describe('Auth route endpoints', () => {
 
     const response = await chai
       .request(server)
-      .post('/api/auth/signup')
+      .post('/api/auth/signup/user')
       .send(user);
     expect(response).to.has.status(409);
     expect(response.body.status).to.equal('fail');
@@ -126,8 +171,6 @@ describe('Auth route endpoints', () => {
 
   it('should signup a company and return status 201', async () => {
     const response = await chai.request(server).post('/api/auth/signup/company').send(newCompany);
-    const { body: { data } } = response;
-    newlyCreatedCompany = { ...data };
     expect(response).to.have.status(201);
     expect(response.body.status).to.equal('success');
     expect(response.body.data).to.be.a('object');
@@ -187,7 +230,7 @@ describe('GET /api/auth/verify?token', () => {
     const response = await chai.request(server).get(`/api/auth/verify?token=${token}`);
     const { body: { error } } = response;
     expect(response).to.have.status(400);
-    expect(error.message).to.equal('no user found to verify');
+    expect(error.message).to.equal('No user found to verify');
   });
   describe('Reset Password route', () => {
     it('should send an email containing reset password link with a status of 200', async () => {
@@ -295,7 +338,7 @@ describe('POST /api/auth/login', () => {
     const { email } = newlyCreatedUser;
     const login = {
       email,
-      password: 'password',
+      password: 'passworD26',
     };
     const response = await chai.request(server).post('/api/auth/login').send(login);
     expect(response.body.status).to.equal('fail');
@@ -306,7 +349,7 @@ describe('POST /api/auth/login', () => {
   it('should return 401 error if user does not exist in the database', async () => {
     const login = {
       email: 'kylewalker123@yahoo.com',
-      password: 'password'
+      password: 'passworD56'
     };
     const response = await chai.request(server).post('/api/auth/login').send(login);
     expect(response.body.status).to.equal('fail');

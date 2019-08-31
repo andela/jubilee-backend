@@ -6,7 +6,7 @@ const { validate, errorResponse } = Helpers;
  * Collection of methods for ResetPassword
  * @class ResetPassword
  */
-class ResetPassword {
+class PasswordMiddleware {
   /**
      * Middleware for password reset form
      *
@@ -31,4 +31,4 @@ class ResetPassword {
   }
 }
 
-export default ResetPassword;
+export default PasswordMiddleware;

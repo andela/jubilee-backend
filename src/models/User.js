@@ -32,6 +32,16 @@ module.exports = (sequelize, DataTypes) => {
       country: { type: DataTypes.STRING, allowNull: true },
       zip: { type: DataTypes.STRING, allowNull: true },
       phoneNumber: { type: DataTypes.STRING, allowNull: true },
+      supplierId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Suppliers',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
       companyName: { type: DataTypes.STRING, allowNull: true },
       companyId: {
         type: DataTypes.INTEGER,
@@ -56,6 +66,10 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   User.associate = (models) => {
+    User.belongsTo(models.Supplier, {
+      foreignKey: 'supplierId',
+      as: 'affiliateSupplier'
+    });
     User.belongsTo(models.Company, {
       foreignKey: 'companyId',
       as: 'company',
