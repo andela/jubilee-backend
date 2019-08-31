@@ -5,7 +5,7 @@ const {
   successResponse, errorResponse, extractUserData
 } = Helpers;
 
-const { findAny, updateAny } = UserService;
+const { find, updateAny } = UserService;
 
 /**
  * A collection of methods that controls user's interaction via the User routes
@@ -25,7 +25,7 @@ class UserController {
   static async userProfile(req, res) {
     try {
       const id = req.params.userId;
-      const user = await findAny({ id });
+      const user = await find({ id });
       const userResponse = extractUserData(user);
       successResponse(res, userResponse, 200);
     } catch (error) {
