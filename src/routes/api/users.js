@@ -1,10 +1,12 @@
 import { Router } from 'express';
 import { UserController } from '../../controllers';
 import { AuthMiddleware } from '../../middlewares';
-import { Role } from '../../controllers';
+import { roleController } from '../../controllers';
 import { roleMiddleware } from '../../middlewares';
 
-const { updateUserRole } = Role;
+const router = Router();
+
+const { updateUserRole } = roleController;
 const { verifyCompanySuperAdmin } = roleMiddleware;
 
 const router = Router();

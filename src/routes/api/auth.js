@@ -3,7 +3,11 @@ import passport from '../../config/passport';
 import { AuthController } from '../../controllers';
 import { rightEmail, wrongEmail } from '../../test/features';
 import {
+<<<<<<< HEAD
   PasswordMiddleware, AuthMiddleware
+=======
+  passwordMiddleware, authMiddleware,
+>>>>>>> bg(conflict): refactored code and fixed merge conflics
 } from '../../middlewares';
 
 const router = Router();

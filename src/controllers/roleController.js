@@ -1,8 +1,8 @@
-import { UserService, RoleService } from '../services';
-import { Helpers } from '../utils';
+import { userService, RoleService } from '../services';
+import { helpers } from '../utils';
 
-const { find } = UserService;
-const { successResponse, errorResponse } = Helpers;
+const { find } = userService;
+const { successResponse, errorResponse } = helpers;
 const { getRoles, updateUserRole } = RoleService;
 
 /**
@@ -22,7 +22,7 @@ class Role {
   static async updateUserRole(req, res) {
     try {
       const { email, roleId } = req.body;
-      const user = await find(email);
+      const user = await find({ email });
       if (!user) {
         return errorResponse(res, { code: 404, message: 'User account does not exist' });
       }

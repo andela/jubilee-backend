@@ -62,6 +62,7 @@ export default class authValidation {
     };
     // Once user inputs are validated, move into server
     const { error } = joi.validate({ ...userObject }, schema);
+    console.log('validation error:', error);
     if (error) {
       // throw errorResponse(res, { code: 400, message: error.details[0].context.label });
       throw error;

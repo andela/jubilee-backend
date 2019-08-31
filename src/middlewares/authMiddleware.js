@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { authValidation } from '../validation';
 import { Helpers, ApiError } from '../utils';
 import { UserService } from '../services';
@@ -5,6 +6,15 @@ import { UserService } from '../services';
 const {
   errorResponse, verifyToken, checkToken
 } = Helpers;
+=======
+import authValidation from '../validation/index';
+import { helpers } from '../utils';
+import { userService } from '../services/index';
+
+const {
+  errorResponse
+} = helpers;
+>>>>>>> bg(conflict): refactored code and fixed merge conflics
 /**
  * Middleware for input validations
  */
@@ -38,17 +48,27 @@ export default class AuthMiddleware {
         phoneNumber,
         companyName,
       };
+      console.log('LOG user to be validated', user);
       // it should take all body and split in future. for testing
       // at this time, it takes only the property it needs
       // original: const validated = await authValidation.userSignup(req.body);
       const validated = await authValidation.userSignup(user);
+      console.log('LOG validation success:', validated);
       if (validated) {
+<<<<<<< HEAD
         const user = await UserService.find({ email });
         if (!user) {
           next();
         } else {
           errorResponse(res, { code: 409, message: `User with email: "${req.body.email}" already exists` });
+=======
+        const member = await userService.find({ email });
+        console.log('LOG found user in database', member);
+        if (!member) {
+          return next();
+>>>>>>> bg(conflict): refactored code and fixed merge conflics
         }
+        errorResponse(res, { code: 409, message: `User with email: "${req.body.email}" already exists` });
       }
     } catch (error) {
       let status = 500;
@@ -71,7 +91,11 @@ export default class AuthMiddleware {
       const validated = await authValidation.supplierSignup(req.body);
       const { email } = req.body;
       if (validated) {
+<<<<<<< HEAD
         const supplier = await UserService.find({ email });
+=======
+        const supplier = await userService.find({ email });
+>>>>>>> bg(conflict): refactored code and fixed merge conflics
         if (!supplier) {
           next();
         } else {
@@ -82,6 +106,7 @@ export default class AuthMiddleware {
       errorResponse(res, { code: 400, message: error.details[0].context.label });
     }
   }
+<<<<<<< HEAD
 
   /**
     * Middleware method for user authentication
@@ -105,4 +130,6 @@ export default class AuthMiddleware {
       errorResponse(res, { code: status, message: err.message });
     }
   }
+=======
+>>>>>>> bg(conflict): refactored code and fixed merge conflics
 }

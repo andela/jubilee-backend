@@ -1,9 +1,9 @@
-import { Helpers } from '../utils';
+import { helpers } from '../utils';
 import { RoleService } from '../services/index';
 
 const {
   verifyToken, errorResponse,
-} = Helpers;
+} = helpers;
 /**
  * Middleware for input validations
  */
