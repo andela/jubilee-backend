@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import passport from '../../config/passport';
-import { Auth } from '../../controllers';
+import { AuthController } from '../../controllers';
 import { rightEmail, wrongEmail } from '../../test/features';
 import {
   PasswordMiddleware, AuthMiddleware,
@@ -10,7 +10,7 @@ const router = Router();
 const {
   userSignup, supplierSignup, verifyEmail, sendResetPasswordEmail, resetPassword,
   verifyPasswordResetLink, loginUser, socialLogin, logout
-} = Auth;
+} = AuthController;
 const { checkParameters } = PasswordMiddleware;
 
 router.post('/signup/user', AuthMiddleware.onUserSignup, userSignup);
