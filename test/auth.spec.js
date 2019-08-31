@@ -247,7 +247,9 @@ describe('GET /api/auth/verify?token', () => {
         confirmPassword: faker.internet.password(15, false)
       };
 
-      const response = await chai.request(server).post(`/api/auth/password/reset/${newUserPasswordReset.email}`).send(password);
+      const response = await chai.request(server)
+        .post(`/api/auth/password/reset/${newUserPasswordReset.email}`)
+        .send(password);
       expect(response).to.have.status(400);
       expect(response.error.message).to.be.a('string');
     });
@@ -259,7 +261,9 @@ describe('GET /api/auth/verify?token', () => {
         confirmPassword: testPassword
       };
 
-      const response = await chai.request(server).post(`/api/auth/password/reset/${faker.internet.email()}`).send(password);
+      const response = await chai.request(server)
+        .post(`/api/auth/password/reset/${faker.internet.email()}`)
+        .send(password);
       expect(response).to.have.status(404);
       expect(response.error.message).to.be.a('string');
     });
@@ -270,28 +274,24 @@ describe('GET /api/auth/verify?token', () => {
         confirmPassword: testPassword
       };
 
-      const response = await chai.request(server).post(`/api/auth/password/reset/${newUserPasswordReset.email}`).send(password);
+      const response = await chai.request(server)
+        .post(`/api/auth/password/reset/${newUserPasswordReset.email}`)
+        .send(password);
       expect(response).to.have.status(200);
       expect(response.body.data).to.be.a('string');
     });
   });
 
-  it('should sign in user if emaill is true', (done) => {
-    chai.request(server)
-      .get('/api/auth/rightSocial')
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        done();
-      });
+  it('should sign in user if emaill is true', async () => {
+    const response = await chai.request(server)
+      .get('/api/auth/rightSocial');
+    expect(response).to.have.status(200);
   });
 
-  it('should not be able to sign in user if email is false', (done) => {
-    chai.request(server)
-      .get('/api/auth/wrongSocial')
-      .end((err, res) => {
-        expect(res).to.have.status(403);
-        done();
-      });
+  it('should not be able to sign in user if email is false', async () => {
+    const response = await chai.request(server)
+      .get('/api/auth/wrongSocial');
+    expect(response).to.have.status(403);
   });
 });
 describe('POST /api/auth/login', () => {
