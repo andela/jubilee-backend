@@ -9,8 +9,8 @@
     "migrate:reset": "sequelize db:migrate:undo:all",
     "migrate": "sequelize db:migrate",
     "seed": "sequelize db:seed:all",
-    "start:dev": "npm run migrate && npm run migrate && nodemon --exec babel-node ./src/index.js",
-    "start": "cross-env NODE_ENV=production  node dist/index.js",
+    "start:dev": "npm run migrate && nodemon --exec babel-node ./src/index.js",
+    "start": "NODE_ENV=production  node dist/index.js",
     "build": "babel src -d dist",
     "prestart": "cross-env NODE_ENV=production sequelize db:migrate",
     "pretest": "cross-env NODE_ENV=test npm run migrate:reset && cross-env NODE_ENV=test  npm run migrate && cross-env NODE_ENV=test npm run seed"
