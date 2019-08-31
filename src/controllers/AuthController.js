@@ -31,8 +31,16 @@ class AuthController {
     try {
       const { body } = req;
       const user = await create({ ...body });
-      // assign lowest role upon signup
-      const roleAssignment = await assign(user.id, 1);
+      /**
+       * TODO: ROLE ID INTEGRATION UPON USER SIGNUP
+       * the user role should be extracted in a token on signup
+       * for testing I've assigned the default role Id as 1 (super Administrator)
+       * Note, super Administrator should only be assigned during company /suppler signup
+       * In future implementation, once supplier and company signup is done, the user
+       * should give this value in a token upon signup
+       */
+      const defaultRoleId = 1;
+      const roleAssignment = await assign(user.id, defaultRoleId);
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       const userResponse = extractUserData(user);
       const isSent = await sendVerificationEmail(req, { ...userResponse });
