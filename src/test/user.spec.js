@@ -47,7 +47,7 @@ describe('GET REQUESTS', () => {
     expect(response).to.have.status(200);
     expect(status).to.equal('success');
   });
-  it('should return error of 404, the user not found', async () => {
+  it('should return error of 401, access denied', async () => {
     const id = 2131121313;
     const response = await chai.request(server).get(`/api/users/profile/${id}`)
       .set('authorization', `Bearer ${token}`);
@@ -58,9 +58,9 @@ describe('GET REQUESTS', () => {
 });
 
 describe('EDIT REQUESTS', () => {
-  it('should return error of 404, the user not found', async () => {
+  it('should return error of 401, access denied', async () => {
     const id = 2131121313;
-    const response = await chai.request(server).get(`/api/users/profile/${id}`)
+    const response = await chai.request(server).get(`/api/users/profile/${id}/edit`)
       .set('authorization', `Bearer ${token}`);
     const { body: { status } } = response;
     expect(response).to.have.status(401);
@@ -77,9 +77,9 @@ describe('EDIT REQUESTS', () => {
 });
 
 describe('PUT REQUESTS', () => {
-  it('should return error of 404, the user not found', async () => {
+  it('should return error of 401, access denied', async () => {
     const id = 2131121313;
-    const response = await chai.request(server).get(`/api/users/profile/${id}`)
+    const response = await chai.request(server).put(`/api/users/profile/${id}/update`)
       .set('authorization', `Bearer ${token}`);
     const { body: { status } } = response;
     expect(response).to.have.status(401);
