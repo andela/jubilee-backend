@@ -49,16 +49,6 @@ export default class UserService {
   }
 
   /**
-   * Finds user in the database
-   *
-   * @param {object} obj - An object of the key to be serached
-   * @returns {Promise<object>} A promise object with user detail if user exists.
-   */
-  static async findAny(obj) {
-    return User.findOne({ where: obj });
-  }
-
-  /**
    * Update user password in the database
    *
    * @param {string} password - New user password to be updated in database
