@@ -1,14 +1,13 @@
 import { Router } from 'express';
-import { User } from '../../controllers';
-import { UserMiddleware } from '../../middlewares';
+import { UserController } from '../../controllers';
+import { AuthMiddleware } from '../../middlewares';
 
 const router = Router();
 
-const { userProfile, updateProfile } = User;
-const { isAuthenticated } = UserMiddleware;
+const { userProfile, updateProfile } = UserController;
+const { isAuthenticated } = AuthMiddleware;
 
 router.get('/profile/:userId', isAuthenticated, userProfile);
-router.get('/profile/:userId/edit', isAuthenticated, userProfile);
-router.put('/profile/:userId/update', isAuthenticated, updateProfile);
+router.put('/profile/:userId', isAuthenticated, updateProfile);
 
 export default router;
