@@ -48,12 +48,10 @@ export default class AuthMiddleware {
         phoneNumber,
         companyName,
       };
-      console.log('LOG user to be validated', user);
       // it should take all body and split in future. for testing
       // at this time, it takes only the property it needs
       // original: const validated = await authValidation.userSignup(req.body);
       const validated = await authValidation.userSignup(user);
-      console.log('LOG validation success:', validated);
       if (validated) {
 <<<<<<< HEAD
         const user = await UserService.find({ email });
@@ -63,7 +61,6 @@ export default class AuthMiddleware {
           errorResponse(res, { code: 409, message: `User with email: "${req.body.email}" already exists` });
 =======
         const member = await userService.find({ email });
-        console.log('LOG found user in database', member);
         if (!member) {
           return next();
 >>>>>>> bg(conflict): refactored code and fixed merge conflics
