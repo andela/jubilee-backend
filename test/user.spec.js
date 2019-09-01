@@ -56,25 +56,6 @@ describe('GET REQUESTS', () => {
   });
 });
 
-describe('EDIT REQUESTS', () => {
-  it('should return error of 404, the user not found', async () => {
-    const id = 2131121313;
-    const response = await chai.request(server).get(`/api/users/profile/${id}`)
-      .set('authorization', `Bearer ${token}`);
-    const { body: { status } } = response;
-    expect(response).to.have.status(401);
-    expect(status).to.equal('fail');
-  });
-  it('should successfully populate the user data on the profile with a status of 200', async () => {
-    const { id } = newlyCreatedUser;
-    const response = await chai.request(server).get(`/api/users/profile/${id}/edit`)
-      .set('authorization', `Bearer ${token}`);
-    const { body: { status } } = response;
-    expect(response).to.have.status(200);
-    expect(status).to.equal('success');
-  });
-});
-
 describe('PUT REQUESTS', () => {
   it('should return error of 404, the user not found', async () => {
     const id = 2131121313;
@@ -98,7 +79,7 @@ describe('PUT REQUESTS', () => {
       birthdate: faker.date.past(),
       phoneNumber: faker.phone.phoneNumber()
     };
-    const response = await chai.request(server).put(`/api/users/profile/${id}/update`).send(user)
+    const response = await chai.request(server).put(`/api/users/profile/${id}`).send(user)
       .set('authorization', `Bearer ${token}`);
     const { body: { status } } = response;
     expect(response).to.have.status(200);
