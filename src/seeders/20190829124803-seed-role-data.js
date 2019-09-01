@@ -28,7 +28,7 @@ module.exports = {
     description: ' '
   },
   {
-    label: 'supplierTeamMenber',
+    label: 'supplierTeamMember',
     description: ' '
   },
   {

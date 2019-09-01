@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       label: {
         type: DataTypes.ENUM('companySuperAdmin', 'companyTravelAdmin', 'companyTravelTeamMember', 'unassigned',
-          'companyManager', 'companyRequester', 'supplierSuperAdmin', 'supplierManager', 'supplierTeamMenber'),
+          'companyManager', 'companyRequester', 'supplierSuperAdmin', 'supplierManager', 'supplierTeamMember'),
         allowNull: false,
         defaultValue: 'unassigned'
       },
