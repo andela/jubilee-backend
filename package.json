@@ -1,19 +1,19 @@
 {
   "name": "jubilee-backend",
   "version": "1.0.0",
-  "description": "Barefoot Nomad - Making company travel and accomodation easy and convenient. =======",
+  "description": "Barefoot Nomad - Making company travel and accomodation easy and convenient.",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc --reporter=text --reporter=html mocha --timeout 10000 -c --require @babel/register --exit",
+    "test": "cross-env NODE_ENV=test nyc --reporter=text --reporter=html mocha --timeout 10000 -c --require @babel/register --exit test/**/*.spec.js",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
     "migrate:reset": "sequelize db:migrate:undo:all",
     "migrate": "sequelize db:migrate",
     "seed": "sequelize db:seed:all",
-    "start:dev": "nodemon --exec babel-node ./src/index.js",
+    "start:dev": "npm run migrate && nodemon --exec babel-node ./src/index.js",
     "start": "NODE_ENV=production  node dist/index.js",
     "build": "babel src -d dist",
     "prestart": "NODE_ENV=production sequelize db:migrate",
-    "pretest": "cross-env NODE_ENV=test npm run migrate:reset && cross-env NODE_ENV=test  npm run migrate && NODE_ENV=test npm run seed"
+    "pretest": "cross-env NODE_ENV=test npm run migrate:reset && cross-env NODE_ENV=test  npm run migrate && cross-env NODE_ENV=test npm run seed"
   },
   "repository": {
     "type": "git",
@@ -50,7 +50,6 @@
     "passport-facebook": "^3.0.0",
     "passport-google-oauth": "^2.0.0",
     "passport-local": "^1.0.0",
-    "password-hash": "^1.2.2",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "request": "^2.87.0",

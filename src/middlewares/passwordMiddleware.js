@@ -1,10 +1,10 @@
 import { changePasswordSchema, passwordResetEmailSchema } from '../validation/passwordValidator';
-import { helpers } from '../utils';
+import { Helpers } from '../utils';
 
-const { validate, errorResponse } = helpers;
+const { validate, errorResponse } = Helpers;
 /**
- * Collection of methods for ResetPassword
- * @class ResetPassword
+ * Collection of methods for PasswordMiddleware
+ * @class PasswordMiddleware
  */
 class PasswordMiddleware {
   /**
@@ -14,7 +14,7 @@ class PasswordMiddleware {
      * @param {Response} res - The response returned by the method.
      * @param {Next} next
      * @returns {next} - Continue with the request.
-     * @memberof ResetPassword
+     * @memberof PasswordMiddleware
      */
   static checkParameters(req, res, next) {
     try {

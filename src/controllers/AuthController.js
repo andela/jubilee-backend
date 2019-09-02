@@ -1,15 +1,15 @@
-import { userService, supplierService } from '../services';
+import { UserService, SupplierService } from '../services';
 import {
-  helpers, mailer, ApiError
+  Helpers, Mailer, ApiError
 } from '../utils';
 
 const {
   generateToken, verifyToken, successResponse, errorResponse, extractUserData, comparePassword
-} = helpers;
-const { sendVerificationEmail, sendResetMail } = mailer;
+} = Helpers;
+const { sendVerificationEmail, sendResetMail } = Mailer;
 const {
   create, updateById, updatePassword, find
-} = userService;
+} = UserService;
 /**
  * A collection of methods that controls authentication responses.
  *
@@ -51,13 +51,13 @@ class AuthController {
    */
   static async supplierSignup(req, res) {
     try {
-      const [companyData, userData] = helpers.splitSupplierData(req.body);
-      let supplier = await supplierService.create(companyData);
+      const [companyData, userData] = Helpers.splitSupplierData(req.body);
+      let supplier = await SupplierService.create(companyData);
       const { id: supplierId } = supplier;
-      let user = await userService.create({ ...userData, supplierId });
+      let user = await UserService.create({ ...userData, supplierId });
       const companyToken = generateToken({ companyId: supplierId, defaultRoleId: 8, companyType: 'supplier' });
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
-      supplier = await supplierService.update({ companyToken }, supplierId);
+      supplier = await SupplierService.update({ companyToken }, supplierId);
       user = extractUserData(user);
       const emailSent = await sendVerificationEmail(req, user);
       res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
@@ -163,8 +163,8 @@ class AuthController {
     try {
       const { token } = req.query;
       const { email } = verifyToken(token);
-      const url = `${req.protocol}://${req.get('host')}/api/auth/password/reset/${email}`;
-      successResponse(res, `Goto ${url} using POST Method`, 200);
+      const url = `${req.protocol}s://${req.get('host')}/api/auth/password/reset/${email}`;
+      successResponse(res, `Goto ${url} using POST Method with body "password": "newpassword" and "confirmPassword": "newpassword"`, 200);
     } catch (err) {
       const status = err.status || 500;
       errorResponse(res, { code: status, message: `Verification unsuccessful, ${err.message}` });
@@ -210,12 +210,12 @@ class AuthController {
    */
   static async socialLogin(req, res) {
     try {
-      const user = await userService.socialLogin(req.user);
+      const user = await UserService.socialLogin(req.user);
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       const userResponse = extractUserData(user);
-      helpers.successResponse(res, userResponse, 200);
+      Helpers.successResponse(res, userResponse, 200);
     } catch (error) {
-      helpers.errorResponse(res, { code: error.statusCode, message: error.message });
+      Helpers.errorResponse(res, { code: error.status, message: error.message });
     }
   }
 
