@@ -1,4 +1,6 @@
-import { UserService, SupplierService, CompanyService } from '../services';
+import {
+  UserService, SupplierService, CompanyService, RoleService
+} from '../services';
 import {
   Helpers, Mailer, ApiError
 } from '../utils';
@@ -17,9 +19,9 @@ const {
 } = UserService;
 
 const { assign } = RoleService;
-const { update } = supplierService;
-const { createCompany } = CompanyService;
-  
+const { update } = SupplierService;
+
+
 /**
  * A collection of methods that controls authentication responses.
  *
@@ -72,7 +74,7 @@ class AuthController {
   static async supplierSignup(req, res) {
     try {
       const [companyData, userData] = splitSupplierData(req.body);
-      let supplier = await supplierService.create(companyData);
+      let supplier = await SupplierService.create(companyData);
       const { id: supplierId } = supplier;
       let user = await UserService.create({ ...userData, supplierId });
       const companyToken = generateTokenAlive({ companyId: supplierId, defaultRoleId: 8, companyType: 'supplier' });

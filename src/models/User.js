@@ -66,7 +66,6 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   User.associate = (models) => {
-<<<<<<< HEAD
     User.belongsTo(models.Supplier, {
       foreignKey: 'supplierId',
       as: 'affiliateSupplier'
@@ -76,8 +75,6 @@ module.exports = (sequelize, DataTypes) => {
       as: 'roles',
       foreignKey: 'userId'
     });
-=======
->>>>>>> feature(database): setup database for company signup
     User.belongsTo(models.Company, {
       foreignKey: 'companyId',
       as: 'company',

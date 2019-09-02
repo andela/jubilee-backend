@@ -30,7 +30,6 @@
   "homepage": "https://github.com/andela/jubilee-backend#readme",
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
-    "@babel/runtime": "^7.5.5",
     "@hapi/joi": "^15.1.1",
     "@sendgrid/mail": "^6.4.0",
     "@types/hapi__joi": "^15.0.3",
@@ -66,10 +65,8 @@
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
-    "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/register": "^7.5.5",
-    "babel-plugin-dynamic-import-node": "^2.3.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "coveralls": "^3.0.6",
