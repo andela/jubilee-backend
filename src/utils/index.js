@@ -1,7 +1,7 @@
 import ApiError from './ApiError';
-import Helpers from './helpers';
+import helpers from './helpers';
 import Mailer from './mailer';
 
 export {
-  ApiError, Helpers, Mailer
+  ApiError, helpers, Mailer
 };

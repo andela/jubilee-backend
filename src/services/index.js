@@ -1,5 +1,8 @@
-import UserService from './UserService';
-import BookingService from './BookingService';
-import SupplierService from './supplierService';
+import userService from './UserService';
+import bookingService from './BookingService';
+import supplierService from './supplierService';
+import RoleService from './RoleService';
 
-export { UserService, BookingService, SupplierService };
+export {
+  userService, bookingService, supplierService, RoleService
+};

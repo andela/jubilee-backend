@@ -1,7 +1,7 @@
 import { changePasswordSchema, passwordResetEmailSchema } from '../validation/passwordValidator';
-import { Helpers } from '../utils';
+import { helpers } from '../utils';
 
-const { validate, errorResponse } = Helpers;
+const { validate, errorResponse } = helpers;
 /**
  * Collection of methods for PasswordMiddleware
  * @class PasswordMiddleware

@@ -272,6 +272,48 @@
                 }
             }
         },
+        "/users/role": {
+            "patch": {
+                "description": "Updates User Role",
+                "summary": "Allows admin to Update User Role",
+                "tags": [
+                    "Users"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "description": "This is the request body object containing user role update",
+                        "schema": {
+                            "$ref": "#/requestBody/updateUserRoleRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Authentication required"
+                    },
+                    "404": {
+                        "description": "User Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/auth/reset-password": {
             "post": {
                 "description": "Send a password reset email to the user",
@@ -519,6 +561,24 @@
                     "street": "street",
                     "preferredLanguage": "EN",
                     "preferredCurrency": "Naira"
+                }
+            },
+            "updateUserRoleRequest": {
+                "title": "Update User Role",
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "description": "the email of the user",
+                        "type": "string"
+                    },
+                    "roleId": {
+                        "description": "Id of role for the user",
+                        "type": "number"
+                    }
+                },
+                "example": {
+                    "email": "barefootnomad@gmail.com",
+                    "roleId": 5
                 }
             },
             "resetPasswordRequest": {

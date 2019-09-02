@@ -1,11 +1,11 @@
-import { UserService } from '../services';
-import { Helpers } from '../utils';
+import { userService } from '../services';
+import { helpers } from '../utils';
 
 const {
   successResponse, errorResponse, extractUserData
-} = Helpers;
+} = helpers;
 
-const { find, updateAny } = UserService;
+const { find, updateAny } = userService;
 
 /**
  * A collection of methods that controls user's interaction via the User routes

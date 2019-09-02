@@ -1,13 +1,17 @@
 import { Router } from 'express';
-import { UserController } from '../../controllers';
-import { AuthMiddleware } from '../../middlewares';
+import { userController, roleController } from '../../controllers';
+import { authMiddleware, roleMiddleware } from '../../middlewares';
 
 const router = Router();
 
-const { userProfile, updateProfile } = UserController;
-const { isAuthenticated } = AuthMiddleware;
+const { updateUserRole } = roleController;
+const { verifyCompanySuperAdmin } = roleMiddleware;
+const { userProfile, updateProfile } = userController;
+const { isAuthenticated } = authMiddleware;
 
 router.get('/profile/:userId', isAuthenticated, userProfile);
 router.put('/profile/:userId', isAuthenticated, updateProfile);
+
+router.patch('/role', verifyCompanySuperAdmin, updateUserRole);
 
 export default router;

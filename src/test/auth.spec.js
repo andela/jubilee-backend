@@ -2,9 +2,9 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import faker from 'faker';
 import server from '../index';
-import { Helpers } from '../utils';
+import { helpers } from '../utils';
 
-const { generateToken } = Helpers;
+const { generateToken } = helpers;
 
 chai.use(chaiHttp);
 let newUserPasswordReset;

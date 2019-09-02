@@ -3,9 +3,9 @@ import chaiHttp from 'chai-http';
 import faker from 'faker';
 import server from '../src';
 import { newUser, newSupplier } from './dummies';
-import Helpers from '../src/utils/helpers';
+import helpers from '../src/utils/helpers';
 
-const { generateToken } = Helpers;
+const { generateToken } = helpers;
 
 chai.use(chaiHttp);
 let newlyCreatedUser = {};
@@ -94,7 +94,7 @@ describe('Auth route endpoints', () => {
   });
 
   // my tests
-  it('should pass upon successfull validation', async () => {
+  it('should pass upon successfull validation and assign default role', async () => {
     const user = {
       email: 'tony@gmail.com',
       firstName: 'Tony',
@@ -116,6 +116,7 @@ describe('Auth route endpoints', () => {
       .send(user);
     expect(response).to.has.status(201);
     expect(response.body).to.be.a('object');
+    expect(response.body.data.roleAssignment).to.be.a('object');
     expect(response.body.status).to.equal('success');
   });
   it('should fail upon missing parameters during validation', async () => {
@@ -332,6 +333,43 @@ describe('POST /api/auth/login', () => {
     expect(response.body.status).to.equal('fail');
     expect(response.status).to.equal(401);
     expect(response.body.error.message).to.be.equal('Invalid login details');
+  });
+});
+
+
+describe('PATCH /api/users/role', () => {
+  it('should successfully update user role', async () => {
+    const { id, firstName, role } = newlyCreatedUser;
+    const token = generateToken({ id, firstName, role });
+    const { email } = newUser;
+    const userRole = {
+      email,
+      roleId: 1
+    };
+    const response = await chai
+      .request(server).patch('/api/users/role')
+      .set('Cookie', `token=${token};`)
+      .send(userRole);
+    expect(response).to.have.status(200);
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.userId).to.be.a('number');
+    expect(response.body.data.roleId).to.be.a('number');
+  });
+
+  it('should fail is user does not exist', async () => {
+    const { id, firstName, role } = newlyCreatedUser;
+    const token = generateToken({ id, firstName, role });
+    const userRole = {
+      email: 'daniel@gmail.com',
+      roleId: 1
+    };
+    const response = await chai.request(server)
+      .patch('/api/users/role')
+      .set('Cookie', `token=${token};`)
+      .send(userRole);
+    expect(response.body.status).to.equal('fail');
+    expect(response.status).to.equal(404);
+    expect(response.body.error.message).to.be.equal('User account does not exist');
   });
 });
 
