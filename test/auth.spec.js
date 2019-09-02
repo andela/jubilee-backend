@@ -3,9 +3,9 @@ import chaiHttp from 'chai-http';
 import faker from 'faker';
 import server from '../src';
 import { newUser, newSupplier } from './dummies';
-import Helpers from '../src/utils/helpers';
+import helpers from '../src/utils/helpers';
 
-const { generateToken } = Helpers;
+const { generateToken } = helpers;
 
 chai.use(chaiHttp);
 let newlyCreatedUser = {};

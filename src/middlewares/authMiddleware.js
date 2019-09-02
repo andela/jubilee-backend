@@ -1,20 +1,10 @@
-<<<<<<< HEAD
 import { authValidation } from '../validation';
-import { Helpers, ApiError } from '../utils';
-import { UserService } from '../services';
+import { helpers, ApiError } from '../utils';
+import { userService } from '../services';
 
 const {
   errorResponse, verifyToken, checkToken
-} = Helpers;
-=======
-import authValidation from '../validation/index';
-import { helpers } from '../utils';
-import { userService } from '../services/index';
-
-const {
-  errorResponse
 } = helpers;
->>>>>>> bg(conflict): refactored code and fixed merge conflics
 /**
  * Middleware for input validations
  */
@@ -53,17 +43,9 @@ export default class AuthMiddleware {
       // original: const validated = await authValidation.userSignup(req.body);
       const validated = await authValidation.userSignup(user);
       if (validated) {
-<<<<<<< HEAD
-        const user = await UserService.find({ email });
-        if (!user) {
-          next();
-        } else {
-          errorResponse(res, { code: 409, message: `User with email: "${req.body.email}" already exists` });
-=======
         const member = await userService.find({ email });
         if (!member) {
           return next();
->>>>>>> bg(conflict): refactored code and fixed merge conflics
         }
         errorResponse(res, { code: 409, message: `User with email: "${req.body.email}" already exists` });
       }
@@ -88,11 +70,7 @@ export default class AuthMiddleware {
       const validated = await authValidation.supplierSignup(req.body);
       const { email } = req.body;
       if (validated) {
-<<<<<<< HEAD
-        const supplier = await UserService.find({ email });
-=======
         const supplier = await userService.find({ email });
->>>>>>> bg(conflict): refactored code and fixed merge conflics
         if (!supplier) {
           next();
         } else {
@@ -103,7 +81,6 @@ export default class AuthMiddleware {
       errorResponse(res, { code: 400, message: error.details[0].context.label });
     }
   }
-<<<<<<< HEAD
 
   /**
     * Middleware method for user authentication
@@ -127,6 +104,4 @@ export default class AuthMiddleware {
       errorResponse(res, { code: status, message: err.message });
     }
   }
-=======
->>>>>>> bg(conflict): refactored code and fixed merge conflics
 }

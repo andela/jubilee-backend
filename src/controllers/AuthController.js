@@ -1,17 +1,19 @@
 import { userService, supplierService, RoleService } from '../services';
 import {
-  Helpers, Mailer, ApiError
+  helpers, Mailer, ApiError
 } from '../utils';
 
 const {
-  generateToken, verifyToken, successResponse, errorResponse, extractUserData, comparePassword
-} = Helpers;
+  generateToken, verifyToken, successResponse, errorResponse, extractUserData, comparePassword,
+  splitSupplierData
+} = helpers;
 const { sendVerificationEmail, sendResetMail } = Mailer;
 const {
-  create, updateById, updatePassword, find,
+  create, updateById, updatePassword, find, socialLogin,
 } = userService;
 
 const { assign } = RoleService;
+const { update } = supplierService;
 /**
  * A collection of methods that controls authentication responses.
  *
@@ -63,13 +65,13 @@ class AuthController {
    */
   static async supplierSignup(req, res) {
     try {
-      const [companyData, userData] = Helpers.splitSupplierData(req.body);
-      let supplier = await SupplierService.create(companyData);
+      const [companyData, userData] = splitSupplierData(req.body);
+      let supplier = await supplierService.create(companyData);
       const { id: supplierId } = supplier;
-      let user = await UserService.create({ ...userData, supplierId });
+      let user = await userService.create({ ...userData, supplierId });
       const companyToken = generateToken({ companyId: supplierId, defaultRoleId: 8, companyType: 'supplier' });
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
-      supplier = await SupplierService.update({ companyToken }, supplierId);
+      supplier = await update({ companyToken }, supplierId);
       user = extractUserData(user);
       const emailSent = await sendVerificationEmail(req, user);
       res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
@@ -222,12 +224,12 @@ class AuthController {
    */
   static async socialLogin(req, res) {
     try {
-      const user = await UserService.socialLogin(req.user);
+      const user = await socialLogin(req.user);
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       const userResponse = extractUserData(user);
-      Helpers.successResponse(res, userResponse, 200);
+      successResponse(res, userResponse, 200);
     } catch (error) {
-      Helpers.errorResponse(res, { code: error.status, message: error.message });
+      errorResponse(res, { code: error.status, message: error.message });
     }
   }
 
