@@ -4,5 +4,5 @@ import CompanyService from './companyService';
 import SupplierService from './supplierService';
 
 export {
-  UserService, BookingService, CompanyService, SupplierService
+  UserService, BookingService, CompanyService, SupplierService,
 };

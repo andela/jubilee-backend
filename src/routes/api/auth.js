@@ -9,17 +9,17 @@ import { rightEmail, wrongEmail } from '../../../test/features';
 const router = Router();
 const {
   userSignup, supplierSignup, verifyEmail, sendResetPasswordEmail, resetPassword,
-  verifyPasswordResetLink, loginUser, logout, companySignUp, socialLogin
+  verifyPasswordResetLink, loginUser, logout, companySignUp, socialLogin,
 } = authController;
 
-const { onCompanySignup } = authMiddleware;
+const { onCompanySignup, onUserLogin } = authMiddleware;
 const { checkParameters } = passwordMiddleware;
 
 router.post('/signup/user', authMiddleware.onUserSignup, userSignup);
 router.post('/signup/supplier', authMiddleware.onSupplierSignup, supplierSignup);
 router.post('/signup/company', onCompanySignup, companySignUp);
 router.get('/verify', verifyEmail);
-router.post('/login', loginUser);
+router.post('/login', onUserLogin, loginUser);
 router.post('/reset-password/', checkParameters, sendResetPasswordEmail);
 router.get('/reset-password', verifyPasswordResetLink);
 router.post('/password/reset/:email', checkParameters, resetPassword);

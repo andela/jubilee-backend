@@ -96,7 +96,6 @@ class AuthController {
       res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, { admin, company, emailSent: isSent }, 201);
     } catch (error) {
-      console.log(error.stack);
       errorResponse(res, {});
     }
   }
