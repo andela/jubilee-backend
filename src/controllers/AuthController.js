@@ -5,12 +5,12 @@ import {
 
 
 const {
-  generateToken, verifyToken, successResponse, errorResponse,
+  generateToken, verifyToken, successResponse, errorResponse, generateTokenAlive,
   extractUserData, comparePassword, splitCompanyData,
   hashPassword
 } = Helpers;
-const { createCompany } = CompanyService;
-const { sendVerificationEmail, sendResetMail } = Mailer;
+const { createCompany, updateCompanyById } = CompanyService;
+const { sendVerificationEmail, sendResetMail, sendWelcomeEmail } = Mailer;
 
 const {
   create, updateById, updatePassword, find
@@ -62,11 +62,11 @@ class AuthController {
       let supplier = await SupplierService.create(companyData);
       const { id: supplierId } = supplier;
       let user = await UserService.create({ ...userData, supplierId });
-      const companyToken = generateToken({ companyId: supplierId, defaultRoleId: 8, companyType: 'supplier' });
+      const companyToken = generateTokenAlive({ companyId: supplierId, defaultRoleId: 8, companyType: 'supplier' });
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       supplier = await SupplierService.update({ companyToken }, supplierId);
       user = extractUserData(user);
-      const emailSent = await sendVerificationEmail(req, user);
+      const emailSent = await sendWelcomeEmail(req, { ...user, companyToken });
       res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, { user, supplier, emailSent }, 201);
     } catch (error) {
@@ -87,15 +87,17 @@ class AuthController {
     try {
       const [companyInfo, userInfo] = splitCompanyData(req.body);
       userInfo.password = hashPassword(userInfo.password);
-      const [company, user] = await createCompany(companyInfo, userInfo);
-      company.token = generateToken({ type: 'company', companyId: company.id, roleId: 1 });
+      const [{ id }, user] = await createCompany(companyInfo, userInfo);
+      const companyToken = generateTokenAlive({ companyType: 'company', companyId: id, defaultRoleId: 1 });
+      const company = await updateCompanyById({ companyToken }, id);
       user.token = generateToken({ email: user.email, id: user.id, role: 4 });
       const admin = extractUserData(user);
-      const isSent = await sendVerificationEmail(req, { ...admin });
+      const isSent = await sendWelcomeEmail(req, { companyToken, ...admin });
       res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, { admin, company, emailSent: isSent }, 201);
     } catch (error) {
-      errorResponse(res, { message: error.message });
+      console.log(error.stack);
+      errorResponse(res, {});
     }
   }
 

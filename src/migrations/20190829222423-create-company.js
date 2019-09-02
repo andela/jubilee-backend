@@ -25,6 +25,10 @@ module.exports = {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     },
+    companyToken: {
+      allowNull: true,
+      type: Sequelize.STRING
+    },
     companyPlanId: {
       allowNull: false,
       type: Sequelize.INTEGER,

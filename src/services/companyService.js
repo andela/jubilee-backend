@@ -26,4 +26,24 @@ export default class CompanyService {
       return new Error('failed to create company');
     }
   }
+
+  /**
+   *
+   * updates an existing company by ID
+   * @static
+   * @param {object} companyData user properties to be updated
+    * @param {string} id user id
+   * @returns {Promise<object | null | string> } an object containing the updated
+   * properties of the user is returned on success
+   * or a null value if update fails, and an error message if a user is not found
+   * @memberof CompanyService
+   */
+  static async updateCompanyById(companyData, id) {
+    const [rowaffected, [company]] = await Company.update(
+      companyData,
+      { returning: true, where: { id } }
+    );
+    if (!rowaffected) throw new Error('Not Found');
+    return company;
+  }
 }

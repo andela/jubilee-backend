@@ -16,12 +16,23 @@ class Helpers {
  * @static
  * @param {string | number | Buffer | object} payLoad Payload to sign.
  * @param {string | number} expiresIn Expressed in seconds or a string describing a
- * time span. Eg: 60, "2 days", "10h", "7d". Default specified is 7days.
+ * time span. Eg: 60, "2 days", "10h", "7d". Default specified is 1day.
  * @memberof Helpers
  * @returns {string} JWT token.
  */
-  static generateToken(payLoad, expiresIn = '7d') {
+  static generateToken(payLoad, expiresIn = '1d') {
     return jwt.sign(payLoad, SECRET, { expiresIn });
+  }
+
+  /**
+ *  Synchronously sign the given payload into a JSON Web Token string that never expires.
+ * @static
+ * @param {string | number | Buffer | object} payLoad Payload to sign.
+ * @memberof Helpers
+ * @returns {string} JWT token.
+ */
+  static generateTokenAlive(payLoad) {
+    return jwt.sign(payLoad, SECRET);
   }
 
   /**
