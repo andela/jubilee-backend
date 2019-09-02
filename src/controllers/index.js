@@ -1,5 +1,5 @@
 import UserController from './UserController';
-import AuthController from './AuthController';
+import AuthController from './authController';
 import RoleController from './roleController';
 
 export {

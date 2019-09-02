@@ -6,6 +6,7 @@ import {
   PasswordMiddleware, AuthMiddleware
 } from '../../middlewares';
 
+
 const router = Router();
 const {
   userSignup, supplierSignup, verifyEmail, sendResetPasswordEmail, resetPassword,

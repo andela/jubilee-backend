@@ -3,6 +3,10 @@ module.exports = (sequelize, DataTypes) => {
   const Company = sequelize.define('Company', {
     companyName: { type: DataTypes.STRING, allowNull: false },
     companyAddress: { type: DataTypes.STRING, allowNull: false },
+    companyToken: {
+      allowNull: true,
+      type: DataTypes.STRING
+    },
     companySizeId: {
       allowNull: false,
       type: DataTypes.INTEGER,

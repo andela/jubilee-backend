@@ -176,7 +176,7 @@ describe('Auth route endpoints', () => {
     expect(response.body.status).to.equal('success');
     expect(response.body.data).to.be.a('object');
     expect(response.body.data.admin.token).to.be.a('string');
-    expect(response.body.data.company.token).to.be.a('string');
+    expect(response.body.data.company.companyToken).to.be.a('string');
     expect(response.body.data.admin.firstName).to.be.a('string');
     expect(response.body.data.admin.lastName).to.be.a('string');
   });

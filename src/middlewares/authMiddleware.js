@@ -1,16 +1,12 @@
 import { authValidation } from '../validation';
-import { helpers, ApiError } from '../utils';
-import { userService } from '../services';
+import { Helpers, ApiError } from '../utils';
+import { UserService } from '../services';
 
 const {
   errorResponse, verifyToken, checkToken
-<<<<<<< HEAD
-} = helpers;
-=======
 } = Helpers;
 
 const { companySignup } = authValidation;
->>>>>>> feature(implement): add company signup functionality
 /**
  * Middleware for input validations
  */
@@ -49,7 +45,7 @@ export default class AuthMiddleware {
       // original: const validated = await authValidation.userSignup(req.body);
       const validated = await authValidation.userSignup(user);
       if (validated) {
-        const member = await userService.find({ email });
+        const member = await UserService.find({ email });
         if (!member) {
           return next();
         }
@@ -76,7 +72,7 @@ export default class AuthMiddleware {
       const validated = await authValidation.supplierSignup(req.body);
       const { email } = req.body;
       if (validated) {
-        const supplier = await userService.find({ email });
+        const supplier = await UserService.find({ email });
         if (!supplier) {
           next();
         } else {
