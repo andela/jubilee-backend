@@ -1,4 +1,4 @@
-import UserController from './UserController';
+import UserController from './userController';
 import AuthController from './authController';
 import RoleController from './roleController';
 

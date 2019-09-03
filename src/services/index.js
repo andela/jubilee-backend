@@ -1,7 +1,7 @@
-import UserService from './UserService';
-import BookingService from './BookingService';
+import UserService from './userService';
+import BookingService from './bookingService';
 import CompanyService from './companyService';
-import RoleService from './RoleService';
+import RoleService from './roleService';
 import SupplierService from './supplierService';
 
 export {

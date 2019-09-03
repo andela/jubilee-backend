@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import passport from '../../config/passport';
-import { AuthController } from '../../controllers';
-import { rightEmail, wrongEmail } from '../../test/features';
+import passport from '../config/passport';
+import { AuthController } from '../controllers';
+import { rightEmail, wrongEmail } from '../test/features';
 import {
   PasswordMiddleware, AuthMiddleware
-} from '../../middlewares';
+} from '../middlewares';
 
 
 const router = Router();

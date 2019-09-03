@@ -1,4 +1,4 @@
-import ApiError from './ApiError';
+import ApiError from './apiError';
 import Helpers from './helpers';
 import Mailer from './mailer';
 
