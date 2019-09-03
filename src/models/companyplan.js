@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   CompanyPlan.associate = (models) => {
     CompanyPlan.hasMany(models.Company, {
       as: 'companies',
-      foriegnKey: 'companyPlanId',
+      foreignKey: 'companyPlanId',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
