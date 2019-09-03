@@ -1,10 +1,10 @@
 import joi from '@hapi/joi';
 import passwordComplexity from 'joi-password-complexity';
-import { helpers } from '../utils';
+import { Helpers } from '../utils';
 
 const {
   successResponse, errorResponse
-} = helpers;
+} = Helpers;
 
 // password complexity object
 const complexityOptions = {
@@ -24,8 +24,8 @@ const complexityOptions = {
    * 1) signup - validates user upon registration.
    * 2) dummy - a dummy method for testing validations upon success.
    */
-export default class authValidation {
-  /**
+export default class AuthValidation {
+/**
      * Validates user paramenters upon registration
      *
      * @param {object} userObject - The user object
@@ -44,7 +44,7 @@ export default class authValidation {
       password: new passwordComplexity(complexityOptions).required()
         .label('Password is required. \n It should be more than 8 characters, and should include at least a capital letter, and a number'),
       gender: joi.string().valid('male', 'female').required()
-        .label('please input a gender (male or female'),
+        .label('please input a gender (male or female)'),
       street: joi.string().min(2).max(20).required()
         .label('Please input a street name'),
       city: joi.string().min(3).max(25).required()
@@ -60,7 +60,7 @@ export default class authValidation {
       companyName: joi.string().min(3).max(40).required()
         .label('Please add your company name'),
     };
-    // Once user inputs are validated, move into server
+      // Once user inputs are validated, move into server
     const { error } = joi.validate({ ...userObject }, schema);
     if (error) {
       // throw errorResponse(res, { code: 400, message: error.details[0].context.label });
@@ -70,12 +70,35 @@ export default class authValidation {
   }
 
   /**
-     * Validates supplier paramenters upon registration
+     * Validates user paramenters upon login
      *
-     * @param {object} supplierObject - The supplier object
-     * @param {object} res - The supplier response object
+     * @param {object} userObject - The user object
+     * @param {object} res - The user response object
      * @returns {object} - returns an object (error or response).
      */
+  static async userLogin(userObject) {
+    // joi parameters to test against user inputs
+    const schema = {
+      email: joi.string().email().required()
+        .label('Please enter a valid company email address'),
+      password: new passwordComplexity(complexityOptions).required()
+        .label('Password is not provided or its invalid'),
+    };
+    // Once user inputs are validated, move into server
+    const { error } = joi.validate({ ...userObject }, schema);
+    if (error) {
+      throw error;
+    }
+    return true;
+  }
+
+  /**
+       * Validates supplier paramenters upon registration
+       *
+       * @param {object} supplierObject - The supplier object
+       * @param {object} res - The supplier response object
+       * @returns {object} - returns an object (error or response).
+       */
   static async supplierSignup(supplierObject) {
     const schema = {
       firstName: joi.string().min(3).max(25).required()
@@ -101,6 +124,45 @@ export default class authValidation {
     }
     return true;
   }
+
+
+  /**
+     * Validates user paramenters upon registration
+     *
+     * @param {object} userObject - The user object
+     * @param {object} res - The user response object
+     * @returns {object} - returns an object (error or response).
+    */
+  static async companySignup(userObject) {
+    // joi parameters to test against user inputs
+    const schema = {
+      email: joi.string().email().required()
+        .label('Please enter a valid company email address'),
+      password: new passwordComplexity(complexityOptions).required()
+        .label('Password is required. \n It should be more than 8 characters, and should include at least a capital letter, and a number'),
+      firstName: joi.string().min(3).max(25).required()
+        .label('Please enter a valid firstname \n the field must not be empty and it must be more than 2 letters'),
+      lastName: joi.string().min(3).max(25).required()
+        .label('Please enter a valid lastname \n the field must not be empty and it must be more than 2 letters'),
+      companyName: joi.string().min(3).max(40).required()
+        .label('Please add your company name'),
+      companySizeId: joi.number().integer().positive().required()
+        .label('please select a company size'),
+      companyPlanId: joi.number().integer().positive()
+        .required()
+        .label('please select a plan (silver, gold or platinum'),
+      companyAddress: joi.string().min(10).max(60).regex(/^[\w',-\\/.\s]*$/)
+        .required()
+        .label('Please enter a valid address that is within 10 to 60 letters long'),
+    };
+    // Once user inputs are validated, move into server
+    const { error } = joi.validate({ ...userObject }, schema);
+    if (error) {
+      throw error;
+    }
+    return true;
+  }
+
 
   /**
    *  Dummy callback function for validation tests

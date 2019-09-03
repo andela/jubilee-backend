@@ -1,10 +1,12 @@
-import { authValidation } from '../validation';
-import { helpers, ApiError } from '../utils';
-import { userService } from '../services';
+import { AuthValidation } from '../validation';
+import { Helpers, ApiError } from '../utils';
+import { UserService } from '../services';
 
 const {
   errorResponse, verifyToken, checkToken
-} = helpers;
+} = Helpers;
+
+const { companySignup, userLogin } = AuthValidation;
 /**
  * Middleware for input validations
  */
@@ -41,9 +43,9 @@ export default class AuthMiddleware {
       // it should take all body and split in future. for testing
       // at this time, it takes only the property it needs
       // original: const validated = await authValidation.userSignup(req.body);
-      const validated = await authValidation.userSignup(user);
+      const validated = await AuthValidation.userSignup(user);
       if (validated) {
-        const member = await userService.find({ email });
+        const member = await UserService.find({ email });
         if (!member) {
           return next();
         }
@@ -59,6 +61,24 @@ export default class AuthMiddleware {
   }
 
   /**
+       * Middleware method for user validation during login
+       * @param {object} req - The request from the endpoint.
+       * @param {object} res - The response returned by the method.
+       * @param {object} next - Call the next operation.
+       * @returns {object} - Returns an object (error or response).
+       */
+  static async onUserLogin(req, res, next) {
+    try {
+      const validated = await userLogin(req.body);
+      if (validated) {
+        next();
+      }
+    } catch (error) {
+      errorResponse(res, { code: 400, message: error.details[0].context.label });
+    }
+  }
+
+  /**
      * Middleware method for supplier validation during signup/registration
      * @param {object} req - The request from the endpoint.
      * @param {object} res - The response returned by the method.
@@ -67,10 +87,10 @@ export default class AuthMiddleware {
      */
   static async onSupplierSignup(req, res, next) {
     try {
-      const validated = await authValidation.supplierSignup(req.body);
+      const validated = await AuthValidation.supplierSignup(req.body);
       const { email } = req.body;
       if (validated) {
-        const supplier = await userService.find({ email });
+        const supplier = await UserService.find({ email });
         if (!supplier) {
           next();
         } else {
@@ -102,6 +122,29 @@ export default class AuthMiddleware {
     } catch (err) {
       const status = err.status || 500;
       errorResponse(res, { code: status, message: err.message });
+    }
+  }
+
+  /**
+     * Middleware method for company validation during signup/registration
+     * @param {object} req - The request from the endpoint.
+     * @param {object} res - The response returned by the method.
+     * @param {object} next - the returned values going into the next operation.
+     * @returns {object} - returns an object (error or response).
+     */
+  static async onCompanySignup(req, res, next) {
+    const { email } = req.body;
+    try {
+      const validated = await companySignup(req.body);
+      if (validated) {
+        const admin = await UserService.find({ email });
+        if (!admin) {
+          return next();
+        }
+        if (admin.companyId) { errorResponse(res, { code: 409, message: `Admin with email: "${email}" already exists for a company` }); }
+      }
+    } catch (error) {
+      errorResponse(res, { code: 400, message: error.details[0].context.label });
     }
   }
 }

@@ -31,7 +31,7 @@ if (!isProduction) {
 }
 
 // connect app to routes
-routes(app);
+app.use('/api', routes);
 
 // / catch 404 and forward to error handler
 app.use((req, res, next) => {

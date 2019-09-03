@@ -1,7 +1,7 @@
-import passwordMiddleware from './passwordMiddleware';
-import authMiddleware from './authMiddleware';
-import roleMiddleware from './roleMiddleware';
+import PasswordMiddleware from './passwordMiddleware';
+import AuthMiddleware from './authMiddleware';
+import RoleMiddleware from './roleMiddleware';
 
 export {
-  passwordMiddleware, authMiddleware, roleMiddleware
+  PasswordMiddleware, AuthMiddleware, RoleMiddleware
 };

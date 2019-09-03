@@ -25,5 +25,13 @@ export const newSupplier = {
   password: faker.internet.password(15, false),
   phoneNumber: faker.phone.phoneNumber()
 };
-
-export const obj = {};
+export const newCompany = {
+  firstName: 'Ago',
+  lastName: 'Akin',
+  email: 'daylay32@gmail.com',
+  password: faker.internet.password(15, false),
+  companyName: faker.company.companyName(),
+  companyAddress: '20, Ania street, Ojomo',
+  companySizeId: 2,
+  companyPlanId: 3
+};

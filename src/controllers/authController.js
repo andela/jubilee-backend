@@ -1,19 +1,27 @@
-import { userService, supplierService, RoleService } from '../services';
 import {
-  helpers, Mailer, ApiError
+  UserService, SupplierService, CompanyService, RoleService
+} from '../services';
+import {
+  Helpers, Mailer, ApiError
 } from '../utils';
 
+
 const {
-  generateToken, verifyToken, successResponse, errorResponse, extractUserData, comparePassword,
-  splitSupplierData
-} = helpers;
-const { sendVerificationEmail, sendResetMail } = Mailer;
+  generateToken, verifyToken, successResponse, errorResponse, generateTokenAlive,
+  extractUserData, comparePassword, splitCompanyData, splitSupplierData,
+  hashPassword
+} = Helpers;
+const { createCompany, updateCompanyById } = CompanyService;
+const { sendVerificationEmail, sendResetMail, sendWelcomeEmail } = Mailer;
+
 const {
   create, updateById, updatePassword, find, socialLogin,
-} = userService;
+} = UserService;
 
 const { assign } = RoleService;
-const { update } = supplierService;
+const { update } = SupplierService;
+
+
 /**
  * A collection of methods that controls authentication responses.
  *
@@ -66,18 +74,44 @@ class AuthController {
   static async supplierSignup(req, res) {
     try {
       const [companyData, userData] = splitSupplierData(req.body);
-      let supplier = await supplierService.create(companyData);
+      let supplier = await SupplierService.create(companyData);
       const { id: supplierId } = supplier;
-      let user = await userService.create({ ...userData, supplierId });
-      const companyToken = generateToken({ companyId: supplierId, defaultRoleId: 8, companyType: 'supplier' });
+      let user = await UserService.create({ ...userData, supplierId });
+      const companyToken = generateTokenAlive({ companyId: supplierId, defaultRoleId: 8, companyType: 'supplier' });
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       supplier = await update({ companyToken }, supplierId);
       user = extractUserData(user);
-      const emailSent = await sendVerificationEmail(req, user);
+      const emailSent = await sendWelcomeEmail(req, { ...user, companyToken });
       res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, { user, supplier, emailSent }, 201);
     } catch (error) {
       errorResponse(res, {});
+    }
+  }
+
+  /**
+   * Registers a new company.
+   *
+   * @static
+   * @param {Request} req - The request from the endpoint.
+   * @param {Response} res - The response returned by the method.
+   * @returns { JSON } A JSON response with the registered company's details and a JWT.
+   * @memberof Auth
+   */
+  static async companySignUp(req, res) {
+    try {
+      const [companyInfo, userInfo] = splitCompanyData(req.body);
+      userInfo.password = hashPassword(userInfo.password);
+      const [{ id }, user] = await createCompany(companyInfo, userInfo);
+      const companyToken = generateTokenAlive({ companyType: 'company', companyId: id, defaultRoleId: 1 });
+      const company = await updateCompanyById({ companyToken }, id);
+      user.token = generateToken({ email: user.email, id: user.id, role: 4 });
+      const admin = extractUserData(user);
+      const isSent = await sendWelcomeEmail(req, { companyToken, ...admin });
+      res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
+      return successResponse(res, { admin, company, emailSent: isSent }, 201);
+    } catch (error) {
+      errorResponse(res, { message: error.message });
     }
   }
 

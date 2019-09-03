@@ -3,7 +3,7 @@
  * Google Mock Data
  */
 
-export default (req, res, next) => {
+const googleMock = (req, res, next) => {
   req.user = {
     id: '1283637238389',
     displayName: 'Barefoot Nomad',
@@ -34,3 +34,5 @@ export default (req, res, next) => {
   };
   next();
 };
+
+export default googleMock;

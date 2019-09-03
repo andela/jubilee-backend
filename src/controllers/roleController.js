@@ -1,8 +1,8 @@
-import { userService, RoleService } from '../services';
-import { helpers } from '../utils';
+import { UserService, RoleService } from '../services';
+import { Helpers } from '../utils';
 
-const { find } = userService;
-const { successResponse, errorResponse } = helpers;
+const { find } = UserService;
+const { successResponse, errorResponse } = Helpers;
 const { getRoles, updateUserRole } = RoleService;
 
 /**
