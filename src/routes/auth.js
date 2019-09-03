@@ -27,17 +27,17 @@ router.get('/reset-password', verifyPasswordResetLink);
 router.post('/password/reset/:email', checkParameters, resetPassword);
 router.get('/logout', logout);
 
-// router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
-// router.get('/facebook/callback',
-//   passport.authenticate('facebook'),
-//   socialLogin);
+router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }));
+router.get('/facebook/callback',
+  passport.authenticate('facebook'),
+  socialLogin);
 
-// router.get('/google', passport.authenticate('google', { scope: ['email'] }));
-// router.get('/google/callback',
-//   passport.authenticate('google'),
-//   socialLogin);
+router.get('/google', passport.authenticate('google', { scope: ['email'] }));
+router.get('/google/callback',
+  passport.authenticate('google'),
+  socialLogin);
 
-// router.get('/rightSocial', rightEmail, socialLogin);
-// router.get('/wrongSocial', wrongEmail, socialLogin);
+router.get('/rightSocial', rightEmail, socialLogin);
+router.get('/wrongSocial', wrongEmail, socialLogin);
 
 export default router;
