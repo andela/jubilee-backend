@@ -1,11 +1,11 @@
-import userValidation from '../validation/index';
+import UserValidation from '../validation/index';
 import { Helpers } from '../utils';
 import { UserService } from '../services/index';
 
 const {
   errorResponse
 } = Helpers;
-const { companySignup } = userValidation;
+const { companySignup } = UserValidation;
 
 
 /**
@@ -21,7 +21,7 @@ export default class ValidationMiddleware {
        */
   static async onSignup(req, res, next) {
     try {
-      const validated = await userValidation.signup(req.body);
+      const validated = await UserValidation.signup(req.body);
       if (validated) {
         const user = await UserService.find(req.body.email);
         if (!user) {

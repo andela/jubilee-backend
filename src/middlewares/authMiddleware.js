@@ -1,4 +1,4 @@
-import { authValidation } from '../validation';
+import { AuthValidation } from '../validation';
 import { Helpers, ApiError } from '../utils';
 import { UserService } from '../services';
 
@@ -6,7 +6,7 @@ const {
   errorResponse, verifyToken, checkToken
 } = Helpers;
 
-const { companySignup } = authValidation;
+const { companySignup } = AuthValidation;
 /**
  * Middleware for input validations
  */
@@ -43,7 +43,7 @@ export default class AuthMiddleware {
       // it should take all body and split in future. for testing
       // at this time, it takes only the property it needs
       // original: const validated = await authValidation.userSignup(req.body);
-      const validated = await authValidation.userSignup(user);
+      const validated = await AuthValidation.userSignup(user);
       if (validated) {
         const member = await UserService.find({ email });
         if (!member) {
@@ -69,7 +69,7 @@ export default class AuthMiddleware {
      */
   static async onSupplierSignup(req, res, next) {
     try {
-      const validated = await authValidation.supplierSignup(req.body);
+      const validated = await AuthValidation.supplierSignup(req.body);
       const { email } = req.body;
       if (validated) {
         const supplier = await UserService.find({ email });

@@ -24,7 +24,7 @@ const complexityOptions = {
    * 1) signup - validates user upon registration.
    * 2) dummy - a dummy method for testing validations upon success.
    */
-export default class authValidation {
+export default class AuthValidation {
 /**
      * Validates user paramenters upon registration
      *

@@ -1,4 +1,4 @@
-import authValidation from './authValidation';
-import passwordValidator from './passwordValidator';
+import AuthValidation from './authValidation';
+import PasswordValidator from './passwordValidator';
 
-export { authValidation, passwordValidator };
+export { AuthValidation, PasswordValidator };
