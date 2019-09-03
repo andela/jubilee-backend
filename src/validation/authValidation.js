@@ -70,6 +70,29 @@ export default class AuthValidation {
   }
 
   /**
+     * Validates user paramenters upon login
+     *
+     * @param {object} userObject - The user object
+     * @param {object} res - The user response object
+     * @returns {object} - returns an object (error or response).
+     */
+  static async userLogin(userObject) {
+    // joi parameters to test against user inputs
+    const schema = {
+      email: joi.string().email().required()
+        .label('Please enter a valid company email address'),
+      password: new passwordComplexity(complexityOptions).required()
+        .label('Password is not provided or its invalid'),
+    };
+    // Once user inputs are validated, move into server
+    const { error } = joi.validate({ ...userObject }, schema);
+    if (error) {
+      throw error;
+    }
+    return true;
+  }
+
+  /**
        * Validates supplier paramenters upon registration
        *
        * @param {object} supplierObject - The supplier object

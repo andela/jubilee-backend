@@ -3,7 +3,7 @@
  * Facebook Mock Data
  */
 
-export default (req, res, next) => {
+const wrongFacebookMock = (req, res, next) => {
   req.user = {
     id: '1283637238389',
     username: undefined,
@@ -48,3 +48,5 @@ export default (req, res, next) => {
   };
   next();
 };
+
+export default wrongFacebookMock;

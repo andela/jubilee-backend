@@ -187,13 +187,6 @@ describe('Auth route endpoints', () => {
     expect(response.body.error).to.be.a('object');
     expect(response.body.error.message).to.equal(`Admin with email: "${email}" already exists for a company`);
   });
-  it('should return a conflict error 409 if admin already exists in database', async () => {
-    const { email } = newCompany;
-    const response = await chai.request(server).post('/api/auth/signup/company').send(newCompany);
-    expect(response).to.have.status(409);
-    expect(response.body.error).to.be.a('object');
-    expect(response.body.error.message).to.equal(`Admin with email: "${email}" already exists for a company`);
-  });
 
   it('should return an error response if verification token is not provided', async () => {
     const response = await chai.request(server).get('/api/auth/verify?token=');
@@ -354,7 +347,7 @@ describe('POST /api/auth/login', () => {
     const { email } = newlyCreatedUser;
     const login = {
       email,
-      password: 'password',
+      password: 'passworD26',
     };
     const response = await chai.request(server).post('/api/auth/login').send(login);
     expect(response.body.status).to.equal('fail');
@@ -365,7 +358,7 @@ describe('POST /api/auth/login', () => {
   it('should return 401 error if user does not exist in the database', async () => {
     const login = {
       email: 'kylewalker123@yahoo.com',
-      password: 'password'
+      password: 'passworD56'
     };
     const response = await chai.request(server).post('/api/auth/login').send(login);
     expect(response.body.status).to.equal('fail');

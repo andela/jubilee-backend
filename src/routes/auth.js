@@ -14,14 +14,14 @@ const {
 } = AuthController;
 
 
-const { onCompanySignup } = AuthMiddleware;
+const { onCompanySignup, onUserLogin } = AuthMiddleware;
 const { checkParameters } = PasswordMiddleware;
 
 router.post('/signup/user', AuthMiddleware.onUserSignup, userSignup);
 router.post('/signup/supplier', AuthMiddleware.onSupplierSignup, supplierSignup);
 router.post('/signup/company', onCompanySignup, companySignUp);
 router.get('/verify', verifyEmail);
-router.post('/login', loginUser);
+router.post('/login', onUserLogin, loginUser);
 router.post('/reset-password/', checkParameters, sendResetPasswordEmail);
 router.get('/reset-password', verifyPasswordResetLink);
 router.post('/password/reset/:email', checkParameters, resetPassword);

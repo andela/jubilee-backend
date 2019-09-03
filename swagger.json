@@ -634,7 +634,7 @@
                 "type": "object",
                 "properties": {
                     "email": {
-                        "description": "Email address of the user user",
+                        "description": "Email address of the user",
                         "type": "string"
                     },
                     "password": {
@@ -643,8 +643,8 @@
                     }
                 },
                 "example": {
-                    "email": "efe.yusuf@andela.com",
-                    "password": "password123"
+                    "email": "barefootnomad@gmail.com",
+                    "password": "Elija455h"
                 },
                 "required": [
                     "email, password,"
