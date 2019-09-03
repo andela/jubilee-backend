@@ -35,5 +35,3 @@ export const newCompany = {
   companySizeId: 2,
   companyPlanId: 3
 };
-
-export const obj = {};

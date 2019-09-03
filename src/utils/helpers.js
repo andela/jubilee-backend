@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import Joi from '@hapi/joi';
 import bcrypt from 'bcryptjs';
 import env from '../config/env-config';
+import ApiError from './ApiError';
 
 const { SECRET, PORT } = env;
 
@@ -16,12 +17,23 @@ class Helpers {
  * @static
  * @param {string | number | Buffer | object} payLoad Payload to sign.
  * @param {string | number} expiresIn Expressed in seconds or a string describing a
- * time span. Eg: 60, "2 days", "10h", "7d". Default specified is 7days.
+ * time span. Eg: 60, "2 days", "10h", "7d". Default specified is 1day.
  * @memberof Helpers
  * @returns {string} JWT token.
  */
-  static generateToken(payLoad, expiresIn = '7d') {
+  static generateToken(payLoad, expiresIn = '1d') {
     return jwt.sign(payLoad, SECRET, { expiresIn });
+  }
+
+  /**
+ *  Synchronously sign the given payload into a JSON Web Token string that never expires.
+ * @static
+ * @param {string | number | Buffer | object} payLoad Payload to sign.
+ * @memberof Helpers
+ * @returns {string} JWT token.
+ */
+  static generateTokenAlive(payLoad) {
+    return jwt.sign(payLoad, SECRET);
   }
 
   /**
@@ -179,6 +191,21 @@ class Helpers {
  */
   static validate(value, schema) {
     return Joi.validate(value, schema, { abortEarly: false, allowUnknown: true });
+  }
+
+  /**
+ * Checks token from request header for user authentication
+ * @param {object} req - The request from the endpoint
+ * @memberof Helpers
+ * @returns {Token} Token
+ */
+  static checkToken(req) {
+    const { authorization } = req.headers;
+    if (!authorization) {
+      throw new ApiError(401, 'Access denied, Token required');
+    }
+    const token = req.headers.authorization.split(' ')[1] || req.headers.authorization || req.headers['x-access-token'] || req.headers.token || req.body.token;
+    return token;
   }
 
   /**

@@ -220,10 +220,10 @@
                 }
             }
         },
-        "/user": {
+        "/users/profile/{userId}": {
             "get": {
-                "description": "#",
-                "summary": "#",
+                "description": "Populates user details on the profile",
+                "summary": "Gets a single user profile",
                 "tags": [
                     "Users"
                 ],
@@ -235,12 +235,20 @@
                         "Bearer": []
                     }
                 ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "required": true,
+                        "description": "The Id of the user"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success"
                     },
                     "401": {
-                        "description": "Authorization required"
+                        "description": "Authentication required"
                     },
                     "404": {
                         "description": "User Not Found"
@@ -251,10 +259,10 @@
                 }
             }
         },
-        "/user/": {
+        "/users/profile/{userId}/": {
             "put": {
-                "description": "#",
-                "summary": "#",
+                "description": "Updates a single user profile",
+                "summary": "User can update the profile details",
                 "tags": [
                     "Users"
                 ],
@@ -276,10 +284,10 @@
                     {
                         "in": "body",
                         "name": "body",
-                        "required": false,
+                        "required": true,
                         "description": "This is the request body object containing user update",
                         "schema": {
-                            "$ref": "#/requestBody/putUserRequest"
+                            "$ref": "#/requestBody/updateUserProfileRequest"
                         }
                     }
                 ],
@@ -297,7 +305,49 @@
                         "description": "Internal Server Error"
                     },
                     "schema": {
-                        "$ref": "#/requestBody/putUserRequest"
+                        "$ref": "#/requestBody/updateUserProfileRequest"
+                    }
+                }
+            }
+        },
+        "/users/role": {
+            "patch": {
+                "description": "Updates User Role",
+                "summary": "Allows admin to Update User Role",
+                "tags": [
+                    "Users"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "description": "This is the request body object containing user role update",
+                        "schema": {
+                            "$ref": "#/requestBody/updateUserRoleRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Authentication required"
+                    },
+                    "404": {
+                        "description": "User Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
                     }
                 }
             }
@@ -528,6 +578,57 @@
                     "firstName, lastName, email,password,companySizeId,companyPlanId,companyAddress,companyName"
                 ]
             },
+            "companySignUpRequest": {
+                "title": "Company Signup Request",
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "description": "first name of the Company Admin",
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "description": "Last name of the Company Admin",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "Email of the user",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "The Password of the user",
+                        "type": "string"
+                    },
+                    "companyName": {
+                        "description": "The user's company name",
+                        "type": "string"
+                    },
+                    "companyAddress": {
+                        "description": "The company's Address",
+                        "type": "string"
+                    },
+                    "companySizeId": {
+                        "description": "The company's Size, between 1-101 and Above,a id reference is passed to the server",
+                        "type": "integer"
+                    },
+                    "companyPlanId": {
+                        "description": "The plan to subscribe, gold,silver or platinum ,a id reference is passed to the server",
+                        "type": "integer"
+                    }
+                },
+                "example": {
+                    "firstName": "Ayodelre",
+                    "lastName": "Akin",
+                    "companySizeId": 1,
+                    "companyPlanId": 2,
+                    "email": "daylay33@gmail.com",
+                    "companyAddress": "30, Ania Street",
+                    "companyName": "Andela",
+                    "password": "Elijah38490"
+                },
+                "required": [
+                    "firstName, lastName, email,password,companySizeId,companyPlanId,companyAddress,companyName"
+                ]
+            },
             "loginRequest": {
                 "title": "Login Request",
                 "type": "object",
@@ -549,37 +650,75 @@
                     "email, password,"
                 ]
             },
-            "putUserRequest": {
+            "updateUserProfileRequest": {
                 "title": "Update User",
                 "type": "object",
                 "properties": {
-                    "username": {
-                        "description": "New username",
+                    "firstName": {
+                        "description": "First name of the user",
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "description": "Last name of the user",
                         "type": "string"
                     },
                     "email": {
-                        "description": "New user email",
+                        "description": "Email of the user",
                         "type": "string"
                     },
-                    "bio": {
-                        "description": "User bio",
+                    "gender": {
+                        "description": "Use gender",
+                        "type": "integer"
+                    },
+                    "department": {
+                        "description": "User department",
                         "type": "string"
                     },
-                    "image": {
-                        "description": "User image",
+                    "lineManager": {
+                        "description": "User line manager",
                         "type": "string"
                     },
-                    "password": {
-                        "description": "New password",
+                    "street": {
+                        "description": "User street",
+                        "type": "string"
+                    },
+                    "preferredLanguage": {
+                        "description": "User preferred language",
+                        "type": "string"
+                    },
+                    "preferredCurrency": {
+                        "description": "User preferred currency",
                         "type": "string"
                     }
                 },
                 "example": {
-                    "username": "Example",
-                    "email": "Example",
-                    "bio": "Example",
-                    "image": "Example",
-                    "password": "Example"
+                    "firstName": "first name",
+                    "lastName": "last name",
+                    "email": "newemail@example.com",
+                    "gender": "male",
+                    "department": "",
+                    "lineManager": "",
+                    "street": "street",
+                    "preferredLanguage": "EN",
+                    "preferredCurrency": "Naira"
+                }
+            },
+            "updateUserRoleRequest": {
+                "title": "Update User Role",
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "description": "the email of the user",
+                        "type": "string"
+                    },
+                    "roleId": {
+                        "description": "Id of role for the user",
+                        "type": "number"
+                    }
+                },
+                "example": {
+                    "email": "barefootnomad@gmail.com",
+                    "roleId": 5
                 }
             },
             "resetPasswordRequest": {

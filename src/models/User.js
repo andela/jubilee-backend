@@ -70,6 +70,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'supplierId',
       as: 'affiliateSupplier'
     });
+    User.belongsToMany(models.Role, {
+      through: 'RoleUsers',
+      as: 'roles',
+      foreignKey: 'userId'
+    });
     User.belongsTo(models.Company, {
       foreignKey: 'companyId',
       as: 'company',

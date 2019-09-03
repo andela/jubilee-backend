@@ -25,13 +25,13 @@ const complexityOptions = {
    * 2) dummy - a dummy method for testing validations upon success.
    */
 export default class authValidation {
-  /**
-       * Validates user paramenters upon registration
-       *
-       * @param {object} userObject - The user object
-       * @param {object} res - The user response object
-       * @returns {object} - returns an object (error or response).
-       */
+/**
+     * Validates user paramenters upon registration
+     *
+     * @param {object} userObject - The user object
+     * @param {object} res - The user response object
+     * @returns {object} - returns an object (error or response).
+     */
   static async userSignup(userObject) {
     // joi parameters to test against user inputs
     const schema = {
@@ -44,7 +44,7 @@ export default class authValidation {
       password: new passwordComplexity(complexityOptions).required()
         .label('Password is required. \n It should be more than 8 characters, and should include at least a capital letter, and a number'),
       gender: joi.string().valid('male', 'female').required()
-        .label('please input a gender (male or female'),
+        .label('please input a gender (male or female)'),
       street: joi.string().min(2).max(20).required()
         .label('Please input a street name'),
       city: joi.string().min(3).max(25).required()

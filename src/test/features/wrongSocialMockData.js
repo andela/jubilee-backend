@@ -5,7 +5,7 @@
 
 const wrongFacebookMock = (req, res, next) => {
   req.user = {
-    id: undefined,
+    id: '1283637238389',
     username: undefined,
     displayName: undefined,
     name: {
@@ -43,7 +43,7 @@ const wrongFacebookMock = (req, res, next) => {
         }
       },
       email: 'jubilee.barefootnomad@gmail.com',
-      id: undefined
+      id: '1283637238389'
     }
   };
   next();

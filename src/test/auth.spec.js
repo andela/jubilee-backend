@@ -1,9 +1,9 @@
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import faker from 'faker';
-import server from '../src';
+import server from '..';
 import { newUser, newSupplier, newCompany } from './dummies';
-import Helpers from '../src/utils/helpers';
+import Helpers from '../utils/helpers';
 
 const { generateToken } = Helpers;
 
@@ -94,7 +94,7 @@ describe('Auth route endpoints', () => {
   });
 
   // my tests
-  it('should pass upon successfull validation', async () => {
+  it('should pass upon successfull validation and assign default role', async () => {
     const user = {
       email: 'tony@gmail.com',
       firstName: 'Tony',
@@ -116,6 +116,7 @@ describe('Auth route endpoints', () => {
       .send(user);
     expect(response).to.has.status(201);
     expect(response.body).to.be.a('object');
+    expect(response.body.data.roleAssignment).to.be.a('object');
     expect(response.body.status).to.equal('success');
   });
   it('should fail upon missing parameters during validation', async () => {
@@ -175,7 +176,7 @@ describe('Auth route endpoints', () => {
     expect(response.body.status).to.equal('success');
     expect(response.body.data).to.be.a('object');
     expect(response.body.data.admin.token).to.be.a('string');
-    expect(response.body.data.company.token).to.be.a('string');
+    expect(response.body.data.company.companyToken).to.be.a('string');
     expect(response.body.data.admin.firstName).to.be.a('string');
     expect(response.body.data.admin.lastName).to.be.a('string');
   });
@@ -193,7 +194,6 @@ describe('Auth route endpoints', () => {
     expect(response).to.have.status(400);
     expect(error.message).to.equal('Invalid token, verification unsuccessful');
   });
-
   it('should return bad error 400 if a required field is missing', async () => {
     const response = await chai.request(server).post('/api/auth/signup/company').send({ ...newCompany, firstName: '' });
     expect(response).to.have.status(400);
@@ -279,7 +279,9 @@ describe('GET /api/auth/verify?token', () => {
         confirmPassword: faker.internet.password(15, false)
       };
 
-      const response = await chai.request(server).post(`/api/auth/password/reset/${newUserPasswordReset.email}`).send(password);
+      const response = await chai.request(server)
+        .post(`/api/auth/password/reset/${newUserPasswordReset.email}`)
+        .send(password);
       expect(response).to.have.status(400);
       expect(response.error.message).to.be.a('string');
     });
@@ -291,7 +293,9 @@ describe('GET /api/auth/verify?token', () => {
         confirmPassword: testPassword
       };
 
-      const response = await chai.request(server).post(`/api/auth/password/reset/${faker.internet.email()}`).send(password);
+      const response = await chai.request(server)
+        .post(`/api/auth/password/reset/${faker.internet.email()}`)
+        .send(password);
       expect(response).to.have.status(404);
       expect(response.error.message).to.be.a('string');
     });
@@ -302,19 +306,24 @@ describe('GET /api/auth/verify?token', () => {
         confirmPassword: testPassword
       };
 
-      const response = await chai.request(server).post(`/api/auth/password/reset/${newUserPasswordReset.email}`).send(password);
+      const response = await chai.request(server)
+        .post(`/api/auth/password/reset/${newUserPasswordReset.email}`)
+        .send(password);
       expect(response).to.have.status(200);
       expect(response.body.data).to.be.a('string');
     });
   });
 
-  it('should sign in user if emaill is true', (done) => {
-    chai.request(server)
-      .get('/api/auth/rightSocial')
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        done();
-      });
+  it('should sign in user if emaill is true', async () => {
+    const response = await chai.request(server)
+      .get('/api/auth/rightSocial');
+    expect(response).to.have.status(200);
+  });
+
+  it('should not be able to sign in user if email is false', async () => {
+    const response = await chai.request(server)
+      .get('/api/auth/wrongSocial');
+    expect(response).to.have.status(403);
   });
 });
 describe('POST /api/auth/login', () => {
@@ -355,6 +364,43 @@ describe('POST /api/auth/login', () => {
     expect(response.body.status).to.equal('fail');
     expect(response.status).to.equal(401);
     expect(response.body.error.message).to.be.equal('Invalid login details');
+  });
+});
+
+
+describe('PATCH /api/users/role', () => {
+  it('should successfully update user role', async () => {
+    const { id, firstName, role } = newlyCreatedUser;
+    const token = generateToken({ id, firstName, role });
+    const { email } = newUser;
+    const userRole = {
+      email,
+      roleId: 1
+    };
+    const response = await chai
+      .request(server).patch('/api/users/role')
+      .set('Cookie', `token=${token};`)
+      .send(userRole);
+    expect(response).to.have.status(200);
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.userId).to.be.a('number');
+    expect(response.body.data.roleId).to.be.a('number');
+  });
+
+  it('should fail is user does not exist', async () => {
+    const { id, firstName, role } = newlyCreatedUser;
+    const token = generateToken({ id, firstName, role });
+    const userRole = {
+      email: 'daniel@gmail.com',
+      roleId: 1
+    };
+    const response = await chai.request(server)
+      .patch('/api/users/role')
+      .set('Cookie', `token=${token};`)
+      .send(userRole);
+    expect(response.body.status).to.equal('fail');
+    expect(response.status).to.equal(404);
+    expect(response.body.error.message).to.be.equal('User account does not exist');
   });
 });
 

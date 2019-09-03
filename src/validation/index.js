@@ -1,3 +1,4 @@
 import authValidation from './authValidation';
+import passwordValidator from './passwordValidator';
 
-export default authValidation;
+export { authValidation, passwordValidator };
