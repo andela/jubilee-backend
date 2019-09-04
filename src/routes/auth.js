@@ -14,11 +14,13 @@ const {
 } = AuthController;
 
 
-const { onCompanySignup, onUserLogin } = AuthMiddleware;
+const {
+  onCompanySignup, onSupplierSignup, onUserSignup, onUserLogin
+} = AuthMiddleware;
 const { checkParameters } = PasswordMiddleware;
 
-router.post('/signup/user', AuthMiddleware.onUserSignup, userSignup);
-router.post('/signup/supplier', AuthMiddleware.onSupplierSignup, supplierSignup);
+router.post('/signup/user', onUserSignup, userSignup);
+router.post('/signup/supplier', onSupplierSignup, supplierSignup);
 router.post('/signup/company', onCompanySignup, companySignUp);
 router.get('/verify', verifyEmail);
 router.post('/login', onUserLogin, loginUser);

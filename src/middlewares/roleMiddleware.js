@@ -19,10 +19,7 @@ export default class roleMiddleware {
     try {
       const { token } = req.cookies;
       const { id } = verifyToken(token);
-      const [{ dataValues: userWithRoles }] = await RoleService.getRoles(id);
-      const roleObject = userWithRoles.roles;
-      const [{ dataValues: unroledRowArray }] = roleObject;
-      const { id: roleId } = unroledRowArray;
+      const { roleId } = await RoleService.getRoles(id);
       if (roleId === 1) {
         return next();
       }

@@ -13,7 +13,7 @@ export default class RoleService {
     * @return {Promise<object>} A promise object with role detail.
     * @memberof RoleService
     */
-  static async assign(userId, roleId) {
+  static async assignRole(userId, roleId) {
     const { dataValues: newAssignment } = await RoleUser.create({ userId, roleId });
     return newAssignment;
   }
@@ -24,16 +24,8 @@ export default class RoleService {
    * @returns {Promise<object>} A promise object with user and role detail.
    */
   static async getRoles(id) {
-    return User.findAll({
-      include: [{
-        model: Role,
-        as: 'roles',
-        required: false,
-        attributes: ['id', 'label'],
-        through: { attributes: [] }
-      }],
-      where: { id }
-    });
+    const [{ dataValues: userRoles }] = await RoleUser.findAll({ where: { userId: id } });
+    return userRoles;
   }
 
   /**

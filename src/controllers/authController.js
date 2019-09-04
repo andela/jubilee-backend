@@ -18,7 +18,7 @@ const {
   create, updateById, updatePassword, find, socialLogin,
 } = UserService;
 
-const { assign } = RoleService;
+const { assignRole } = RoleService;
 const { update } = SupplierService;
 
 
@@ -50,7 +50,7 @@ class AuthController {
        * should give this value in a token upon signup
        */
       const defaultRoleId = 1;
-      const roleAssignment = await assign(user.id, defaultRoleId);
+      const roleAssignment = await assignRole(user.id, defaultRoleId);
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       const userResponse = extractUserData(user);
       const isSent = await sendVerificationEmail(req, { ...userResponse });
