@@ -9,8 +9,8 @@ describe('Booking Route Endpoints', () => {
   it('should successfully create an accommodation booking', async () => {
     const booking = {
       fullname: faker.name.firstName(),
-			checkIn: new Date();
-			checkOut: new Date();
+      checkIn: new Date(),
+      checkOut: new Date()
     };
 
     const response = await chai
