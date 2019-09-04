@@ -1,5 +1,5 @@
 import { BookingValidator } from '../validation';
-import { Helpers, ApiError } from '../utils';
+import { Helpers } from '../utils';
 
 const { errorResponse } = Helpers;
 /**
@@ -17,7 +17,7 @@ class BookingMiddleware {
    * @returns {object} Returns an true if validation passes or error if validation fails.
    * @memberof BookingMiddleware
    */
-  static async checkAccomodationFields(req, res, next) {
+  static async validateFields(req, res, next) {
     try {
       const validated = await BookingValidator.validateAccommodation(req.body);
       if (validated) {

@@ -8,6 +8,7 @@ import facilityRoutes from './facility';
 const router = Router();
 
 router.use('/auth', authRoutes);
+router.use('/booking', bookingRoutes);
 router.use('/users', userRoutes);
 router.use('/facility', facilityRoutes);
 router.use('/docs', swaggerUi.serve);
