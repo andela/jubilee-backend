@@ -67,6 +67,7 @@ class AuthController {
   static async supplierSignup(req, res) {
     try {
       const [companyData, userData] = splitSupplierData(req.body);
+      userData.password = hashPassword(userData.password);
       let supplier = await SupplierService.create(companyData);
       const { id: supplierId } = supplier;
       let user = await UserService.create({ ...userData, supplierId });

@@ -1,3 +1,4 @@
+Supplier
 module.exports = (sequelize, DataTypes) => {
   const Supplier = sequelize.define('Supplier', {
     companyName: { type: DataTypes.STRING, allowNull: false },
@@ -26,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
     Supplier.belongsTo(models.CategoryOfService, {
       foreignKey: 'categoryOfServiceId',
       as: 'service'
+    });
+    Supplier.hasMany(models.Facility, {
+      foreignKey: 'supplierId',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     });
   };
   return Supplier;
