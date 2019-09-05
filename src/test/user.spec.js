@@ -12,28 +12,24 @@ describe('User Route Endpoints', () => {
       email: faker.internet.email(),
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
-      password: faker.internet.password(15, false),
+      password: 'Elijahayodele12',
       companyName: faker.company.companyName(),
-      country: faker.address.country(),
-      gender: 'male',
-      street: 'ajayi estate',
-      city: faker.address.city(),
-      state: faker.address.state(),
-      birthdate: faker.date.past(),
+      companyAddress: faker.address.secondaryAddress(),
+      categoryOfServiceId: 2,
       phoneNumber: faker.phone.phoneNumber()
     };
     const response = await chai
       .request(server)
-      .post('/api/auth/signup/user')
+      .post('/api/auth/signup/supplier')
       .send(user);
     expect(response).to.have.status(201);
     expect(response.body.data).to.be.a('object');
-    expect(response.body.data.token).to.be.a('string');
-    expect(response.body.data.firstName).to.be.a('string');
-    expect(response.body.data.lastName).to.be.a('string');
-    newlyCreatedUser = response.body.data;
-    const returnToken = response.body.data.token;
-    token = returnToken;
+    expect(response.body.data.user.token).to.be.a('string');
+    expect(response.body.data.user.firstName).to.be.a('string');
+    expect(response.body.data.user.lastName).to.be.a('string');
+    newlyCreatedUser = response.body.data.user;
+    console.log('newly created user: ', newlyCreatedUser);
+    token = response.body.data.user.token;
   });
 });
 
@@ -44,6 +40,7 @@ describe('GET REQUESTS', () => {
     const response = await chai.request(server).get(`/api/users/profile/${id}`)
       .set('authorization', `Bearer ${token}`);
     const { body: { status } } = response;
+    console.log('response data: ', response.body.error);
     expect(response).to.have.status(200);
     expect(status).to.equal('success');
   });
@@ -52,6 +49,7 @@ describe('GET REQUESTS', () => {
     const response = await chai.request(server).get(`/api/users/profile/${id}`)
       .set('authorization', `Bearer ${token}`);
     const { body: { status } } = response;
+    console.log('response data: ', response.body.error);
     expect(response).to.have.status(401);
     expect(status).to.equal('fail');
   });
@@ -63,6 +61,7 @@ describe('PUT REQUESTS', () => {
     const response = await chai.request(server).put(`/api/users/profile/${id}`)
       .set('authorization', `Bearer ${token}`);
     const { body: { status } } = response;
+    console.log('response data: ', response.body.error);
     expect(response).to.have.status(401);
     expect(status).to.equal('fail');
   });
@@ -83,6 +82,7 @@ describe('PUT REQUESTS', () => {
     const response = await chai.request(server).put(`/api/users/profile/${id}`).send(user)
       .set('authorization', `Bearer ${token}`);
     const { body: { status } } = response;
+    console.log('response data: ', response.body.error);
     expect(response).to.have.status(200);
     expect(status).to.equal('success');
   });

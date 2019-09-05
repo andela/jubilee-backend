@@ -253,19 +253,13 @@ class Helpers {
  * @returns { array } - An array containing both company data and user data.
  */
   static verifySignupToken(token) {
-    console.log('checking token: ', token);
     const [establishment, value] = token.split('.');
-    console.log(`-${establishment}-`);
     const establishmentId = Number(value);
-    console.log('id: ', establishmentId);
     if (establishment !== 'supplier' && establishment !== 'company') {
-      console.log('#1 should not show');
       throw new ApiError(400, 'Corrupted signup token');
     } else if (Number.isNaN(establishmentId)) {
-      console.log('#2 should not show');
       throw new ApiError(400, 'Corrupted signup token');
     } else {
-      console.log('token checked');
       return [establishment, establishmentId];
     }
   }

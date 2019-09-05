@@ -9,6 +9,7 @@ const { generateToken } = Helpers;
 
 chai.use(chaiHttp);
 let newlyCreatedUser = {};
+let companyAdmin = {};
 let newUserPasswordReset;
 let supplierToken,
   companyToken;
@@ -82,7 +83,7 @@ describe('Auth route endpoints', () => {
 
   it("should send a verification link to a user's email upon successful registration", async () => {
     newUser.companyName = newSupplier.companyName;
-    newUser.companyToken = supplierToken;
+    newUser.signupToken = supplierToken;
     const response = await chai.request(server).post('/api/auth/signup/user').send(newUser);
     const { body: { data } } = response;
     newlyCreatedUser = { ...data };
@@ -152,6 +153,8 @@ describe('Auth route endpoints', () => {
   it('should signup a company and return status 201', async () => {
     const response = await chai.request(server).post('/api/auth/signup/company').send(newCompany);
     companyToken = response.body.data.signupToken;
+    const { body: { data: { admin } } } = response;
+    companyAdmin = { ...admin };
     expect(response).to.have.status(201);
     expect(response.body.status).to.equal('success');
     expect(response.body.data).to.be.a('object');
@@ -372,8 +375,8 @@ describe('POST /api/auth/login', () => {
 
 describe('PATCH /api/users/role', () => {
   it('should successfully update user role', async () => {
-    const { id, firstName, role } = newlyCreatedUser;
-    const token = generateToken({ id, firstName, role });
+    const { id, firstName } = companyAdmin;
+    const token = generateToken({ id, firstName });
     const { email } = newUser;
     const userRole = {
       email,
@@ -390,8 +393,8 @@ describe('PATCH /api/users/role', () => {
   });
 
   it('should fail is user does not exist', async () => {
-    const { id, firstName, role } = newlyCreatedUser;
-    const token = generateToken({ id, firstName, role });
+    const { id, firstName } = newlyCreatedUser;
+    const token = generateToken({ id, firstName });
     const userRole = {
       email: 'daniel@gmail.com',
       roleId: 1

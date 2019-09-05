@@ -12,7 +12,7 @@ export const newSupplier = {
   firstName: faker.name.firstName(),
   lastName: faker.name.lastName(),
   email: faker.internet.email(),
-  companyName: faker.company.companyName(),
+  companyName: 'Andela',
   companyAddress: faker.address.secondaryAddress(),
   categoryOfServiceId: 2,
   password: faker.internet.password(15, false),

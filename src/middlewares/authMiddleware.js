@@ -23,18 +23,13 @@ export default class AuthMiddleware {
   static async onUserSignup(req, res, next) {
     try {
       const validated = await AuthValidation.userSignup(req.body);
-      console.log('Code passes validation');
       if (validated) {
         const { email } = req.body;
         const member = await UserService.find({ email });
-        console.log('user in database: ', member);
         if (!member) {
-          console.log('time to check token');
           const [establishment, establishmentId] = verifySignupToken(req.body.signupToken);
-          console.log('FLAG 1: ', establishment, establishmentId);
           if (establishment === 'supplier') {
             const supplier = await findSupplier({ id: establishmentId });
-            console.log(supplier);
             if (!supplier) {
               return errorResponse(res, { code: 401, message: 'Please make sure your token is valid, we cannot locate supplier details' });
             }
@@ -147,7 +142,6 @@ export default class AuthMiddleware {
       const validated = await companySignup(req.body);
       if (validated) {
         const admin = await UserService.find({ email });
-        console.log(admin);
         if (!admin) {
           next();
         } else {
