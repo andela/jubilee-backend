@@ -28,7 +28,6 @@ describe('User Route Endpoints', () => {
     expect(response.body.data.user.firstName).to.be.a('string');
     expect(response.body.data.user.lastName).to.be.a('string');
     newlyCreatedUser = response.body.data.user;
-    console.log('newly created user: ', newlyCreatedUser);
     token = response.body.data.user.token;
   });
 });
@@ -40,7 +39,6 @@ describe('GET REQUESTS', () => {
     const response = await chai.request(server).get(`/api/users/profile/${id}`)
       .set('authorization', `Bearer ${token}`);
     const { body: { status } } = response;
-    console.log('response data: ', response.body.error);
     expect(response).to.have.status(200);
     expect(status).to.equal('success');
   });
@@ -49,7 +47,6 @@ describe('GET REQUESTS', () => {
     const response = await chai.request(server).get(`/api/users/profile/${id}`)
       .set('authorization', `Bearer ${token}`);
     const { body: { status } } = response;
-    console.log('response data: ', response.body.error);
     expect(response).to.have.status(401);
     expect(status).to.equal('fail');
   });
@@ -61,7 +58,6 @@ describe('PUT REQUESTS', () => {
     const response = await chai.request(server).put(`/api/users/profile/${id}`)
       .set('authorization', `Bearer ${token}`);
     const { body: { status } } = response;
-    console.log('response data: ', response.body.error);
     expect(response).to.have.status(401);
     expect(status).to.equal('fail');
   });
@@ -82,7 +78,6 @@ describe('PUT REQUESTS', () => {
     const response = await chai.request(server).put(`/api/users/profile/${id}`).send(user)
       .set('authorization', `Bearer ${token}`);
     const { body: { status } } = response;
-    console.log('response data: ', response.body.error);
     expect(response).to.have.status(200);
     expect(status).to.equal('success');
   });
