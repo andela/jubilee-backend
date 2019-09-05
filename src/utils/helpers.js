@@ -37,6 +37,21 @@ class Helpers {
   }
 
   /**
+ *  Generates token upon first signup to be used by subesquent users
+ * @static
+ * @param {string} letterIdentifier - one letter identifier of establishment.
+ * @param {number} id - one letter identifier of establishment
+ * @memberof Helpers
+ * @returns {string} JWT token.
+ */
+  static generateTokenOnSignup(letterIdentifier, id) {
+    const randomNumber = Math.floor(Math.random() * 8999 + 1000);
+    const anotherRandomNumber = Math.floor(Math.random() * 8999 + 1000);
+    const token = `${letterIdentifier}.${id}.${randomNumber}@${anotherRandomNumber}`;
+    return token;
+  }
+
+  /**
    *
    *  Synchronously verify the given JWT token using a secret
    * @static
@@ -153,6 +168,7 @@ class Helpers {
       phoneNumber: user.phoneNumber,
       companyName: user.companyName,
       supplierId: user.supplierId,
+      companyId: user.companyId,
       isVerified: user.isVerified,
       role: user.role,
       department: user.department,
@@ -227,6 +243,25 @@ class Helpers {
       firstName, lastName, email, password
     };
     return [companyData, userData];
+  }
+
+  /**
+ * returns values from token needed for signup
+ * @static
+ * @param {string} token - The company object sent as request body.
+ * @memberof Helpers
+ * @returns { array } - An array containing both company data and user data.
+ */
+  static verifySignupToken(token) {
+    const [establishment, value] = token.split('.');
+    const establishmentId = Number(value);
+    if (establishment !== 'supplier' && establishment !== 'company') {
+      throw new ApiError(400, 'Corrupted signup token');
+    } else if (Number.isNaN(establishmentId)) {
+      throw new ApiError(400, 'Corrupted signup token');
+    } else {
+      return [establishment, establishmentId];
+    }
   }
 }
 
