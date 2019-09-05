@@ -28,6 +28,16 @@ export default class CompanyService {
   }
 
   /**
+   * Find a company
+   * @param {number | object | string} options - company search value
+   * @returns {Promise<object>} A promise object with user detail.
+   * @memberof SupplierService
+   */
+  static async findCompany(options) {
+    return Company.findOne({ where: options });
+  }
+
+  /**
    *
    * updates an existing company by ID
    * @static

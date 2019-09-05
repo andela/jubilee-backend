@@ -10,23 +10,31 @@ const { generateToken } = Helpers;
 chai.use(chaiHttp);
 let newlyCreatedUser = {};
 let newUserPasswordReset;
+let supplierToken,
+  companyToken;
 describe('Auth route endpoints', () => {
-  it('should signup a user successfully with a status of 201', async () => {
-    const user = {
-      email: faker.internet.email(),
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-      password: faker.internet.password(15, false),
-      companyName: faker.company.companyName(),
-      country: faker.address.country(),
-      gender: 'male',
-      street: 'ajayi estate',
-      city: faker.address.city(),
-      state: faker.address.state(),
-      birthdate: faker.date.past(),
-      phoneNumber: faker.phone.phoneNumber()
-    };
+  it('should successfully signup a supplier with status 201', async () => {
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup/supplier')
+      .send(newSupplier);
+    supplierToken = response.body.data.signupToken;
+    expect(response).to.have.status(201);
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.user.token).to.be.a('string');
+    expect(response.body.data.user.firstName).to.be.a('string');
+    expect(response.body.data.user.lastName).to.be.a('string');
+  });
 
+  it('should signup a supplier user successfully with a status of 201', async () => {
+    const user = {
+      firstName: 'Davis',
+      lastName: 'Okra',
+      email: 'Davis@okra.com',
+      password: 'tmobnvarq.ss66u',
+      companyName: newSupplier.companyName,
+      signupToken: supplierToken,
+    };
     const response = await chai
       .request(server)
       .post('/api/auth/signup/user')
@@ -37,18 +45,6 @@ describe('Auth route endpoints', () => {
     expect(response.body.data.firstName).to.be.a('string');
     expect(response.body.data.lastName).to.be.a('string');
     newUserPasswordReset = user;
-  });
-
-  it('should successfully signup a supplier with status 201', async () => {
-    const response = await chai
-      .request(server)
-      .post('/api/auth/signup/supplier')
-      .send(newSupplier);
-    expect(response).to.have.status(201);
-    expect(response.body.data).to.be.a('object');
-    expect(response.body.data.user.token).to.be.a('string');
-    expect(response.body.data.user.firstName).to.be.a('string');
-    expect(response.body.data.user.lastName).to.be.a('string');
   });
 
   it('should return validation error when supplied a wrong category of service id', async () => {
@@ -81,10 +77,12 @@ describe('Auth route endpoints', () => {
     expect(response).to.have.status(409);
     expect(response.body.status).to.equal('fail');
     expect(response.body.error).to.be.a('object');
-    expect(response.body.error.message).to.equal(`User with email: "${newSupplier.email}" already exists`);
+    expect(response.body.error.message).to.equal(`User with email: "${newSupplier.email}" already exists for a supplier`);
   });
 
   it("should send a verification link to a user's email upon successful registration", async () => {
+    newUser.companyName = newSupplier.companyName;
+    newUser.companyToken = supplierToken;
     const response = await chai.request(server).post('/api/auth/signup/user').send(newUser);
     const { body: { data } } = response;
     newlyCreatedUser = { ...data };
@@ -96,18 +94,12 @@ describe('Auth route endpoints', () => {
   // my tests
   it('should pass upon successfull validation and assign default role', async () => {
     const user = {
-      email: 'tony@gmail.com',
-      firstName: 'Tony',
-      lastName: 'Marshall',
-      password: 'tmonarqA1.',
-      companyName: 'Jubilee',
-      country: 'NIgeria',
-      gender: 'male',
-      street: 'Abage',
-      city: 'Lagos',
-      state: 'Imo',
-      birthdate: '2019-08-20',
-      phoneNumber: '00000000000',
+      firstName: 'Kaniri',
+      lastName: 'ODunsi',
+      email: 'kaniri@gmail.com',
+      password: 'tmobnvarq.ss66u',
+      companyName: newSupplier.companyName,
+      signupToken: supplierToken,
     };
 
     const response = await chai
@@ -125,13 +117,6 @@ describe('Auth route endpoints', () => {
       lastName: 'Marshall',
       password: 'tmonarqA1.',
       companyName: 'Jubilee',
-      country: 'NIgeria',
-      gender: 'male',
-      street: 'Abage',
-      city: 'Lagos',
-      state: 'Imo',
-      birthdate: '2019-08-20',
-      phoneNumber: '00000000000',
     };
 
     const response = await chai
@@ -145,18 +130,12 @@ describe('Auth route endpoints', () => {
 
   it('should fail upon signup if user exists', async () => {
     const user = {
-      email: 'tony@gmail.com',
-      firstName: 'Tony',
-      lastName: 'Marshall',
-      password: 'tmonarqA1.',
-      companyName: 'Jubilee',
-      country: 'NIgeria',
-      gender: 'male',
-      street: 'Abage',
-      city: 'Lagos',
-      state: 'Imo',
-      birthdate: '2019-08-20',
-      phoneNumber: faker.phone.phoneNumber(),
+      firstName: 'Kaniri',
+      lastName: 'ODunsi',
+      email: 'kaniri@gmail.com',
+      password: 'tmobnvarq.ss66u',
+      companyName: newSupplier.companyName,
+      signupToken: supplierToken,
     };
 
     const response = await chai
@@ -172,6 +151,7 @@ describe('Auth route endpoints', () => {
 
   it('should signup a company and return status 201', async () => {
     const response = await chai.request(server).post('/api/auth/signup/company').send(newCompany);
+    companyToken = response.body.data.signupToken;
     expect(response).to.have.status(201);
     expect(response.body.status).to.equal('success');
     expect(response.body.data).to.be.a('object');
@@ -180,12 +160,34 @@ describe('Auth route endpoints', () => {
     expect(response.body.data.admin.firstName).to.be.a('string');
     expect(response.body.data.admin.lastName).to.be.a('string');
   });
+
+  it('should signup a company user successfully with a status of 201', async () => {
+    const user = {
+      firstName: 'brimo',
+      lastName: 'Okra',
+      email: 'brimo@okra.com',
+      password: 'tmobnvarq.ss66u',
+      companyName: newCompany.companyName,
+      signupToken: companyToken,
+    };
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup/user')
+      .send(user);
+    expect(response).to.have.status(201);
+    expect(response.body.data).to.be.a('object');
+    expect(response.body.data.token).to.be.a('string');
+    expect(response.body.data.firstName).to.be.a('string');
+    expect(response.body.data.lastName).to.be.a('string');
+    newUserPasswordReset = user;
+  });
+
   it('should return a conflict error 409 if admin already exists in database', async () => {
     const { email } = newCompany;
     const response = await chai.request(server).post('/api/auth/signup/company').send(newCompany);
     expect(response).to.have.status(409);
     expect(response.body.error).to.be.a('object');
-    expect(response.body.error.message).to.equal(`Admin with email: "${email}" already exists for a company`);
+    expect(response.body.error.message).to.equal(`User with email: "${email}" already exists for a company`);
   });
 
   it('should return an error response if verification token is not provided', async () => {

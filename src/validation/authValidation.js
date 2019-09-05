@@ -43,19 +43,21 @@ export default class AuthValidation {
         .label('Please enter a valid company email address'),
       password: new passwordComplexity(complexityOptions).required()
         .label('Password is required. \n It should be more than 8 characters, and should include at least a capital letter, and a number'),
-      gender: joi.string().valid('male', 'female').required()
+      gender: joi.string().valid('male', 'female')
         .label('please input a gender (male or female)'),
-      street: joi.string().min(2).max(20).required()
+      street: joi.string().min(2).max(20)
         .label('Please input a street name'),
-      city: joi.string().min(3).max(25).required()
+      signupToken: joi.string().min(6).max(21).required()
+        .label('Please input token needed for signup'),
+      city: joi.string().min(3).max(25)
         .label('Please input a city name'),
-      state: joi.string().min(3).max(25).required()
+      state: joi.string().min(3).max(25)
         .label('Please input a state name'),
-      country: joi.string().min(3).max(50).required()
+      country: joi.string().min(3).max(50)
         .label('Please input a country'),
-      birthdate: joi.date().iso().required()
+      birthdate: joi.date().iso()
         .label('Please input a valid date format: yy-mm-dd'),
-      phoneNumber: joi.string().regex(/^[0-9+\(\)#\.\s\/ext-]+$/).required()
+      phoneNumber: joi.string().regex(/^[0-9+\(\)#\.\s\/ext-]+$/)
         .label('Please input a valid phone number'),
       companyName: joi.string().min(3).max(40).required()
         .label('Please add your company name'),

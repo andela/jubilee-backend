@@ -19,6 +19,16 @@ export default class SupplierService {
   }
 
   /**
+   * Find a supplier
+   * @param {number | object | string} options - supplier search value
+   * @returns {Promise<object>} A promise object with user detail.
+   * @memberof SupplierService
+   */
+  static async findSupplier(options) {
+    return Supplier.findOne({ where: options });
+  }
+
+  /**
    * Updates supplier data in the database
    * @static
    * @param {object} supplierData - The supplier to be added to the database.

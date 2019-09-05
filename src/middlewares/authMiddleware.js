@@ -1,12 +1,14 @@
 import { AuthValidation } from '../validation';
 import { Helpers, ApiError } from '../utils';
-import { UserService } from '../services';
+import { UserService, SupplierService, CompanyService } from '../services';
 
 const {
-  errorResponse, verifyToken, checkToken
+  errorResponse, verifyToken, checkToken, verifySignupToken, comparePassword
 } = Helpers;
 
 const { companySignup, userLogin } = AuthValidation;
+const { findSupplier } = SupplierService;
+const { findCompany } = CompanyService;
 /**
  * Middleware for input validations
  */
@@ -20,34 +22,41 @@ export default class AuthMiddleware {
      */
   static async onUserSignup(req, res, next) {
     try {
-      // this destructuring was written to make testing easier, as roleId is needed to test
-      // other methods
-      const {
-        firstName, lastName, email, password, gender, street, city, state,
-        country, birthdate, phoneNumber, companyName,
-      } = req.body;
-      const user = {
-        firstName,
-        lastName,
-        email,
-        password,
-        gender,
-        street,
-        city,
-        state,
-        country,
-        birthdate,
-        phoneNumber,
-        companyName,
-      };
-      // it should take all body and split in future. for testing
-      // at this time, it takes only the property it needs
-      // original: const validated = await authValidation.userSignup(req.body);
-      const validated = await AuthValidation.userSignup(user);
+      const validated = await AuthValidation.userSignup(req.body);
+      console.log('Code passes validation');
       if (validated) {
+        const { email } = req.body;
         const member = await UserService.find({ email });
+        console.log('user in database: ', member);
         if (!member) {
-          return next();
+          console.log('time to check token');
+          const [establishment, establishmentId] = verifySignupToken(req.body.signupToken);
+          console.log('FLAG 1: ', establishment, establishmentId);
+          if (establishment === 'supplier') {
+            const supplier = await findSupplier({ id: establishmentId });
+            console.log(supplier);
+            if (!supplier) {
+              return errorResponse(res, { code: 401, message: 'Please make sure your token is valid, we cannot locate supplier details' });
+            }
+            if (!comparePassword(req.body.signupToken, supplier.companyToken)) {
+              return errorResponse(res, { code: 401, message: 'Please make sure your token is valid, we cannot locate supplier details' });
+            }
+            req.body.supplierId = establishmentId;
+            req.body.roleId = 5;
+            return next();
+          }
+          if (establishment === 'company') {
+            const company = await findCompany({ id: establishmentId });
+            if (!company) {
+              return errorResponse(res, { code: 401, message: 'Please make sure your token is valid, we cannot locate company details' });
+            }
+            if (!comparePassword(req.body.signupToken, company.companyToken)) {
+              return errorResponse(res, { code: 401, message: 'Please make sure your token is valid, we cannot locate supplier details' });
+            }
+            req.body.companyId = establishmentId;
+            req.body.roleId = 8;
+            return next();
+          }
         }
         errorResponse(res, { code: 409, message: `User with email: "${req.body.email}" already exists` });
       }
@@ -94,7 +103,7 @@ export default class AuthMiddleware {
         if (!supplier) {
           next();
         } else {
-          errorResponse(res, { code: 409, message: `User with email: "${req.body.email}" already exists` });
+          errorResponse(res, { code: 409, message: `User with email: "${email}" already exists for a supplier` });
         }
       }
     } catch (error) {
@@ -138,10 +147,12 @@ export default class AuthMiddleware {
       const validated = await companySignup(req.body);
       if (validated) {
         const admin = await UserService.find({ email });
+        console.log(admin);
         if (!admin) {
-          return next();
+          next();
+        } else {
+          errorResponse(res, { code: 409, message: `User with email: "${email}" already exists for a company` });
         }
-        if (admin.companyId) { errorResponse(res, { code: 409, message: `Admin with email: "${email}" already exists for a company` }); }
       }
     } catch (error) {
       errorResponse(res, { code: 400, message: error.details[0].context.label });

@@ -7,9 +7,9 @@ import {
 
 
 const {
-  generateToken, verifyToken, successResponse, errorResponse, generateTokenAlive,
-  extractUserData, comparePassword, splitCompanyData, splitSupplierData,
-  hashPassword
+  generateToken, verifyToken, successResponse, errorResponse, extractUserData,
+  comparePassword, splitCompanyData, splitSupplierData,
+  hashPassword, generateTokenOnSignup,
 } = Helpers;
 const { createCompany, updateCompanyById } = CompanyService;
 const { sendVerificationEmail, sendResetMail, sendWelcomeEmail } = Mailer;
@@ -40,23 +40,15 @@ class AuthController {
   static async userSignup(req, res) {
     try {
       const { body } = req;
-      const user = await create({ ...body });
-      /**
-       * TODO: ROLE ID INTEGRATION UPON USER SIGNUP
-       * the user role should be extracted in a token on signup
-       * for testing I've assigned the default role Id as 1 (super Administrator)
-       * Note, super Administrator should only be assigned during company /suppler signup
-       * In future implementation, once supplier and company signup is done, the user
-       * should give this value in a token upon signup
-       */
-      const defaultRoleId = 1;
+      let user = await create({ ...body });
+      const defaultRoleId = body.roleId;
       const roleAssignment = await assignRole(user.id, defaultRoleId);
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
-      const userResponse = extractUserData(user);
-      const isSent = await sendVerificationEmail(req, { ...userResponse });
-      const { token } = userResponse;
+      user = extractUserData(user);
+      const isSent = await sendVerificationEmail(req, { ...user });
+      const { token } = user;
       res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
-      return successResponse(res, { ...userResponse, emailSent: isSent, roleAssignment }, 201);
+      return successResponse(res, { ...user, emailSent: isSent, roleAssignment }, 201);
     } catch (error) {
       errorResponse(res, {});
     }
@@ -77,13 +69,18 @@ class AuthController {
       let supplier = await SupplierService.create(companyData);
       const { id: supplierId } = supplier;
       let user = await UserService.create({ ...userData, supplierId });
-      const companyToken = generateTokenAlive({ companyId: supplierId, defaultRoleId: 8, companyType: 'supplier' });
-      user.token = generateToken({ email: user.email, id: user.id, role: user.role });
+      const unhashedCompanyToken = generateTokenOnSignup('supplier', supplierId);
+      const companyToken = hashPassword(unhashedCompanyToken);
+      user.token = generateToken({ email: user.email, id: user.id });
       supplier = await update({ companyToken }, supplierId);
+      const defaultRoleId = 6;
+      const roleAssignment = await assignRole(user.id, defaultRoleId);
       user = extractUserData(user);
-      const emailSent = await sendWelcomeEmail(req, { ...user, companyToken });
+      const emailSent = await sendWelcomeEmail(req, { ...user, unhashedCompanyToken });
       res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
-      return successResponse(res, { user, supplier, emailSent }, 201);
+      return successResponse(res, {
+        user, supplier, emailSent, signupToken: unhashedCompanyToken, roleAssignment
+      }, 201);
     } catch (error) {
       errorResponse(res, {});
     }
@@ -103,13 +100,18 @@ class AuthController {
       const [companyInfo, userInfo] = splitCompanyData(req.body);
       userInfo.password = hashPassword(userInfo.password);
       const [{ id }, user] = await createCompany(companyInfo, userInfo);
-      const companyToken = generateTokenAlive({ companyType: 'company', companyId: id, defaultRoleId: 1 });
+      const unhashedCompanyToken = generateTokenOnSignup('company', id);
+      const companyToken = hashPassword(unhashedCompanyToken);
       const company = await updateCompanyById({ companyToken }, id);
-      user.token = generateToken({ email: user.email, id: user.id, role: 4 });
+      user.token = generateToken({ email: user.email, id: user.id });
+      const defaultRoleId = 1;
+      const roleAssignment = await assignRole(user.id, defaultRoleId);
       const admin = extractUserData(user);
-      const isSent = await sendWelcomeEmail(req, { companyToken, ...admin });
+      const emailSent = await sendWelcomeEmail(req, { companyToken, ...admin });
       res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
-      return successResponse(res, { admin, company, emailSent: isSent }, 201);
+      return successResponse(res, {
+        admin, company, emailSent, signupToken: unhashedCompanyToken, roleAssignment
+      }, 201);
     } catch (error) {
       errorResponse(res, { message: error.message });
     }
