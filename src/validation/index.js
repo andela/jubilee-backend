@@ -4,6 +4,7 @@ import FacilityValidator from './facilityValidator';
 import BookingValidator from './bookingValidator';
 import ProfileValidator from './profileValidator';
 import RequestValidator from './requestValidator';
+import TripRequestValidation from './tripRequestValidation';
 
 export {
   AuthValidation,
@@ -11,5 +12,6 @@ export {
   FacilityValidator,
   BookingValidator,
   ProfileValidator,
-  RequestValidator
+  RequestValidator,
+  TripRequestValidation
 };

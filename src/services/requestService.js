@@ -26,6 +26,16 @@ export default class RequestService {
     return requestObj.dataValues;
   }
 
+  /**
+    * Allows user to create a trip request
+    * @param {object} tripreq - the id of assigned user.
+    * @return {Promise<object>} A promise object with trip request detail.
+    * @memberof RequestService
+    */
+  static async createTripRequest(tripreq) {
+    const { dataValues: newTripRequest } = await Request.create(tripreq);
+    return newTripRequest;
+  }
 
   /**
     * Get Request by id and status

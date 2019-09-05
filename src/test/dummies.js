@@ -121,3 +121,11 @@ export const newRequest = {
   departureDate: '2019-11-07',
   returnDate: '2019-11-21',
 };
+
+export const tripRequest = {
+  purpose: 'Official',
+  tripType: 'One-way',
+  origin: 'Abuja',
+  destination: 'Lagos',
+  departureDate: '2019-11-07'
+};
