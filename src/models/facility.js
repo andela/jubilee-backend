@@ -1,3 +1,4 @@
+
 module.exports = (sequelize, DataTypes) => {
   const Facility = sequelize.define('Facility', {
     name: {
@@ -6,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: true
     },
     state: {
       type: DataTypes.STRING,
@@ -14,19 +15,26 @@ module.exports = (sequelize, DataTypes) => {
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: false
     },
     address: {
       type: DataTypes.STRING,
       allowNull: false
     },
     companyType: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM,
+      values: ['company', 'supplier'],
       allowNull: false
     },
     companyId: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'Company',
+        key: 'id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     supplierId: {
       type: DataTypes.INTEGER,
@@ -34,7 +42,9 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         key: 'id',
         model: 'Supplier'
-      }
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     imageUrl: {
       type: DataTypes.STRING,
@@ -49,6 +59,12 @@ module.exports = (sequelize, DataTypes) => {
     Facility.belongsTo(models.Supplier, {
       as: 'owner',
       foreignKey: 'supplierId',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
+    Facility.belongsTo(models.Company, {
+      foriegnKey: 'companyId',
+      as: 'company',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });

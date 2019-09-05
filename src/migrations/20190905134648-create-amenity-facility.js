@@ -6,13 +6,25 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    amenityId: {
-      type: Sequelize.INTEGER,
-      allowNull: false
-    },
     facilityId: {
       type: Sequelize.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        key: 'id',
+        model: 'Facilities'
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    },
+    amenityId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        key: 'id',
+        model: 'Amenities'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     createdAt: {
       allowNull: false,

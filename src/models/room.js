@@ -6,7 +6,9 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         key: 'id',
         model: 'Facility'
-      }
+      },
+      onDelete: 'CASADE',
+      onUpdate: 'CASCADE'
     },
     roomCount: {
       type: DataTypes.INTEGER,
@@ -29,10 +31,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         key: 'id',
-        model: 'Category'
-      }
-    },
+        model: 'RoomCategory'
+      },
+      onDelete: 'CASADE',
+      onUpdate: 'CASCADE'
+
+    }
   }, {});
+
   Room.associate = (models) => {
     Room.belongsTo(models.Facility, {
       as: 'facility',
@@ -41,11 +47,12 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE'
     });
     Room.belongsTo(models.RoomCategory, {
-      as: 'category',
+      as: 'roomCategory',
       foreignKey: 'roomCategoryId',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
   };
+
   return Room;
 };

@@ -1,3 +1,4 @@
+
 module.exports = (sequelize, DataTypes) => {
   const RoomCategory = sequelize.define('RoomCategory', {
     label: {
