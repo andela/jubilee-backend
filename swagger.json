@@ -337,6 +337,9 @@
                     "401": {
                         "description": "Access denied"
                     },
+                    "404": {
+                        "description": "You have not made any request yet"
+                    },
                     "500": {
                         "description": "Internal Server Error"
                     }
