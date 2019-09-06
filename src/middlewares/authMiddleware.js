@@ -117,7 +117,9 @@ export default class AuthMiddleware {
     try {
       const { userId } = req.params;
       const token = checkToken(req);
-      const { id } = verifyToken(token);
+      const decoded = verifyToken(token);
+      req.user = decoded;
+      const { id } = decoded;
       if (Number(userId) === id) {
         next();
       } else {
