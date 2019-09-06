@@ -96,6 +96,3 @@ typings/
 .prettierrc.yaml
 
 # End of https://www.gitignore.io/api/node
-
-src/models/accommodationBookings
-src/migrations/20190906125251-create-room
