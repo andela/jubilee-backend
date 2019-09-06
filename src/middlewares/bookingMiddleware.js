@@ -1,7 +1,9 @@
 import { BookingValidator } from '../validation';
-import { Helpers } from '../utils';
+import { Helpers, ApiError } from '../utils';
+import { UserService } from '../services';
 
-const { errorResponse } = Helpers;
+const { errorResponse, verifyToken } = Helpers;
+const { find } = UserService;
 /**
  * Collection of methods for BookingMiddleware
  * @class BookingMiddleware
@@ -18,8 +20,18 @@ class BookingMiddleware {
    * @memberof BookingMiddleware
    */
   static async validateFields(req, res, next) {
+    // TODO: add validation for room
     try {
-      const validated = await BookingValidator.validateAccommodation(req.body);
+      const { body } = req;
+      const { userId } = body;
+      const { authorization } = req.headers;
+      const validated = await BookingValidator.validateAccommodation(body);
+      const user = await find({ id: userId });
+      verifyToken(authorization);
+
+      if (!user) {
+        throw new ApiError(404, `User with id ${userId} is not found`);
+      }
       if (validated) {
         next();
       }
