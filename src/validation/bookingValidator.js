@@ -8,10 +8,7 @@ const month = dateObj.getMonth() + 1;
 const today = dateObj.getDate();
 const year = dateObj.getFullYear();
 
-const tomorrow = dateObj.getDate() + 1;
-
 const newdate = `${year}-${month}-${today}`;
-const newDay = `${year}-${month}-${tomorrow}`;
 
 /**
  * Collection of methods for BookingValidation
@@ -23,42 +20,18 @@ class BookingValidator {
    * Validation methods for accomodation booking
    * @static
    * @param {object} bookingData - The booking to be validated.
-   * @returns {object | boolean} Returns true if validation passes or throws an error if validation fails.
+   * @returns {object | boolean} Returns true if validation passes
+   * or throws an error if validation fails.
    * @memberof BookingValidation
    */
   static validateAccommodation(bookingData) {
     const schema = {
-      fullname: Joi.string()
-        .min(5)
-        .max(50)
-        .required()
-        .error(errors => {
-          errors.forEach(err => {
-            switch (err.type) {
-              case 'any.required':
-                err.message = 'fullname is required!';
-                break;
-              case 'any.empty':
-                err.message = 'fullname should not be empty!';
-                break;
-              case 'string.min':
-                err.message = `fullname should be at least ${err.context.limit} characters!`;
-                break;
-              case 'string.max':
-                err.message = `fullname should be at most ${err.context.limit} characters!`;
-                break;
-              default:
-                break;
-            }
-          });
-          return errors;
-        }),
       checkIn: Joi.date()
         .format('YYYY-MM-DD')
         .min(newdate)
         .required()
-        .error(errors => {
-          errors.forEach(err => {
+        .error((errors) => {
+          errors.forEach((err) => {
             switch (err.type) {
               case 'any.required':
                 err.message = 'checkIn is required!';
@@ -80,10 +53,10 @@ class BookingValidator {
         }),
       checkOut: Joi.date()
         .format('YYYY-MM-DD')
-        .min(newDay)
+        .min(Joi.ref('checkIn'))
         .required()
-        .error(errors => {
-          errors.forEach(err => {
+        .error((errors) => {
+          errors.forEach((err) => {
             switch (err.type) {
               case 'any.required':
                 err.message = 'checkOut is required!';
@@ -95,7 +68,49 @@ class BookingValidator {
                 err.message = 'checkOut should not be empty';
                 break;
               case 'date.min':
-                err.message = `checkOut must be larger than or equal to ${newDay}`;
+                err.message = 'checkOut must be larger than checkIn';
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
+        }),
+      userId: Joi.number()
+        .positive()
+        .required()
+        .error((errors) => {
+          errors.forEach((err) => {
+            switch (err.type) {
+              case 'any.required':
+                err.message = 'userId is required!';
+                break;
+              case 'number.base':
+                err.message = 'userId should not be empty';
+                break;
+              case 'number.positive':
+                err.message = 'userId must be a positive number';
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
+        }),
+      roomId: Joi.number()
+        .positive()
+        .required()
+        .error((errors) => {
+          errors.forEach((err) => {
+            switch (err.type) {
+              case 'any.required':
+                err.message = 'roomId is required!';
+                break;
+              case 'number.base':
+                err.message = 'roomId should not be empty';
+                break;
+              case 'number.positive':
+                err.message = 'roomId must be a positive number';
                 break;
               default:
                 break;
@@ -107,7 +122,6 @@ class BookingValidator {
 
     const { error } = Joi.validate({ ...bookingData }, schema);
     if (error) {
-      console.log(error.details[0]);
       throw new ApiError(400, error.details[0].message);
     }
     return true;
