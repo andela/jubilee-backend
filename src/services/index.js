@@ -7,5 +7,7 @@ import FacilityService from './facilityService';
 import RequestService from './requestService';
 
 export {
-  UserService, BookingService, CompanyService, SupplierService, RoleService, FacilityService, RequestService,
+  UserService, BookingService, CompanyService, 
+  SupplierService, RoleService, FacilityService, 
+  RequestService,
 };
