@@ -245,6 +245,7 @@ class Helpers {
     const { authorization } = req.headers;
     const posibleOptions = (req.headers['access-token'] || req.headers.token || req.params.token || req.cookies.token || null);
     const token = authorization ? authorization.split(' ')[1] : posibleOptions;
+    console.log(token);
     if (!token) throw new ApiError(401, 'Access denied, Token required');
     return token;
   }

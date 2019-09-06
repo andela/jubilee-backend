@@ -82,3 +82,10 @@ describe('PUT REQUESTS', () => {
     expect(status).to.equal('success');
   });
 });
+
+describe('GET /users/requests', () => {
+  it('should return 404 for user with no request yet', async () => {
+    const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${token}`);
+    expect(response).to.have.status(404);
+  });
+});
