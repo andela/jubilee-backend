@@ -4,7 +4,7 @@
   "description": "Barefoot Nomad - Making company travel and accomodation easy and convenient.",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc --reporter=text --reporter=html mocha src/test/*.spec.js --timeout 10000 -c --require @babel/register --exit",
+    "test": "cross-env NODE_ENV=test nyc --reporter=text --reporter=html mocha src/test/*.js --timeout 10000 -c --require @babel/register --exit",
     "seed": "sequelize db:seed:all",
     "unseed": "sequelize db:seed:undo",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
