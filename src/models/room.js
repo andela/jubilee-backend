@@ -12,11 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    categoryId: {
+    roomCategoryId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -32,9 +28,9 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
-    Room.belongsTo(models.Roomcategory, {
+    Room.belongsTo(models.RoomCategory, {
       as: 'category',
-      foreignKey: 'categoryId',
+      foreignKey: 'roomCategoryId',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });

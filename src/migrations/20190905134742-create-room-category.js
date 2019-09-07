@@ -1,5 +1,5 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Roomcategories', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('RoomCategories', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -10,6 +10,10 @@ module.exports = {
       type: Sequelize.STRING,
       allowNull: false
     },
+    description: {
+      type: Sequelize.TEXT,
+      allowNull: true
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE
@@ -19,5 +23,5 @@ module.exports = {
       type: Sequelize.DATE
     }
   }),
-  down: (queryInterface) => queryInterface.dropTable('Roomcategories')
+  down: (queryInterface) => queryInterface.dropTable('RoomCategories')
 };

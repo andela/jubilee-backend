@@ -1,36 +1,89 @@
 import db from '../models';
+import { Helpers } from '../utils';
 
 const {
-  Facility, AmenityFacility, Room, sequelize
+  Facility, sequelize, RoomCategory, Room, AmenityFacility, Amenity
 } = db;
+const { extractArrayRecords, updateCollection } = Helpers;
+
 /**
- * FacilityService class, interface for CompanyModel
+ * A collection of methods that handles the database interactions
+ * for managing a Facility as an entity of the App.
+ *
+ * @class FacilityService
  */
-export default class FacilityService {
+class FacilityService {
   /**
-   * Adds a facility instance along with its corresponding rooms and amenties into the database
+   * Checks the room category value and creates a new record for any category added
+   * by user.
    * @static
-   * @param {object} facility - Facility object.
-   * @param {array} roomsArray - Array of rooms.
-   * @param {array} amenitiesArray - Array of amenities.
-   * @returns {Promise<object>} A promise object with user detail.
+   * @param {array} rooms - An array of rooms of a specific facility.
+   * @returns {Promise<Array>} A promise object with updated room properties.
    * @memberof FacilityService
    */
-  static async createFacility(facility, roomsArray, amenitiesArray) {
+  static async sortRoomCategory(rooms) {
+    const updatedRooms = rooms.map(async (room) => {
+      const { dataValues: { label } } = await RoomCategory.findByPk(room.roomCategoryId);
+      if (label === 'Others') {
+        const { id } = await RoomCategory.create({ description: ' ', label: room.newCategory });
+        room.roomCategoryId = id;
+      }
+      return room;
+    });
+    return Promise.all(updatedRooms);
+  }
+
+  /**
+   * Creates an array of amenities for a specific facility.
+   * @static
+   * @param {object} amenities - Facility data to be recorded in the database.
+   * @param {number} id - Facility id.
+   * @returns {array}  An array of facility amenities.
+   * @memberof FacilityService
+   */
+  static sortFacilityAmenities(amenities, id) {
+    return amenities ? amenities.map((item) => ({ amenityId: item, facilityId: id })) : [];
+  }
+
+  /**
+   * Fetches a facility instance based on it's primary key.
+   * @static
+   * @param {integer} facilityId - Primary key of the facility to be fetched.
+   * @param {object} options - Additional query information
+   * @returns {Promise<array>}  An instance of Facility table including it's relationships.
+   * @memberof FacilityService
+   */
+  static async findFacilityById(facilityId, options = {}) {
+    return Facility.findByPk(facilityId, options);
+  }
+
+
+  /**
+   * Creates a facility record in the database.
+   * @static
+   * @param {object} facilityInfo - Facility data to be recorded in the database.
+   * @returns {Promise<object>} A promise object with facility detail.
+   * @memberof FacilityService
+   */
+  static async createFacility(facilityInfo) {
+    const { amenities } = facilityInfo;
     try {
+      const rooms = await FacilityService.sortRoomCategory(facilityInfo.rooms);
       const result = await sequelize.transaction(async (t) => {
-        const { dataValues: facilityRecord } = await Facility.create(facility, { transaction: t });
-        const { id: facilityId } = facilityRecord;
-        const rooms = roomsArray.map((room) => ({ ...room, facilityId }));
-        await Room.bulkCreate(rooms, { transaction: t });
-        const amenities = amenitiesArray.map((amenityId) => ({ facilityId, amenityId }));
-        await AmenityFacility.bulkCreate(amenities, { transaction: t });
-        const options = { where: { id: facilityId }, include: [rooms, amenities] };
-        return Facility.findOne(options, { transaction: t });
+        const { id: facilityId } = await Facility.create(facilityInfo, { transaction: t });
+        const updatedRooms = await updateCollection(rooms, { facilityId });
+        const facilityAmenities = FacilityService.sortFacilityAmenities(amenities, facilityId);
+        await AmenityFacility.bulkCreate(facilityAmenities, { transaction: t });
+        await Room.bulkCreate(updatedRooms, { transaction: t });
+        const options = { include: [{ model: Room, as: 'rooms' }, { model: Amenity, as: 'amenities' }], transaction: t };
+        const facility = await FacilityService.findFacilityById(facilityId, options);
+        return facility;
       });
       return result;
     } catch (err) {
-      return new Error('failed to create facility');
+      throw new Error('Failed to create facility. Try again');
     }
   }
 }
+
+export default FacilityService;
