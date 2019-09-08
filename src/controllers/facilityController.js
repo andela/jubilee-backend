@@ -3,8 +3,7 @@ import { Helpers } from '../utils';
 
 const { createFacility } = FacilityService;
 const { find } = UserService;
-const { successResponse, errorResponse } = Helpers;
-
+const { errorResponse, successResponse } = Helpers;
 
 /**
  * A collection of methods that controls CRUD operations for  facilities

@@ -14,12 +14,21 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+<<<<<<< HEAD
     roomCost: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: true
     },
     occupancyCount: {
       type: DataTypes.INTEGER,
+=======
+    occupancyCount: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.STRING,
+>>>>>>> feature(company-facility): add create facility functionality
       allowNull: false
     },
     description: {
@@ -40,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   Room.associate = (models) => {
+<<<<<<< HEAD
     Room.belongsTo(models.Facility, {
       as: 'facility',
       foreignKey: 'facilityId',
@@ -52,6 +62,10 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
+=======
+    Room.belongsTo(models.Facility, { foreignKey: 'facilityId', as: 'company' });
+    Room.belongsTo(models.RoomCategory, { foreignKey: 'roomCategoryId', as: 'roomCategory' });
+>>>>>>> feature(company-facility): add create facility functionality
   };
 
   return Room;

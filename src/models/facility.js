@@ -56,6 +56,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {});
   Facility.associate = (models) => {
+<<<<<<< HEAD
     Facility.belongsTo(models.Supplier, {
       as: 'owner',
       foreignKey: 'supplierId',
@@ -79,6 +80,11 @@ module.exports = (sequelize, DataTypes) => {
       as: 'amenities',
       foreignKey: 'facilityId'
     });
+=======
+    Facility.hasMany(models.Room, { foreignKey: 'facilityId', as: 'rooms' });
+    Facility.belongsTo(models.Company, { foreignKey: 'companyId', as: 'company' });
+    Facility.belongsToMany(models.Amenity, { through: models.FacilityAmenity, as: 'amenities', foreignKey: 'facilityId' });
+>>>>>>> feature(company-facility): add create facility functionality
   };
   return Facility;
 };
