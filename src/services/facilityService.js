@@ -4,7 +4,7 @@ import { Helpers } from '../utils';
 const {
   Facility, sequelize, RoomCategory, Room, AmenityFacility, Amenity
 } = db;
-const { extractArrayRecords, updateCollection } = Helpers;
+const { updateCollection } = Helpers;
 
 /**
  * A collection of methods that handles the database interactions

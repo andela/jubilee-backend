@@ -1,9 +1,8 @@
-import { FacilityService } from '../services';
-import {
-  Helpers
-} from '../utils';
+import { FacilityService, UserService } from '../services';
+import { Helpers } from '../utils';
 
 const { createFacility } = FacilityService;
+const { find } = UserService;
 const { successResponse, errorResponse } = Helpers;
 
 /**
@@ -23,11 +22,12 @@ class FacilityController {
  */
   static async addFacilitySupplier(req, res) {
     try {
-      const companyType = 'supplier';
-      const { supplier: { supplierId } } = req;
-      const facility = await createFacility({ ...req.body, companyType, supplierId });
+      const { id } = req.data;
+      const { supplierId } = find({ id });
+      const facility = await createFacility({ ...req.body, companyType: 'supplier', supplierId });
       return successResponse(res, facility, 201);
     } catch (error) {
+      console.log(error)
       const status = error.status || 500;
       errorResponse(res, { code: status, message: error.message });
     }

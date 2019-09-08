@@ -170,27 +170,4 @@ export default class AuthMiddleware {
       errorResponse(res, { code: 400, message: error.details[0].context.label });
     }
   }
-
-  /**
-     * Middleware method for checking if user is a supplier admin
-     * @param {object} req - The request from the endpoint.
-     * @param {object} res - The response returned by the method.
-     * @param {object} next - the returned values going into the next operation.
-     * @returns {object} - returns an object or boolean (userData or false).
-     */
-  static async isSupplierAdmin(req, res, next) {
-    try {
-      const { data } = req;
-      const { isSupplierAdmin, supplierId } = data;
-      if (isSupplierAdmin && supplierId) {
-        req.supplier = { supplierId };
-        next();
-      } else {
-        errorResponse(res, { code: 401, message: 'Access denied, you\'d have to be a supplier admin to access this enpoint' });
-      }
-    } catch (err) {
-      const status = err.status || 500;
-      errorResponse(res, { code: status, message: err.message });
-    }
-  }
 }

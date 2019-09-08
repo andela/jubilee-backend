@@ -72,7 +72,7 @@ class AuthController {
       let user = await UserService.create({ ...userData, supplierId });
       const unhashedCompanyToken = generateTokenOnSignup('supplier', supplierId);
       const companyToken = hashPassword(unhashedCompanyToken);
-      user.token = generateToken({ email: user.email, id: user.id, isSupplierAdmin: true, supplierId });
+      user.token = generateToken({ email: user.email, id: user.id });
       supplier = await updateSupplier({ companyToken }, supplierId);
       const defaultRoleId = 6;
       const roleAssignment = await assignRole(user.id, defaultRoleId);

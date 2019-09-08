@@ -1,6 +1,6 @@
 import db from '../models';
 
-const { RoleUser, Role, User } = db;
+const { RoleUser } = db;
 
 /**
  * RoleService class, interface for RoleUser model
