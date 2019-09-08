@@ -200,24 +200,6 @@ class Helpers {
   }
 
   /**
- * Splits facility object into facility, amenities and rooms data
- * @static
- * @param {object} facilityObject - The supplier object sent as request body.
- * @memberof Helpers
- * @returns { array } - An array containing both facility, amenities and rooms data.
- */
-  static splitFacilityData(facilityObject) {
-    const {
-      name, state, city, address,
-      imageUrl, description, amenities, rooms, addOns
-    } = facilityObject;
-    const facilityData = {
-      name, state, city, address, imageUrl, description, addOns
-    };
-    return [facilityData, amenities, rooms];
-  }
-
-  /**
  * Extracts Array Records from sequelize object.
  * @static
  * @param {array} dataArray - An array of unformatted records.

@@ -2,7 +2,7 @@ import chai, { expect } from 'chai';
 import faker from 'faker';
 import chaiHttp from 'chai-http';
 import server from '../index';
-import { newSupplier, newFacility, newUser } from './dummies';
+import { newSupplier, newFacility } from './dummies';
 
 chai.use(chaiHttp);
 describe('Facility endpoint', () => {
