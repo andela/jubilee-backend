@@ -67,22 +67,20 @@ class AuthController {
   static async supplierSignup(req, res) {
     try {
       const [companyData, userData] = splitSupplierData(req.body);
-      userData.password = hashPassword(userData.password);
       let supplier = await SupplierService.create(companyData);
       const { id: supplierId } = supplier;
       let user = await UserService.create({ ...userData, supplierId });
-      const companyToken = generateTokenOnSignup('supplier', supplierId);
-      user.token = generateToken({
-        email: user.email, id: user.id, isSupplierAdmin: true, supplierId
-      });
+      const unhashedCompanyToken = generateTokenOnSignup('supplier', supplierId);
+      const companyToken = hashPassword(unhashedCompanyToken);
+      user.token = generateToken({ email: user.email, id: user.id, isSupplierAdmin: true, supplierId });
       supplier = await updateSupplier({ companyToken }, supplierId);
       const defaultRoleId = 6;
       const roleAssignment = await assignRole(user.id, defaultRoleId);
       user = extractUserData(user);
-      const emailSent = await sendWelcomeEmail(req, { ...user, companyToken });
+      const emailSent = await sendWelcomeEmail(req, { ...user, unhashedCompanyToken });
       res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, {
-        user, supplier, emailSent, signupToken: companyToken, roleAssignment
+        user, supplier, emailSent, signupToken: unhashedCompanyToken, roleAssignment
       }, 201);
     } catch (error) {
       errorResponse(res, {});

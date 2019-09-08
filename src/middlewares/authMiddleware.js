@@ -139,7 +139,6 @@ export default class AuthMiddleware {
   static authenticate(req, res, next) {
     try {
       const token = checkToken(req);
-      if (!token) return errorResponse(res, { code: 401, message: 'You are not logged in' });
       const decoded = verifyToken(token);
       req.data = decoded;
       next();

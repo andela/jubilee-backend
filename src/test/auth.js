@@ -27,7 +27,7 @@ describe('Auth route endpoints', () => {
     expect(response.body.data.user.lastName).to.be.a('string');
   });
 
-  it('should signup a supplier user successfully with a status of 201', async () => {
+  it('should signup a user successfully with a status of 201', async () => {
     const user = {
       firstName: 'Davis',
       lastName: 'Okra',

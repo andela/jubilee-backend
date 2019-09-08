@@ -18,6 +18,30 @@ export const newSupplier = {
   password: faker.internet.password(15, false),
   phoneNumber: faker.phone.phoneNumber()
 };
+
+export const newFacility = {
+  name: 'Sheraton Hotels',
+  state: 'Lagos',
+  city: 'Ajah',
+  address: '123, St. Micheal str Ajah, Lagos state',
+  imageUrl: 'https://cloudinary/sheraton-lagos',
+  description: 'Hotels and suite',
+  rooms: [{
+    roomCount: 3,
+    roomCategoryId: 4,
+    occupancyCount: 2,
+    roomCost: 5000
+  },
+  {
+    roomCount: 2,
+    roomCategoryId: 2,
+    occupancyCount: 1,
+    roomCost: 15000
+  }],
+  amenities: [1, 2, 3, 4],
+  addOns: ['wifi', 'coffee shop']
+};
+
 export const newCompany = {
   firstName: 'Ago',
   lastName: 'Akin',
