@@ -18,14 +18,12 @@ export default class roleMiddleware {
       try {
         const { id } = req.data;
         const { roleId } = await RoleService.getRoles(id);
-        console.log('ssdasdds', roleId)
         const permitted = permissions.includes(roleId);
         if (permitted) {
           return next();
         }
         return errorResponse(res, { code: 401, message: 'You are an unauthorized user' });
       } catch (error) {
-        console.log(error)
         errorResponse(res, { code: 500, message: error.message });
       }
     };

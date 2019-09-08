@@ -27,7 +27,6 @@ class FacilityController {
       const facility = await createFacility({ ...req.body, companyType: 'supplier', supplierId });
       return successResponse(res, facility, 201);
     } catch (error) {
-      console.log(error)
       const status = error.status || 500;
       errorResponse(res, { code: status, message: error.message });
     }
