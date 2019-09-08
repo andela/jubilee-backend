@@ -12,6 +12,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    roomCost: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    occupancyCount: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
     roomCategoryId: {
       type: DataTypes.INTEGER,
       allowNull: false,

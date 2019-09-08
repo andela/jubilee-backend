@@ -14,6 +14,18 @@ module.exports = {
       type: Sequelize.INTEGER,
       allowNull: false
     },
+    roomCost: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    occupancyCount: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    description: {
+      type: Sequelize.TEXT,
+      allowNull: true
+    },
     roomCategoryId: {
       type: Sequelize.INTEGER,
       allowNull: false
