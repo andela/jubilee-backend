@@ -11,12 +11,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {});
   RoomCategory.associate = (models) => {
+<<<<<<< HEAD
     RoomCategory.hasMany(models.Room, {
       as: 'rooms',
       foreignKey: 'roomCategoryId',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
+=======
+    RoomCategory.hasMany(models.Room, { foreignKey: 'roomCategoryId', as: 'rooms' });
+>>>>>>> feature(company-facility): add create facility functionality
   };
   return RoomCategory;
 };

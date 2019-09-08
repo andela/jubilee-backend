@@ -2,7 +2,7 @@ import { Helpers } from '../utils';
 import { RoleService } from '../services/index';
 
 const {
-  verifyToken, errorResponse,
+  errorResponse
 } = Helpers;
 /**
  * Middleware for input validations

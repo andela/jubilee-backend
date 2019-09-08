@@ -13,7 +13,7 @@ const states = [
   'Enugu',
   'Edo',
   'Ekiti',
-  'FCT - Abuja',
+  'Abuja',
   'Gombe',
   'Imo',
   'Jigawa',
@@ -38,4 +38,6 @@ const states = [
   'Zamfara'
 ];
 
-export default { states };
+export default {
+  states
+};

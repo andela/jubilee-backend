@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id',
         model: 'Facility'
       },
-      onDelete: 'CASADE',
+      onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
     },
     amenityId: {

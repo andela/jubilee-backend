@@ -14,6 +14,18 @@ const { updateCollection } = Helpers;
  */
 class FacilityService {
   /**
+   * Fetches a facility instance based on it's primary key.
+   * @static
+   * @param {integer} facilityId - Primary key of the facility to be fetched.
+   * @param {object} options - Additional query information
+   * @returns {Promise<array>} - An instance of Facility table including it's relationships.
+   * @memberof FacilityService
+   */
+  static async findFacilityById(facilityId, options = {}) {
+    return Facility.findByPk(facilityId, options);
+  }
+
+  /**
    * Checks the room category value and creates a new record for any category added
    * by user.
    * @static
@@ -46,15 +58,15 @@ class FacilityService {
   }
 
   /**
-   * Fetches a facility instance based on it's primary key.
+   * Fetches a list of amenities returning an array of their labels.
    * @static
-   * @param {integer} facilityId - Primary key of the facility to be fetched.
-   * @param {object} options - Additional query information
-   * @returns {Promise<array>}  An instance of Facility table including it's relationships.
+   * @param {array} amenityIds - Facility data to be recorded in the database.
+   * @returns {Promise<array>}  An array of facility amenities.
    * @memberof FacilityService
    */
-  static async findFacilityById(facilityId, options = {}) {
-    return Facility.findByPk(facilityId, options);
+  static async findAmenitiesByIds(amenityIds) {
+    const amenityLabels = await Amenity.findAll({ where: { id: amenityIds }, attributes: ['label'] });
+    return amenityLabels.map(({ dataValues: { label } }) => label);
   }
 
 
@@ -75,7 +87,7 @@ class FacilityService {
         const facilityAmenities = FacilityService.sortFacilityAmenities(amenities, facilityId);
         await AmenityFacility.bulkCreate(facilityAmenities, { transaction: t });
         await Room.bulkCreate(updatedRooms, { transaction: t });
-        const options = { include: [{ model: Room, as: 'rooms' }, { model: Amenity, as: 'amenities' }], transaction: t };
+        const options = { include: ['rooms', 'amenities'], transaction: t };
         const facility = await FacilityService.findFacilityById(facilityId, options);
         return facility;
       });

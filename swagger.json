@@ -34,7 +34,7 @@
         },
         {
             "name": "Facility",
-            "description": "Endpoint for Facilities"
+            "description": "Endpoint for CRUD operations involving Facilities"
         }
     ],
     "paths": {
@@ -404,7 +404,7 @@
                 "produces": [
                     "application/json"
                 ],
-                "security": {
+                 "security": {
                     "Bearer": []
                 },
                 "parameters": [
@@ -417,8 +417,8 @@
                         "$ref": "#/requestBody/facility"
                       }
                     }
-                  ],
-                "responses": {
+                  ], 
+                   "responses": {
                     "201": {
                         "description": "Success"
                     },
@@ -427,6 +427,47 @@
                     },
                     "500": {
                         "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/facility/company": {
+            "post": {
+                "description": "creates a new facility for a specific company",
+                "summary": "Enables a company's Travel Admin to create a new facility",
+                "tags": [
+                    "Facility"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                      "in": "body",
+                      "name": "body",
+                      "required": true,
+                      "description": "This is the request body object containing a the details of the facility created",
+                      "schema": {
+                        "$ref": "#/requestBody/companyFacilityCreationRequest"
+                      }
+                    }
+                  ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully created new facility"
+                    },
+                    "400": {
+                      "description": "Invalid input parameters"
+                    },
+                    "401": {
+                        "description": "Unautheticated Request (You are not logged in)"
+                    },
+                    "403": {
+                        "description": "Unauthorized Request (You don't have the require permission)"
+                    },
+                    "500": {
+                        "description":"Internal Server Error"
                     }
                 }
             }
@@ -617,6 +658,76 @@
                 },
                 "required": [
                     "firstName, lastName, email,password,companySizeId,companyPlanId,companyAddress,companyName"
+                ]
+            },
+            "companyFacilityCreationRequest": {
+                "title": "New company facility creation Request",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "Name of Facility",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "A simple description of the facility",
+                        "type": "string"
+                    },
+                    "state": {
+                        "description": "The state where the facility is located",
+                        "type": "string"
+                    },
+                    "city": {
+                        "description": "The city where the facility is located",
+                        "type": "string"
+                    },
+                    "address": {
+                        "description": "An address excluding state and city where the facility is located",
+                        "type": "string"
+                    },
+                    "rooms": {
+                        "description": "A collection of room types available in the facility, Checkout the example for clarity",
+                        "type": "array"
+                    },
+                    "amenities": {
+                        "description": "A collection of amenities available in the facility. Usually provided as a list of checkbox. Refer to the example for clarity on value type",
+                        "type": "array"
+                    },
+                    "addOns": {
+                        "description": "A collection of extra/add-on services available in the facility. Usually provided as a list of checkbox. Refer to the example for clarity on value type",
+                        "type": "array"
+                    },
+                    "imageUrl": {
+                        "description": "A link to a picture of the facility",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "amenities": [
+                        1,5,5,6,7,8
+                        ],
+                    "rooms": [{
+                        "occupancyCount": 2,
+                        "roomCategoryId": 1,
+                        "description": "A room for a single dude",
+                        "roomCount": 3
+                    },
+                    {
+                        "occupancyCount": 3,
+                        "roomCategoryId": 2,
+                        "description": "A room for two dudes",
+                        "roomCount": 3
+                    }],
+                    "description": "A nice place to stay for all your ever",
+                    "addOns":["parking lot", "free-wifi"],
+                    "state": "Ondo",
+                    "city": "Akure",
+                    "address": "30, Ojumu Crescent",
+                    "name": "Bliss World",
+                    "imageUrl": "http://www.google.com"
+                }
+                ,
+                "required": [
+                    "name, state, city,address,description,imageUrl,rooms,amenities,addOns"
                 ]
             },
             "loginRequest": {

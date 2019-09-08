@@ -23,7 +23,7 @@ export default class CompanyService {
       });
       return result;
     } catch (err) {
-      return new Error('failed to create company');
+      throw new Error('failed to create company');
     }
   }
 
