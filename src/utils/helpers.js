@@ -200,6 +200,32 @@ class Helpers {
   }
 
   /**
+ * Extracts Array Records from sequelize object.
+ * @static
+ * @param {array} dataArray - An array of unformatted records.
+ * @memberof Helpers
+ * @returns { array } - An array containing formatted records.
+ */
+  static extractArrayRecords(dataArray) {
+    return dataArray.map(({ dataValues }) => dataValues);
+  }
+
+  /**
+   * Adds new properties to the items of a collection.
+   * @static
+   * @param {array} collection - An array of objects.
+   * @param {object} options - An object with properties to be added to the items of a collection.
+   * @returns {Promise<Array>} A promise object with an updated collection.
+   * @memberof Helpers
+   */
+  static async updateCollection(collection, options) {
+    return collection.map((item) => {
+      const newItem = { ...item, ...options };
+      return newItem;
+    });
+  }
+
+  /**
  * Validates a value using the given Joi schema
  * @param {object} value
  * @param {Joi.SchemaLike} schema
@@ -217,10 +243,9 @@ class Helpers {
  */
   static checkToken(req) {
     const { authorization } = req.headers;
-    if (!authorization) {
-      throw new ApiError(401, 'Access denied, Token required');
-    }
-    const token = req.headers.authorization.split(' ')[1] || req.headers.authorization || req.headers['x-access-token'] || req.headers.token || req.body.token;
+    const posibleOptions = (req.headers['access-token'] || req.headers.token || req.params.token || req.cookies.token || null);
+    const token = authorization ? authorization.split(' ')[1] : posibleOptions;
+    if (!token) throw new ApiError(401, 'Access denied, Token required');
     return token;
   }
 

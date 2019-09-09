@@ -27,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'categoryOfServiceId',
       as: 'service'
     });
+    Supplier.hasMany(models.Facility, {
+      foreignKey: 'supplierId',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
   };
   return Supplier;
 };

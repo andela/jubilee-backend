@@ -19,7 +19,7 @@ const {
 } = UserService;
 
 const { assignRole } = RoleService;
-const { update } = SupplierService;
+const { updateSupplier } = SupplierService;
 
 
 /**
@@ -73,13 +73,12 @@ class AuthController {
       const unhashedCompanyToken = generateTokenOnSignup('supplier', supplierId);
       const companyToken = hashPassword(unhashedCompanyToken);
       user.token = generateToken({ email: user.email, id: user.id });
-      supplier = await update({ companyToken }, supplierId);
+      supplier = await updateSupplier({ companyToken }, supplierId);
       const defaultRoleId = 6;
       const roleAssignment = await assignRole(user.id, defaultRoleId);
       user = extractUserData(user);
       const emailSent = await sendWelcomeEmail(req, { ...user, unhashedCompanyToken });
       res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
-      res.cookie('permissionId', defaultRoleId, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, {
         user, supplier, emailSent, signupToken: unhashedCompanyToken, roleAssignment
       }, 201);

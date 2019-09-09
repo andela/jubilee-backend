@@ -36,7 +36,7 @@ export default class SupplierService {
    * @returns {Promise<object>} A promise object with user detail.
    * @memberof SupplierService
    */
-  static async update(supplierData, id) {
+  static async updateSupplier(supplierData, id) {
     const [rowaffected, [newSupplier]] = await Supplier
       .update(supplierData, { returning: true, where: { id } });
     if (!rowaffected) throw new Error('Not Found');

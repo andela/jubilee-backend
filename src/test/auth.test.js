@@ -8,11 +8,12 @@ import Helpers from '../utils/helpers';
 const { generateToken } = Helpers;
 
 chai.use(chaiHttp);
-let newlyCreatedUser = {};
-let companyAdmin = {};
+let newlyCreatedUser;
+let companyAdmin;
 let newUserPasswordReset;
-let supplierToken,
-  companyToken;
+let supplierToken;
+let companyToken;
+let supplierAdminToken;
 describe('Auth route endpoints', () => {
   it('should successfully signup a supplier with status 201', async () => {
     const response = await chai
@@ -20,6 +21,7 @@ describe('Auth route endpoints', () => {
       .post('/api/auth/signup/supplier')
       .send(newSupplier);
     supplierToken = response.body.data.signupToken;
+    supplierAdminToken = response.body.data.user.token;
     expect(response).to.have.status(201);
     expect(response.body.data).to.be.a('object');
     expect(response.body.data.user.token).to.be.a('string');
@@ -27,7 +29,7 @@ describe('Auth route endpoints', () => {
     expect(response.body.data.user.lastName).to.be.a('string');
   });
 
-  it('should signup a supplier user successfully with a status of 201', async () => {
+  it('should signup a user successfully with a status of 201', async () => {
     const user = {
       firstName: 'Davis',
       lastName: 'Okra',
@@ -384,7 +386,7 @@ describe('PATCH /api/users/role', () => {
     };
     const response = await chai
       .request(server).patch('/api/users/role')
-      .set('Cookie', `token=${token};`)
+      .set('Cookie', `token=${supplierAdminToken};`)
       .send(userRole);
     expect(response).to.have.status(200);
     expect(response.body.data).to.be.a('object');
@@ -392,16 +394,14 @@ describe('PATCH /api/users/role', () => {
     expect(response.body.data.roleId).to.be.a('number');
   });
 
-  it('should fail is user does not exist', async () => {
-    const { id, firstName } = newlyCreatedUser;
-    const token = generateToken({ id, firstName });
+  it('should fail if user does not exist', async () => {
     const userRole = {
       email: 'daniel@gmail.com',
       roleId: 1
     };
     const response = await chai.request(server)
       .patch('/api/users/role')
-      .set('Cookie', `token=${token};`)
+      .set('Cookie', `token=${supplierAdminToken}`)
       .send(userRole);
     expect(response.body.status).to.equal('fail');
     expect(response.status).to.equal(404);

@@ -37,7 +37,7 @@ export default class AuthMiddleware {
               return errorResponse(res, { code: 401, message: 'Please make sure your token is valid, we cannot locate supplier details' });
             }
             req.body.supplierId = establishmentId;
-            req.body.roleId = 5;
+            req.body.roleId = 8;
             return next();
           }
           if (establishment === 'company') {
@@ -49,7 +49,7 @@ export default class AuthMiddleware {
               return errorResponse(res, { code: 401, message: 'Please make sure your token is valid, we cannot locate supplier details' });
             }
             req.body.companyId = establishmentId;
-            req.body.roleId = 8;
+            req.body.roleId = 5;
             return next();
           }
         }
@@ -126,6 +126,24 @@ export default class AuthMiddleware {
     } catch (err) {
       const status = err.status || 500;
       errorResponse(res, { code: status, message: err.message });
+    }
+  }
+
+  /**
+    * Middleware method for authentication
+    * @param {object} req - The request from the endpoint.
+    * @param {object} res - The response returned by the method.
+    * @param {object} next - the returned values going into the next operation.
+    * @returns {object} - next().
+    */
+  static authenticate(req, res, next) {
+    try {
+      const token = checkToken(req);
+      const decoded = verifyToken(token);
+      req.data = decoded;
+      next();
+    } catch (err) {
+      errorResponse(res, { code: 401, message: err.message });
     }
   }
 
