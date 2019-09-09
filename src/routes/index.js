@@ -4,6 +4,7 @@ import swaggerDocument from '../../swagger.json';
 import userRoutes from './users';
 import authRoutes from './auth';
 import facilityRoutes from './facility';
+import bookingRoutes from './booking';
 
 const router = Router();
 

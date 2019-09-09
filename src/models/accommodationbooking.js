@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         references: {
           key: 'id',
-          model: 'rooms'
+          model: 'Rooms'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   AccommodationBooking.associate = (models) => {
-    AccommodationBooking.belongsTo(models.room, {
+    AccommodationBooking.belongsTo(models.Room, {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });

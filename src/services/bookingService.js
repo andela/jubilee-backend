@@ -6,7 +6,7 @@ const { AccommodationBooking } = db;
  *
  * @class BookingService
  */
-class BookingService {
+export default class BookingService {
   /**
    *
    * Create accommodation booking and saves it in the database
@@ -21,5 +21,3 @@ class BookingService {
     return newBooking;
   }
 }
-
-export default BookingService;

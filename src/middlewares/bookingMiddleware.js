@@ -1,14 +1,15 @@
 import { BookingValidator } from '../validation';
 import { Helpers, ApiError } from '../utils';
-import { UserService } from '../services';
+import { UserService, RoomService } from '../services';
 
-const { errorResponse, verifyToken } = Helpers;
-const { find } = UserService;
+const { errorResponse } = Helpers;
+const { validateAccommodation } = BookingValidator;
+const { findRoom } = RoomService;
 /**
  * Collection of methods for BookingMiddleware
  * @class BookingMiddleware
  */
-class BookingMiddleware {
+export default class BookingMiddleware {
   /**
    *
    * Validates booking fields
@@ -20,25 +21,18 @@ class BookingMiddleware {
    * @memberof BookingMiddleware
    */
   static async validateFields(req, res, next) {
-    // TODO: add validation for room
     try {
       const { body } = req;
-      const { userId } = body;
-      const { authorization } = req.headers;
-      const validated = await BookingValidator.validateAccommodation(body);
-      const user = await find({ id: userId });
-      verifyToken(authorization);
+      const { userId, roomId } = body;
+      const validated = await validateAccommodation(body);
+      const user = await UserService.find({ id: userId });
+      const room = await findRoom({ id: roomId });
 
-      if (!user) {
-        throw new ApiError(404, `User with id ${userId} is not found`);
-      }
-      if (validated) {
-        next();
-      }
+      if (!user) throw new ApiError(404, `User with id ${userId} does not exist`);
+      if (!room) throw new ApiError(400, `Room with id: ${roomId} does not exist`);
+      if (validated) next();
     } catch (err) {
       errorResponse(res, { code: err.status || 500, message: err.message });
     }
   }
 }
-
-export default BookingMiddleware;
