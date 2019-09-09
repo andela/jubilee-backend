@@ -15,8 +15,8 @@ module.exports = {
       allowNull: false
     },
     roomCost: {
-      type: Sequelize.INTEGER,
-      allowNull: false
+      type: Sequelize.DECIMAL(10, 2),
+      allowNull: true
     },
     occupancyCount: {
       type: Sequelize.INTEGER,
