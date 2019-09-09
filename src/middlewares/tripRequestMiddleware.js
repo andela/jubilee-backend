@@ -1,10 +1,11 @@
 import { TripRequestValidation } from '../validation';
 import { Helpers, ApiError } from '../utils';
-import { UserService } from '../services';
+import { UserService, RequestService } from '../services';
 
-const { errorResponse } = Helpers;
+const { errorResponse, verifyToken } = Helpers;
 const { tripRequest } = TripRequestValidation;
 const { find } = UserService;
+const { findUserRecord } = RequestService;
 
 /**
  * Middleware for trip input validations
@@ -73,6 +74,23 @@ export default class TripRequestMiddleware {
       next();
     } catch (error) {
       errorResponse(res, { code: error.status || 500, message: error.message });
+  static async checkUserRecordExist(req, res, next) {
+    try {
+      const { token } = req.cookies;
+      const { email } = verifyToken(token);
+      const userData = await findUserRecord({ email });
+      if (userData) {
+        req.body.accommodation = userData.accommodation;
+        req.body.passportNumber = userData.passportNumber;
+        req.body.passportName = userData.passportName;
+        req.body.lineManager = userData.lineManager;
+        req.body.gender = userData.gender;
+        next();
+      } else {
+        next();
+      }
+    } catch (err) {
+      errorResponse(res, { code: 500, message: err.message });
     }
   }
 }
