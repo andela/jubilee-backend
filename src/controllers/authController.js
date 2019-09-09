@@ -163,7 +163,7 @@ class AuthController {
       }
       const { firstName, id } = user;
       const token = generateToken({ firstName, id, email }, '24h');
-      const url = `${req.protocol}://${req.get('host')}/api/auth/reset-password?token=${token}`;
+      const url = `${req.protocol}s://${req.get('host')}/api/auth/reset-password?token=${token}`;
       const response = await sendResetMail({
         email, firstName, resetPasswordLink: url
       });
