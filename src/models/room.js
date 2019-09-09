@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     roomCost: {
-      type: DataTypes.INTEGER,
-      allowNull: false
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true
     },
     occupancyCount: {
       type: DataTypes.INTEGER,
