@@ -8,65 +8,77 @@ import {
   createCompanyFacility, newCompanyUser, newSupplier, newFacility
 } from './dummies';
 import { FacilityService } from '../services';
-import { FacilityController } from '../controllers';
+import { FacilityController, AuthController } from '../controllers';
 
 chai.use(chaiHttp);
 chai.use(sinonChai);
+
 const [newCompanyAdmin, facilityData] = createCompanyFacility;
 
 
 describe('Facility route endpoints', () => {
   let adminToken;
   const supplierData = { ...newSupplier, email: faker.internet.email() };
+  let adminSignUpResponse;
   before(async () => {
-    const supplier = await chai
-      .request(server)
-      .post('/api/auth/signup/supplier')
-      .send(supplierData);
-    adminToken = supplier.body.data.user.token;
+    const reqSupplier = { body: { ...supplierData } };
+    const reqCompany = { body: { ...newCompanyAdmin } };
+    const res = {
+      status() {
+        return this;
+      },
+      cookie() {
+        return this;
+      },
+      json(obj) {
+        return obj;
+      }
+    };
+    adminSignUpResponse = await AuthController.companySignUp(reqCompany, res);
+    const supplier = await AuthController.supplierSignup(reqSupplier, res);
+    adminToken = supplier.data.user.token;
   });
-  it('should return an authentication error - 401', async () => {
-    const response = await chai
-      .request(server)
-      .post('/api/facility/supplier')
-      .send(newFacility);
-    expect(response).to.have.status(401);
-    expect(response.body.status).to.equal('fail');
-    expect(response.body.error).to.have.property('message');
-    expect(response.body.error.message).to.equal('Access denied, Token required');
-  });
-  it('should return a validation error - 400', async () => {
-    const response = await chai
-      .request(server)
-      .post('/api/facility/supplier')
-      .send({ ...newFacility, name: '' })
-      .set('authorization', `Bearer ${adminToken}`);
-    expect(response).to.have.status(400);
-    expect(response.body.status).to.equal('fail');
-    expect(response.body.error).to.have.property('message');
-    expect(response.body.error.message).to.equal('Please enter a valid name for your facility, It should be atleast 3 characters long');
-  });
-  it('should successfully create a new facility - 201', async () => {
-    const response = await chai
-      .request(server)
-      .post('/api/facility/supplier')
-      .send(newFacility)
-      .set('authorization', `Bearer ${adminToken}`);
-    expect(response).to.have.status(201);
-    expect(response.body.status).to.equal('success');
-    expect(response.body).to.have.property('data');
-    expect(response.body.data).to.be.a('object');
-    expect(response.body.data).to.have.property('rooms');
-    expect(response.body.data).to.have.property('amenities');
+  describe('POST /api/facility/supplier', () => {
+    it('should return an authentication error - 401', async () => {
+      const response = await chai
+        .request(server)
+        .post('/api/facility/supplier')
+        .send(newFacility);
+      expect(response).to.have.status(401);
+      expect(response.body.status).to.equal('fail');
+      expect(response.body.error).to.have.property('message');
+      expect(response.body.error.message).to.equal('Access denied, Token required');
+    });
+    it('should return a validation error - 400', async () => {
+      const response = await chai
+        .request(server)
+        .post('/api/facility/supplier')
+        .send({ ...newFacility, name: '' })
+        .set('authorization', `Bearer ${adminToken}`);
+      expect(response).to.have.status(400);
+      expect(response.body.status).to.equal('fail');
+      expect(response.body.error).to.have.property('message');
+      expect(response.body.error.message).to.equal('Please enter a valid name for your facility, It should be atleast 3 characters long');
+    });
+    it('should successfully create a new facility - 201', async () => {
+      const response = await chai
+        .request(server)
+        .post('/api/facility/supplier')
+        .send(newFacility)
+        .set('authorization', `Bearer ${adminToken}`);
+      expect(response).to.have.status(201);
+      expect(response.body.status).to.equal('success');
+      expect(response.body).to.have.property('data');
+      expect(response.body.data).to.be.a('object');
+      expect(response.body.data).to.have.property('rooms');
+      expect(response.body.data).to.have.property('amenities');
+    });
   });
   describe('POST /api/facility/company', () => {
     adminToken = null;
+    let invalidFacilityData = {};
     it('should enable a companyTravelAdmin or a companySuperAdmin to successfully create a facility', async () => {
-      const adminSignUpResponse = await chai
-        .request(server)
-        .post('/api/auth/signup/company')
-        .send(newCompanyAdmin);
-      const { body: { data: { signupToken, admin } } } = adminSignUpResponse;
+      const { data: { signupToken, admin } } = adminSignUpResponse;
       newCompanyUser.signupToken = signupToken;
       adminToken = admin.token;
       const response = await chai
@@ -79,17 +91,17 @@ describe('Facility route endpoints', () => {
       expect(response.body.data.facility.amenities).to.be.an('array');
     });
     it('should prevent a facility from being created with invalid field parameters', async () => {
-      const invalidFacilityData = { ...facilityData };
-      invalidFacilityData.name = 'w';
+      invalidFacilityData = { ...facilityData, name: 'w' };
       const response = await chai
         .request(server)
         .post('/api/facility/company')
         .send(invalidFacilityData).set('Cookie', `token=${adminToken}`);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.an('string');
       expect(response.body.error.message).to
         .eql('Please enter a valid name for your facility, It should be atleast 3 characters long');
+    });
+    it('should prevent a facility from being created if some required fields are missing', async () => {
       delete invalidFacilityData.name;
       const missingFieldResponse = await chai
         .request(server)
@@ -97,7 +109,7 @@ describe('Facility route endpoints', () => {
         .send(invalidFacilityData).set('Cookie', `token=${adminToken}`);
       expect(missingFieldResponse).to.have.status(400);
       expect(missingFieldResponse.body.error).to.be.a('object');
-      expect(missingFieldResponse.body.error.message).to.be.an('string');
+      expect(missingFieldResponse.body.error.message).to.be.eql('Please enter a valid name for your facility, It should be atleast 3 characters long');
     });
     it('should prevent an unautheticated user from creating a facility', async () => {
       const response = await chai
@@ -105,7 +117,7 @@ describe('Facility route endpoints', () => {
         .post('/api/facility/company')
         .send(facilityData);
       expect(response).to.have.status(401);
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.be.eql('Access denied, Token required');
     });
     it('should prevent an unauthorized user from creating a facility', async () => {
       const companyUserSignUpResponse = await chai
@@ -118,7 +130,7 @@ describe('Facility route endpoints', () => {
         .post('/api/facility/company')
         .send(facilityData).set('Cookie', `token=${token}`);
       expect(response).to.have.status(403);
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.eql('You are an unauthorized user');
     });
     it('should return a 500 error response if something goes wrong while creating the facility', async () => {
       const req = { data: { id: 1 } };

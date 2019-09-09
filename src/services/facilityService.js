@@ -1,6 +1,7 @@
 import db from '../models';
 import { Helpers } from '../utils';
 
+
 const {
   Facility, sequelize, RoomCategory, Room, AmenityFacility, Amenity
 } = db;
@@ -81,13 +82,13 @@ class FacilityService {
     const { amenities } = facilityInfo;
     try {
       const rooms = await FacilityService.sortRoomCategory(facilityInfo.rooms);
-      const result = await sequelize.transaction(async (t) => {
-        const { id: facilityId } = await Facility.create(facilityInfo, { transaction: t });
+      const result = await sequelize.transaction(async () => {
+        const { id: facilityId } = await Facility.create(facilityInfo);
         const updatedRooms = await updateCollection(rooms, { facilityId });
         const facilityAmenities = FacilityService.sortFacilityAmenities(amenities, facilityId);
-        await AmenityFacility.bulkCreate(facilityAmenities, { transaction: t });
-        await Room.bulkCreate(updatedRooms, { transaction: t });
-        const options = { include: ['rooms', 'amenities'], transaction: t };
+        await AmenityFacility.bulkCreate(facilityAmenities);
+        await Room.bulkCreate(updatedRooms);
+        const options = { include: ['rooms', 'amenities'] };
         const facility = await FacilityService.findFacilityById(facilityId, options);
         return facility;
       });

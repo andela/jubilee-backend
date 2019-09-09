@@ -28,7 +28,13 @@ module.exports = {
     },
     roomCategoryId: {
       type: Sequelize.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        key: 'id',
+        model: 'RoomCategories'
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     },
     createdAt: {
       allowNull: false,
