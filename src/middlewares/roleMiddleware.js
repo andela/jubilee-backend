@@ -22,7 +22,7 @@ export default class roleMiddleware {
         if (permitted) {
           return next();
         }
-        return errorResponse(res, { code: 401, message: 'You are an unauthorized user' });
+        return errorResponse(res, { code: 403, message: 'You are an unauthorized user' });
       } catch (error) {
         errorResponse(res, { code: 500, message: error.message });
       }

@@ -8,9 +8,9 @@ const { addFacilitySupplier, createCompanyFacility } = FacilityController;
 const { authenticate } = AuthMiddleware;
 const { onCreateFacility } = FacilityMiddleware;
 const { verifyRoles } = RoleMiddleware;
-const { supplierAdmin } = Permissions;
+const { supplierAdmin, companyTravelAdmins } = Permissions;
 
-router.post('/supplier', authenticate, verifyRoles(supplierAdmin), onCreateFacility, addFacilitySupplier);
-router.post('/company', authenticate, verifyRoles(supplierAdmin), onCreateFacility, createCompanyFacility);
+router.post('/supplier', authenticate, verifyRoles(supplierAdmin), onCreateFacility(false), addFacilitySupplier);
+router.post('/company', authenticate, verifyRoles(companyTravelAdmins), onCreateFacility(true), createCompanyFacility);
 
 export default router;

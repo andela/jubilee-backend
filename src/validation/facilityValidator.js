@@ -12,11 +12,24 @@ class FacilityValidator {
      * Validates a Facility upon creation
      *
      * @param {object} facility - The facility object to be validated.
+     * @param {boolean} isCompany - True if its a company facility object
+     * and false if its a supplier facility.
      * @returns {object | boolean } - returns an object (error response)
      * or a boolean if the facility details are valid.
      */
-  static async validateFacility(facility) {
-    const roomSchema = {
+  static async validateFacility(facility, isCompany) {
+    const roomSchema = isCompany ? {
+      occupancyCount: joi.number().required()
+        .label('Please fill in the max number of occupant for this category'),
+      roomCount: joi.number().required()
+        .label('Please fill in the number of rooms that are present for this category'),
+      description: joi.string().min(3).max(250)
+        .label('Please add a valid description'),
+      roomCategoryId: joi.number().required()
+        .label('Please select a category from the options provided'),
+      newCategory: joi.string().min(3).max(10)
+        .label('Please enter a meaningful and short category name')
+    } : {
       occupancyCount: joi.number().required()
         .label('Please fill in the max number of occupant for this category'),
       roomCount: joi.number().required()

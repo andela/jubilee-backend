@@ -377,8 +377,6 @@ describe('POST /api/auth/login', () => {
 
 describe('PATCH /api/users/role', () => {
   it('should successfully update user role', async () => {
-    const { id, firstName } = companyAdmin;
-    const token = generateToken({ id, firstName });
     const { email } = newUser;
     const userRole = {
       email,
