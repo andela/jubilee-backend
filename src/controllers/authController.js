@@ -264,7 +264,8 @@ class AuthController {
       const user = await socialLogin(req.user);
       user.token = generateToken({ email: user.email, id: user.id, role: user.role });
       const userResponse = extractUserData(user);
-      successResponse(res, userResponse, 200);
+      res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
+      return successResponse(res, userResponse, 200);
     } catch (error) {
       errorResponse(res, { code: error.status, message: error.message });
     }

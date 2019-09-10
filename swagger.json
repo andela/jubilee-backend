@@ -5,14 +5,13 @@
         "title": "Barefoot Nomad",
         "description": "Barefoot Nomad - Making company travel and accomodation easy and convenient."
     },
-    "servers": [
-        {
-          "url": "http://localhost:3000/"
+    "servers": [{
+            "url": "http://localhost:3000/"
         },
         {
-          "url": "https://jubilee-backend-staging.herokuapp.com/"
+            "url": "https://jubilee-backend-staging.herokuapp.com/"
         }
-      ],
+    ],
     "host": "",
     "basePath": "/api",
     "securityDefinitions": {
@@ -23,8 +22,7 @@
             "in": "header"
         }
     },
-    "tags": [
-        {
+    "tags": [{
             "name": "Auth",
             "description": "Endpoint for Authentication"
         },
@@ -61,17 +59,15 @@
                     "application/json"
                 ],
                 "security": [],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "required": true,
-                        "description": "This is the request body object containing user information",
-                        "schema": {
-                            "$ref": "#/requestBody/userSignupRequest"
-                        }
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "description": "This is the request body object containing user information",
+                    "schema": {
+                        "$ref": "#/requestBody/userSignupRequest"
                     }
-                ],
+                }],
                 "responses": {
                     "201": {
                         "description": "Account created successfully"
@@ -99,17 +95,15 @@
                     "application/json"
                 ],
                 "security": [],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "required": true,
-                        "description": "This is the request body object containing supplier information",
-                        "schema": {
-                            "$ref": "#/requestBody/supplierSignupRequest"
-                        }
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "description": "This is the request body object containing supplier information",
+                    "schema": {
+                        "$ref": "#/requestBody/supplierSignupRequest"
                     }
-                ],
+                }],
                 "responses": {
                     "201": {
                         "description": "Supplier created successfully"
@@ -128,42 +122,40 @@
         },
         "/auth/verify": {
             "get": {
-              "description": "The endpoint verifies a new user's verification link and marks the user account as verified if successful",
-              "summary": "Marks User account as verified",
-              "tags": [
-                "Auth"
-              ],
-              "parameters": [
-                {
-                  "name": "token",
-                  "in": "query",
-                  "schema": {
-                    "type": "string"
-                  },
-                  "example": "eyJhbGciOiJIUzI1NiJ9.Mg.hbsvkNj_kZvQYNtZxa4r2GXoNRLq1q4xC9qSq48Dwhw"
-                }
-              ],
-              "responses": {
-                "500": {
-                  "description": "Internal Server Error"
-                },
-                "400": {
-                  "description": "Invalid Token/User does not exist",
-                  "content": {
-                    "application/json; charset=utf-8": {
-                      "schema": {
+                "description": "The endpoint verifies a new user's verification link and marks the user account as verified if successful",
+                "summary": "Marks User account as verified",
+                "tags": [
+                    "Auth"
+                ],
+                "parameters": [{
+                    "name": "token",
+                    "in": "query",
+                    "schema": {
                         "type": "string"
-                      }
+                    },
+                    "example": "eyJhbGciOiJIUzI1NiJ9.Mg.hbsvkNj_kZvQYNtZxa4r2GXoNRLq1q4xC9qSq48Dwhw"
+                }],
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "400": {
+                        "description": "Invalid Token/User does not exist",
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Account verification success"
                     }
-                  }
-                },
-                "200": {
-                  "description": "Account verification success"
                 }
-              }
             }
-          },
-          "/auth/signup/company": {
+        },
+        "/auth/signup/company": {
             "post": {
                 "description": "Registers a Company",
                 "summary": "Creates a new company on the system",
@@ -174,17 +166,15 @@
                     "application/json"
                 ],
                 "security": [],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "required": true,
-                        "description": "This is the request body object containing a company signup information",
-                        "schema": {
-                            "$ref": "#/requestBody/companySignUpRequest"
-                        }
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "description": "This is the request body object containing a company signup information",
+                    "schema": {
+                        "$ref": "#/requestBody/companySignUpRequest"
                     }
-                ],
+                }],
                 "responses": {
                     "201": {
                         "description": "Account created successfully"
@@ -212,17 +202,15 @@
                     "application/json"
                 ],
                 "security": [],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "required": true,
-                        "description": "This is the request body object containing user login information",
-                        "schema": {
-                            "$ref": "#/requestBody/loginRequest"
-                        }
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "description": "This is the request body object containing user login information",
+                    "schema": {
+                        "$ref": "#/requestBody/loginRequest"
                     }
-                ],
+                }],
                 "responses": {
                     "200": {
                         "description": "Login successful"
@@ -257,9 +245,61 @@
                 }
             }
         },
+        "/auth/facebook": {
+            "get": {
+                "description": [
+                    "Login a facebook user and fetch the user profile"
+                ],
+                "summary": "#",
+                "tags": [
+                    "Auth"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "You need to signup to use this feature"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/auth/google": {
+            "get": {
+                "description": [
+                    "Login a google user and fetch the user profile"
+                ],
+                "summary": "#",
+                "tags": [
+                    "Auth"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "401": {
+                        "description": "You need to signup to use this feature"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users/profile/{userId}": {
             "get": {
-                "description": "Populates user details on the profile",
+                "description": "Populates user details on the profile. `Token is required`",
                 "summary": "Gets a single user profile",
                 "tags": [
                     "Users"
@@ -267,19 +307,15 @@
                 "produces": [
                     "application/json"
                 ],
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "userId",
-                        "required": true,
-                        "description": "The Id of the user"
-                    }
-                ],
+                "security": [{
+                    "Bearer": []
+                }],
+                "parameters": [{
+                    "in": "path",
+                    "name": "userId",
+                    "required": true,
+                    "description": "The Id of the user"
+                }],
                 "responses": {
                     "200": {
                         "description": "Success"
@@ -298,7 +334,7 @@
         },
         "/users/profile/{userId}/": {
             "put": {
-                "description": "Updates a single user profile",
+                "description": "Updates a single user profile. `Token is required`",
                 "summary": "User can update the profile details",
                 "tags": [
                     "Users"
@@ -306,13 +342,10 @@
                 "produces": [
                     "application/json"
                 ],
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "parameters": [
-                    {
+                "security": [{
+                    "Bearer": []
+                }],
+                "parameters": [{
                         "in": "path",
                         "name": "userId",
                         "required": true,
@@ -379,6 +412,89 @@
                 }
             }
         },
+        "/users/requests/user/{status}": {
+            "get": {
+                "description": "Gets users requests by specifying status parameter. `Token is required`",
+                "summary": "Gets all requests of such status",
+                "tags": [
+                    "Users"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [{
+                    "Bearer": []
+                }],
+                "parameters": [{
+                    "in": "path",
+                    "name": "status",
+                    "required": true,
+                    "description": "The status of the requests"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Access denied, Token required"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/users/requests/{requestId}": {
+            "patch": {
+                "description": "Updates a single request by assigned manager. `Token of Manager/Admins is required`",
+                "summary": "Manager can update the request status",
+                "tags": [
+                    "Users"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [{
+                    "Bearer": []
+                }],
+                "parameters": [{
+                        "in": "path",
+                        "name": "requestId",
+                        "required": true,
+                        "description": "The Id of the request to be updated"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "description": "This is the request body object containing request update",
+                        "schema": {
+                            "$ref": "#/requestBody/updateRequestStatus"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "You are an authorized user"
+                    },
+                    "400": {
+                        "description": "Request can only be pending, approved, rejected"
+                    },
+                    "404": {
+                        "description": " Not such request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "schema": {
+                        "$ref": "#/requestBody/updateRequestStatus"
+                    }
+                }
+            }
+        },
         "/users/role": {
             "patch": {
                 "description": "Updates User Role",
@@ -389,22 +505,18 @@
                 "produces": [
                     "application/json"
                 ],
-                "security": [
-                    {
-                        "Bearer": []
+                "security": [{
+                    "Bearer": []
+                }],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "description": "This is the request body object containing user role update",
+                    "schema": {
+                        "$ref": "#/requestBody/updateUserRoleRequest"
                     }
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "required": true,
-                        "description": "This is the request body object containing user role update",
-                        "schema": {
-                            "$ref": "#/requestBody/updateUserRoleRequest"
-                        }
-                    }
-                ],
+                }],
                 "responses": {
                     "200": {
                         "description": "Success"
@@ -432,23 +544,21 @@
                     "application/json"
                 ],
                 "security": [],
-                "parameters": [
-                    {
-                      "in": "body",
-                      "name": "email",
-                      "required": true,
-                      "description": "The user email for password reset",
-                      "schema": {
+                "parameters": [{
+                    "in": "body",
+                    "name": "email",
+                    "required": true,
+                    "description": "The user email for password reset",
+                    "schema": {
                         "$ref": "#/requestBody/resetPasswordRequest"
-                      }
                     }
-                  ],
+                }],
                 "responses": {
                     "200": {
                         "description": "Check your email for password reset link"
                     },
                     "400": {
-                      "description": "Email is required || Email must be valid"
+                        "description": "Email is required || Email must be valid"
                     },
                     "404": {
                         "description": "User with email does not exist"
@@ -472,23 +582,21 @@
                  "security": {
                     "Bearer": []
                 },
-                "parameters": [
-                    {
-                      "in": "body",
-                      "name": "body",
-                      "required": true,
-                      "description": "The facility object",
-                      "schema": {
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "description": "The facility object",
+                    "schema": {
                         "$ref": "#/requestBody/facility"
-                      }
                     }
-                  ], 
-                   "responses": {
+                }],
+                "responses": {
                     "201": {
                         "description": "Success"
                     },
                     "400": {
-                      "description": "Validation Error"
+                        "description": "Validation Error"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -970,56 +1078,60 @@
                     "firstName, lastName, email, password"
                 ]
             },
-            "supplierSignupRequest": {
-                "title": "User Signup Request",
-                "type": "object",
-                "properties": {
-                    "firstName": {
-                        "description": "First name of the Admin",
-                        "type": "string"
-                    },
-                    "lastName": {
-                        "description": "Last name of the Admin",
-                        "type": "string"
-                    },
-                    "email": {
-                        "description": "Email of the Admin",
-                        "type": "string"
-                    },
-                    "password": {
-                        "description": "The Password of the Admin",
-                        "type": "string"
-                    },
-                    "companyAddress": {
-                        "description": "The supplier's company address",
-                        "type": "string"
-                    },
-                    "companyName": {
-                        "description": "The supplier's company name",
-                        "type": "string"
-                    },
-                    "categoryOfServiceId": {
-                        "description": "The supplier's category of service",
-                        "type": "integer"
-                    },
-                    "phoneNumber": {
-                        "description": "The Admin's phone number",
-                        "type": "string"
-                    }
+            "example": {
+                "firstName": "King",
+                "lastName": "David",
+                "email": "barefootnomad@gmail.com",
+                "country": "Nigeria",
+                "companyName": "Andela",
+                "password": "Elija455h",
+                "gender": "male",
+                "street": "20, Board Street",
+                "city": "ikeja",
+                "state": "Lagos",
+                "birthdate": "2010-01-01",
+                "phoneNumber": "08063345598"
+            },
+            "required": [
+                "firstName, lastName, email, password"
+            ]
+        },
+        "supplierSignupRequest": {
+            "title": "User Signup Request",
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "description": "First name of the Admin",
+                    "type": "string"
                 },
-                "example": {
-                    "firstName": "King",
-                    "lastName": "David",
-                    "email": "barefootnomad@gmail.com",
-                    "companyName": "Andela",
-                    "companyAddress": "No 1, clinton str, Lagos, Nigeria",
-                    "categoryOfServiceId": 2,
-                    "password": "Elija455h",
-                    "phoneNumber": "08063345598"
-                  },
-                "required": [
-                    "firstName", "lastName", "email", "companyName", "companyAddress", "categoryOfService", "password"
-                ]
+                "lastName": {
+                    "description": "Last name of the Admin",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "Email of the Admin",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "The Password of the Admin",
+                    "type": "string"
+                },
+                "companyAddress": {
+                    "description": "The supplier's company address",
+                    "type": "string"
+                },
+                "companyName": {
+                    "description": "The supplier's company name",
+                    "type": "string"
+                },
+                "categoryOfServiceId": {
+                    "description": "The supplier's category of service",
+                    "type": "integer"
+                },
+                "phoneNumber": {
+                    "description": "The Admin's phone number",
+                    "type": "string"
+                }
             },
             "tripRequest": {
                 "title": "One-way Trip Request",
@@ -1099,19 +1211,34 @@
                         "type": "integer"
                     }
                 },
-                "example": {
-                    "firstName": "Ayodelre",
-                    "lastName": "Akin",
-                    "companySizeId": 1,
-                    "companyPlanId": 2,
-                    "email": "daylay33@gmail.com",
-                    "companyAddress": "30, Ania Street",
-                    "companyName": "Andela",
-                    "password": "Elijah38490"
+                "lastName": {
+                    "description": "Last name of the Company Admin",
+                    "type": "string"
                 },
-                "required": [
-                    "firstName, lastName, email,password,companySizeId,companyPlanId,companyAddress,companyName"
-                ]
+                "email": {
+                    "description": "Email of the user",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "The Password of the user",
+                    "type": "string"
+                },
+                "companyName": {
+                    "description": "The user's company name",
+                    "type": "string"
+                },
+                "companyAddress": {
+                    "description": "The company's Address",
+                    "type": "string"
+                },
+                "companySizeId": {
+                    "description": "The company's Size, between 1-101 and Above,a id reference is passed to the server",
+                    "type": "integer"
+                },
+                "companyPlanId": {
+                    "description": "The plan to subscribe, gold,silver or platinum ,a id reference is passed to the server",
+                    "type": "integer"
+                }
             },
             "companyFacilityCreationRequest": {
                 "title": "New company facility creation Request",
@@ -1228,99 +1355,79 @@
                         "type": "string"
                     }
                 },
-                "example": {
-                    "email": "barefootnomad@gmail.com",
-                    "password": "Elija455h"
+                "lastName": {
+                    "description": "Last name of the user",
+                    "type": "string"
                 },
-                "required": [
-                    "email, password,"
-                ]
-            },
-            "updateUserProfileRequest": {
-                "title": "Update User",
-                "type": "object",
-                "properties": {
-                    "firstName": {
-                        "description": "First name of the user",
-                        "type": "string"
-                    },
-                    "lastName": {
-                        "description": "Last name of the user",
-                        "type": "string"
-                    },
-                    "email": {
-                        "description": "Email of the user",
-                        "type": "string"
-                    },
-                    "gender": {
-                        "description": "Use gender",
-                        "type": "integer"
-                    },
-                    "department": {
-                        "description": "User department",
-                        "type": "string"
-                    },
-                    "lineManager": {
-                        "description": "User line manager",
-                        "type": "string"
-                    },
-                    "street": {
-                        "description": "User street",
-                        "type": "string"
-                    },
-                    "preferredLanguage": {
-                        "description": "User preferred language",
-                        "type": "string"
-                    },
-                    "preferredCurrency": {
-                        "description": "User preferred currency",
-                        "type": "string"
-                    }
+                "email": {
+                    "description": "Email of the user",
+                    "type": "string"
                 },
-                "example": {
-                    "firstName": "first name",
-                    "lastName": "last name",
-                    "email": "newemail@example.com",
-                    "gender": "male",
-                    "department": "",
-                    "lineManager": "",
-                    "street": "street",
-                    "preferredLanguage": "EN",
-                    "preferredCurrency": "Naira"
+                "gender": {
+                    "description": "Use gender",
+                    "type": "integer"
+                },
+                "department": {
+                    "description": "User department",
+                    "type": "string"
+                },
+                "lineManager": {
+                    "description": "User line manager",
+                    "type": "string"
+                },
+                "street": {
+                    "description": "User street",
+                    "type": "string"
+                },
+                "preferredLanguage": {
+                    "description": "User preferred language",
+                    "type": "string"
+                },
+                "preferredCurrency": {
+                    "description": "User preferred currency",
+                    "type": "string"
                 }
             },
-            "updateUserRoleRequest": {
-                "title": "Update User Role",
-                "type": "object",
-                "properties": {
-                    "email": {
-                        "description": "the email of the user",
-                        "type": "string"
-                    },
-                    "roleId": {
-                        "description": "Id of role for the user",
-                        "type": "number"
-                    }
+            "example": {
+                "firstName": "first name",
+                "lastName": "last name",
+                "email": "newemail@example.com",
+                "gender": "male",
+                "department": "",
+                "lineManager": "",
+                "street": "street",
+                "preferredLanguage": "EN",
+                "preferredCurrency": "Naira"
+            }
+        },
+        "updateUserRoleRequest": {
+            "title": "Update User Role",
+            "type": "object",
+            "properties": {
+                "email": {
+                    "description": "the email of the user",
+                    "type": "string"
                 },
-                "example": {
-                    "email": "barefootnomad@gmail.com",
-                    "roleId": 5
+                "roleId": {
+                    "description": "Id of role for the user",
+                    "type": "number"
                 }
             },
-            "resetPasswordRequest": {
-                "title": "Password Reset Request",
-                "type": "object",
-                "properties": {
-                  "email": {
+            "example": {
+                "email": "barefootnomad@gmail.com",
+                "roleId": 5
+            }
+        },
+        "resetPasswordRequest": {
+            "title": "Password Reset Request",
+            "type": "object",
+            "properties": {
+                "email": {
                     "description": "Email address of the user user",
                     "type": "string"
-                  }
-                },
-                "example": {
-                    "email": "johndoe@example.com"
                 }
-              },
-              "facility": {
+            },
+            "facility": {
                 "title": "Company Signup Request",
                 "type": "object",
                 "properties": {
@@ -1369,19 +1476,20 @@
                     "imageUrl": "https://cloudinary/sheraton-lagos",
                     "description": "Hotels and suite",
                     "rooms": [{
-                        "roomCount": 3,
-                        "roomCategoryId": 4,
-                        "occupancyCount":2,
-                        "roomCost":5000
-                    },
-                    {
-                        "roomCount": 2,
-                        "roomCategoryId": 2,
-                        "occupancyCount":1,
-                        "roomCost":15000
-                    }],
-                    "amenities": [1,2,3,4],
-                    "addOns": ["wifi","coffee shop"]
+                            "roomCount": 3,
+                            "roomCategoryId": 4,
+                            "occupancyCount": 2,
+                            "roomCost": 5000
+                        },
+                        {
+                            "roomCount": 2,
+                            "roomCategoryId": 2,
+                            "occupancyCount": 1,
+                            "roomCost": 15000
+                        }
+                    ],
+                    "amenities": [1, 2, 3, 4],
+                    "addOns": ["wifi", "coffee shop"]
                 }
               },
               "commentRequest": {
@@ -1596,6 +1704,19 @@
                         "message": "A server error prevented your request from being processed"
                     }
                 }
+            }
+        },
+        "updateRequestStatus": {
+            "title": "Update Request Status",
+            "type": "object",
+            "properties": {
+                "status": {
+                    "description": "Status to be updated",
+                    "type": "string"
+                }
+            },
+            "example": {
+                "status": 1
             }
         }
     }

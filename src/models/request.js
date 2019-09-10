@@ -72,6 +72,8 @@ module.exports = (sequelize, DataTypes) => {
     Request.belongsTo(models.User, {
       as: 'manager',
       foreignKey: 'managerId',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     });
     Request.belongsTo(models.Status, {
       as: 'status',

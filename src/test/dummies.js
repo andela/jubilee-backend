@@ -99,7 +99,22 @@ export const newCompanyUser = {
   passportNo: 'Ae760bk',
   email: faker.internet.email(),
   companyName: 'Andela',
-  password: 'Exunemployed01'
+  password: 'Exunemployed01',
+  companyName: faker.company.companyName(),
+  companyAddress: '235 ikorudu way',
+  companyPlanId: 1,
+  companySizeId: 2,
+}
+
+export const newTestCompany = {
+  email: 'kolajide@admin.com',
+  firstName: 'kola',
+  lastName: 'jidee',
+  password: 'tmobnvar..Ds66u',
+  companyName: faker.company.companyName(),
+  companyAddress: '235 ikorudu way',
+  companyPlanId: 1,
+  companySizeId: 2,
 };
 export const newRequest = {
   requesterId: 12,
