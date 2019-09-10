@@ -68,6 +68,7 @@ export default class RequestService {
       "Users" ON requests."requesterId"="Users".id WHERE (("requesterId"=${id} OR "managerId"=${id}) AND status='${status}');
     `, { type: sequelize.QueryTypes.SELECT }
     );
+    if (requests.length === 0) throw new ApiError(404, 'No such request');
     return requests;
   }
 
@@ -76,7 +77,7 @@ export default class RequestService {
    *
    * @param {Object} updateValues - Object of fields to be updated
    * @param {string} obj - An object of the keys to be searched e.g {id}, {email}
-   * @memberof UserService
+   * @memberof RequestService
    * @returns {Promise<object>} A promise object with user detail.
    */
   static async updateAnyRequest(updateValues, obj) {
@@ -86,7 +87,7 @@ export default class RequestService {
         { where: obj, returning: true }
       );
       const [bool, [user]] = result;
-      if (!bool) throw new ApiError(404, 'Not such request');
+      if (!bool) throw new ApiError(404, 'No such request');
       return user.dataValues;
     } catch (error) {
       throw new ApiError(error.status || 500, `requestService: update - ${error.message}`);
@@ -105,7 +106,7 @@ export default class RequestService {
       const { dataValues: newRequest } = await Request.create(req);
       return newRequest;
     } catch (error) {
-      throw new ApiError(error.status || 500, `requestService: createRequest - ${error.message}`);
+      throw new ApiError(error.status || 500, error.message);
     }
   }
 }
