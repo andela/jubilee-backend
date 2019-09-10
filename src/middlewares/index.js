@@ -15,5 +15,5 @@ export {
   BookingMiddleware,
   UserMiddleware,
   TripRequestMiddleware,
-  CommentMiddleware
+  CommentMiddleware,
 };

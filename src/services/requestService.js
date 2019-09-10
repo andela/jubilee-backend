@@ -1,3 +1,4 @@
+import sequelize from 'sequelize';
 import db from '../models';
 import { ApiError } from '../utils';
 import RoomService from './roomService';

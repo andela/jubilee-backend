@@ -15,5 +15,5 @@ export {
   ProfileValidator,
   RequestValidator,
   TripRequestValidation,
-  OtherValidators
+  OtherValidators,
 };

@@ -1196,435 +1196,495 @@
                 "tripType, purpose, origin, destination, departureDate, managerId"
             ]
         },
-        "example": {
-            "firstName": "King",
-            "lastName": "David",
-            "email": "barefootnomad@gmail.com",
-            "companyName": "Andela",
-            "companyAddress": "No 1, clinton str, Lagos, Nigeria",
-            "categoryOfServiceId": 2,
-            "password": "Elija455h",
-            "phoneNumber": "08063345598"
-        },
-        "required": [
-            "firstName, lastName, email, companyName, companyAddress, categoryOfService, password"
-        ]
-    },
-    "companySignUpRequest": {
-        "title": "Company Signup Request",
-        "type": "object",
-        "properties": {
-            "firstName": {
-                "description": "first name of the Company Admin",
-                "type": "string"
-            },
-            "lastName": {
-                "description": "Last name of the Company Admin",
-                "type": "string"
-            },
-            "email": {
-                "description": "Email of the user",
-                "type": "string"
-            },
-            "password": {
-                "description": "The Password of the user",
-                "type": "string"
-            },
-            "companyName": {
-                "description": "The user's company name",
-                "type": "string"
-            },
-            "companyAddress": {
-                "description": "The company's Address",
-                "type": "string"
-            },
-            "companySizeId": {
-                "description": "The company's Size, between 1-101 and Above,a id reference is passed to the server",
-                "type": "integer"
-            },
-            "companyPlanId": {
-                "description": "The plan to subscribe, gold,silver or platinum ,a id reference is passed to the server",
-                "type": "integer"
-            }
-        },
-        "companyFacilityCreationRequest": {
-            "title": "New company facility creation Request",
+        "supplierSignupRequest": {
+            "title": "User Signup Request",
             "type": "object",
             "properties": {
-                "name": {
-                    "description": "Name of Facility",
+                "firstName": {
+                    "description": "First name of the Admin",
                     "type": "string"
                 },
-                "description": {
-                    "description": "A simple description of the facility",
+                "lastName": {
+                    "description": "Last name of the Admin",
                     "type": "string"
                 },
-                "state": {
-                    "description": "The state where the facility is located",
-                    "type": "string"
-                },
-                "city": {
-                    "description": "The city where the facility is located",
-                    "type": "string"
-                },
-                "address": {
-                    "description": "An address excluding state and city where the facility is located",
-                    "type": "string"
-                },
-                "rooms": {
-                    "description": "A collection of room types available in the facility, Checkout the example for clarity",
-                    "type": "array"
-                },
-                "amenities": {
-                    "description": "A collection of amenities available in the facility. Usually provided as a list of checkbox. Refer to the example for clarity on value type",
-                    "type": "array"
-                },
-                "addOns": {
-                    "description": "A collection of extra/add-on services available in the facility. Usually provided as a list of checkbox. Refer to the example for clarity on value type",
-                    "type": "array"
-                },
-                "imageUrl": {
-                    "description": "A link to a picture of the facility",
-                    "type": "string"
-                }
-            },
-            "example": {
-                "amenities": [
-                    1, 5, 5, 6, 7, 8
-                ],
-                "rooms": [{
-                        "occupancyCount": 2,
-                        "roomCategoryId": 1,
-                        "description": "A room for a single dude",
-                        "roomCount": 3
-                    },
-                    {
-                        "occupancyCount": 3,
-                        "roomCategoryId": 2,
-                        "description": "A room for two dudes",
-                        "roomCount": 3
-                    }
-                ],
-                "description": "A nice place to stay for all your ever",
-                "addOns": ["parking lot", "free-wifi"],
-                "state": "Ondo",
-                "city": "Akure",
-                "address": "30, Ojumu Crescent",
-                "name": "Bliss World",
-                "imageUrl": "http://www.google.com"
-            },
-            "required": [
-                "name, state, city,address,description,imageUrl,rooms,amenities,addOns"
-            ]
-        },
-        "updateFacilityroomCategory": {
-            "title": "Update room category",
-            "type": "object",
-            "properties": {
-                "roomStatus": {
-                    "description": "status of room category",
-                    "type": "string"
-                }
-            },
-            "example": {
-                "roomStatus": "unavailable"
-            },
-            "required": [
-                "roomStatus"
-            ]
-        },
-        "updateFacilityamenities": {
-            "title": "Update amenities of a facility",
-            "type": "object",
-            "properties": {
-                "amenities": {
-                    "description": "ids of amenities to be updated",
-                    "type": "array"
-                }
-            },
-            "example": {
-                "amenities": [4, 5, 1]
-            },
-            "required": [
-                "amenities"
-            ]
-        },
-        "loginRequest": {
-            "title": "Login Request",
-            "type": "object",
-            "properties": {
                 "email": {
-                    "description": "Email address of the user",
+                    "description": "Email of the Admin",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "The Password of the Admin",
+                    "type": "string"
+                },
+                "companyAddress": {
+                    "description": "The supplier's company address",
+                    "type": "string"
+                },
+                "companyName": {
+                    "description": "The supplier's company name",
+                    "type": "string"
+                },
+                "categoryOfServiceId": {
+                    "description": "The supplier's category of service",
+                    "type": "integer"
+                },
+                "phoneNumber": {
+                    "description": "The Admin's phone number",
+                    "type": "string"
+                }
+            },
+            "example": {
+                "firstName": "King",
+                "lastName": "David",
+                "email": "barefootnomad@gmail.com",
+                "companyName": "Andela",
+                "companyAddress": "No 1, clinton str, Lagos, Nigeria",
+                "categoryOfServiceId": 2,
+                "password": "Elija455h",
+                "phoneNumber": "08063345598"
+            },
+            "required": [
+                "firstName, lastName, email, companyName, companyAddress, categoryOfService, password"
+            ]
+        },
+        "companySignUpRequest": {
+            "title": "Company Signup Request",
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "description": "first name of the Company Admin",
+                    "type": "string"
+                },
+                "lastName": {
+                    "description": "Last name of the Company Admin",
+                    "type": "string"
+                },
+                "email": {
+                    "description": "Email of the user",
                     "type": "string"
                 },
                 "password": {
                     "description": "The Password of the user",
                     "type": "string"
+                },
+                "companyName": {
+                    "description": "The user's company name",
+                    "type": "string"
+                },
+                "companyAddress": {
+                    "description": "The company's Address",
+                    "type": "string"
+                },
+                "companySizeId": {
+                    "description": "The company's Size, between 1-101 and Above,a id reference is passed to the server",
+                    "type": "integer"
+                },
+                "companyPlanId": {
+                    "description": "The plan to subscribe, gold,silver or platinum ,a id reference is passed to the server",
+                    "type": "integer"
                 }
             },
-            "lastName": {
-                "description": "Last name of the user",
-                "type": "string"
-            },
-            "email": {
-                "description": "Email of the user",
-                "type": "string"
-            },
-            "gender": {
-                "description": "Use gender",
-                "type": "integer"
-            },
-            "department": {
-                "description": "User department",
-                "type": "string"
-            },
-            "lineManager": {
-                "description": "User line manager",
-                "type": "string"
-            },
-            "street": {
-                "description": "User street",
-                "type": "string"
-            },
-            "preferredLanguage": {
-                "description": "User preferred language",
-                "type": "string"
-            },
-            "preferredCurrency": {
-                "description": "User preferred currency",
-                "type": "string"
-            }
-        },
-        "example": {
-            "firstName": "first name",
-            "lastName": "last name",
-            "email": "newemail@example.com",
-            "gender": "male",
-            "department": "",
-            "lineManager": "",
-            "street": "street",
-            "preferredLanguage": "EN",
-            "preferredCurrency": "Naira"
-        }
-    },
-    "updateUserRoleRequest": {
-        "title": "Update User Role",
-        "type": "object",
-        "properties": {
-            "email": {
-                "description": "the email of the user",
-                "type": "string"
-            },
-            "roleId": {
-                "description": "Id of role for the user",
-                "type": "number"
-            }
-        },
-        "example": {
-            "email": "barefootnomad@gmail.com",
-            "roleId": 5
-        }
-    },
-    "resetPasswordRequest": {
-        "title": "Password Reset Request",
-        "type": "object",
-        "properties": {
-            "email": {
-                "description": "Email address of the user user",
-                "type": "string"
-            }
-        },
-        "facility": {
-            "title": "Company Signup Request",
-            "type": "object",
-            "properties": {
-                "name": {
-                    "description": "Facility name",
-                    "type": "string"
-                },
-                "city": {
-                    "description": "City in which Facility is located",
-                    "type": "string"
-                },
-                "state": {
-                    "description": "State in which Facility is located",
-                    "type": "string"
-                },
-                "address": {
-                    "description": "Facility address",
-                    "type": "string"
-                },
-                "imageUrl": {
-                    "description": "Facility Image Url",
-                    "type": "string"
-                },
-                "description": {
-                    "description": "Facility description",
-                    "type": "string"
-                },
-                "rooms": {
-                    "description": "an array of available rooms on the facility",
-                    "type": "array"
-                },
-                "amenities": {
-                    "description": "An array of the ids of amenities on the facility",
-                    "type": "array"
-                },
-                "addOns": {
-                    "description": "An array of add on service offered by the facility management",
-                    "type": "array"
-                }
-            },
-            "example": {
-                "name": "Sheraton Hotels",
-                "state": "Lagos",
-                "city": "Ajah",
-                "address": "123, St. Micheal str Ajah, Lagos state",
-                "imageUrl": "https://cloudinary/sheraton-lagos",
-                "description": "Hotels and suite",
-                "rooms": [{
-                        "roomCount": 3,
-                        "roomCategoryId": 4,
-                        "occupancyCount": 2,
-                        "roomCost": 5000
+            "companyFacilityCreationRequest": {
+                "title": "New company facility creation Request",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "Name of Facility",
+                        "type": "string"
                     },
-                    {
-                        "roomCount": 2,
-                        "roomCategoryId": 2,
-                        "occupancyCount": 1,
-                        "roomCost": 15000
+                    "description": {
+                        "description": "A simple description of the facility",
+                        "type": "string"
+                    },
+                    "state": {
+                        "description": "The state where the facility is located",
+                        "type": "string"
+                    },
+                    "city": {
+                        "description": "The city where the facility is located",
+                        "type": "string"
+                    },
+                    "address": {
+                        "description": "An address excluding state and city where the facility is located",
+                        "type": "string"
+                    },
+                    "rooms": {
+                        "description": "A collection of room types available in the facility, Checkout the example for clarity",
+                        "type": "array"
+                    },
+                    "amenities": {
+                        "description": "A collection of amenities available in the facility. Usually provided as a list of checkbox. Refer to the example for clarity on value type",
+                        "type": "array"
+                    },
+                    "addOns": {
+                        "description": "A collection of extra/add-on services available in the facility. Usually provided as a list of checkbox. Refer to the example for clarity on value type",
+                        "type": "array"
+                    },
+                    "imageUrl": {
+                        "description": "A link to a picture of the facility",
+                        "type": "string"
                     }
-                ],
-                "amenities": [1, 2, 3, 4],
-                "addOns": ["wifi", "coffee shop"]
-            }
-        },
-        "commentRequest": {
-            "title": "Comment",
-            "type": "object",
-            "properties": {
-                "requestId": {
-                    "description": "The id of the travel request",
-                    "type": "number"
                 },
-                "message": {
-                    "description": "The body of a comment",
-                    "type": "date"
-                }
+                "example": {
+                    "amenities": [
+                        1, 5, 5, 6, 7, 8
+                    ],
+                    "rooms": [{
+                            "occupancyCount": 2,
+                            "roomCategoryId": 1,
+                            "description": "A room for a single dude",
+                            "roomCount": 3
+                        },
+                        {
+                            "occupancyCount": 3,
+                            "roomCategoryId": 2,
+                            "description": "A room for two dudes",
+                            "roomCount": 3
+                        }
+                    ],
+                    "description": "A nice place to stay for all your ever",
+                    "addOns": ["parking lot", "free-wifi"],
+                    "state": "Ondo",
+                    "city": "Akure",
+                    "address": "30, Ojumu Crescent",
+                    "name": "Bliss World",
+                    "imageUrl": "http://www.google.com"
+                },
+                "required": [
+                    "name, state, city,address,description,imageUrl,rooms,amenities,addOns"
+                ]
             },
-            "example": {
-                "requestId": 1,
-                "message": "What's happening with your trip ?"
-            }
-        },
-        "accommodationBooking": {
-            "title": "Accommodation Booking",
-            "type": "object",
-            "properties": {
-                "checkIn": {
-                    "description": "The date user wants to check-in",
-                    "type": "date"
+            "updateFacilityroomCategory": {
+                "title": "Update room category",
+                "type": "object",
+                "properties": {
+                    "roomStatus": {
+                        "description": "status of room category",
+                        "type": "string"
+                    }
                 },
-                "checkOut": {
-                    "description": "The date user wants to check-out",
-                    "type": "date"
+                "example": {
+                    "roomStatus": "unavailable"
                 },
-                "roomId": {
-                    "description": "The id of the room user wants to book",
-                    "type": "integer"
-                },
-                "userId": {
-                    "description": "The id of the user that wants to book accommodation",
-                    "type": "integer"
-                }
+                "required": [
+                    "roomStatus"
+                ]
             },
-            "example": {
-                "checkIn": "2019-09-20",
-                "checkOut": "2019-09-21",
-                "roomId": 1,
-                "userId": 1
-            }
-        },
-        "accBookingSuccess": {
-            "properties": {
-                "status": {
-                    "description": "Success message returned after a successful booking",
+            "updateFacilityamenities": {
+                "title": "Update amenities of a facility",
+                "type": "object",
+                "properties": {
+                    "amenities": {
+                        "description": "ids of amenities to be updated",
+                        "type": "array"
+                    }
+                },
+                "example": {
+                    "amenities": [4, 5, 1]
+                },
+                "required": [
+                    "amenities"
+                ]
+            },
+            "loginRequest": {
+                "title": "Login Request",
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "description": "Email address of the user",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "The Password of the user",
+                        "type": "string"
+                    }
+                },
+                "lastName": {
+                    "description": "Last name of the user",
                     "type": "string"
                 },
-                "data": {
-                    "description": "A booking object returned by the server",
-                    "type": "object"
+                "email": {
+                    "description": "Email of the user",
+                    "type": "string"
+                },
+                "gender": {
+                    "description": "Use gender",
+                    "type": "integer"
+                },
+                "department": {
+                    "description": "User department",
+                    "type": "string"
+                },
+                "lineManager": {
+                    "description": "User line manager",
+                    "type": "string"
+                },
+                "street": {
+                    "description": "User street",
+                    "type": "string"
+                },
+                "preferredLanguage": {
+                    "description": "User preferred language",
+                    "type": "string"
+                },
+                "preferredCurrency": {
+                    "description": "User preferred currency",
+                    "type": "string"
                 }
             },
             "example": {
-                "status": "success",
-                "data": {
-                    "id": 1,
+                "firstName": "first name",
+                "lastName": "last name",
+                "email": "newemail@example.com",
+                "gender": "male",
+                "department": "",
+                "lineManager": "",
+                "street": "street",
+                "preferredLanguage": "EN",
+                "preferredCurrency": "Naira"
+            }
+        },
+        "updateUserRoleRequest": {
+            "title": "Update User Role",
+            "type": "object",
+            "properties": {
+                "email": {
+                    "description": "the email of the user",
+                    "type": "string"
+                },
+                "roleId": {
+                    "description": "Id of role for the user",
+                    "type": "number"
+                }
+            },
+            "example": {
+                "email": "barefootnomad@gmail.com",
+                "roleId": 5
+            }
+        },
+        "resetPasswordRequest": {
+            "title": "Password Reset Request",
+            "type": "object",
+            "properties": {
+                "email": {
+                    "description": "Email address of the user user",
+                    "type": "string"
+                }
+            },
+            "facility": {
+                "title": "Company Signup Request",
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "Facility name",
+                        "type": "string"
+                    },
+                    "city": {
+                        "description": "City in which Facility is located",
+                        "type": "string"
+                    },
+                    "state": {
+                        "description": "State in which Facility is located",
+                        "type": "string"
+                    },
+                    "address": {
+                        "description": "Facility address",
+                        "type": "string"
+                    },
+                    "imageUrl": {
+                        "description": "Facility Image Url",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Facility description",
+                        "type": "string"
+                    },
+                    "rooms": {
+                        "description": "an array of available rooms on the facility",
+                        "type": "array"
+                    },
+                    "amenities": {
+                        "description": "An array of the ids of amenities on the facility",
+                        "type": "array"
+                    },
+                    "addOns": {
+                        "description": "An array of add on service offered by the facility management",
+                        "type": "array"
+                    }
+                },
+                "example": {
+                    "name": "Sheraton Hotels",
+                    "state": "Lagos",
+                    "city": "Ajah",
+                    "address": "123, St. Micheal str Ajah, Lagos state",
+                    "imageUrl": "https://cloudinary/sheraton-lagos",
+                    "description": "Hotels and suite",
+                    "rooms": [{
+                            "roomCount": 3,
+                            "roomCategoryId": 4,
+                            "occupancyCount": 2,
+                            "roomCost": 5000
+                        },
+                        {
+                            "roomCount": 2,
+                            "roomCategoryId": 2,
+                            "occupancyCount": 1,
+                            "roomCost": 15000
+                        }
+                    ],
+                    "amenities": [1, 2, 3, 4],
+                    "addOns": ["wifi", "coffee shop"]
+                }
+            },
+            "commentRequest": {
+                "title": "Comment",
+                "type": "object",
+                "properties": {
+                    "requestId": {
+                        "description": "The id of the travel request",
+                        "type": "number"
+                    },
+                    "message": {
+                        "description": "The body of a comment",
+                        "type": "date"
+                    }
+                },
+                "example": {
+                    "requestId": 1,
+                    "message": "What's happening with your trip ?"
+                }
+            },
+            "accommodationBooking": {
+                "title": "Accommodation Booking",
+                "type": "object",
+                "properties": {
+                    "checkIn": {
+                        "description": "The date user wants to check-in",
+                        "type": "date"
+                    },
+                    "checkOut": {
+                        "description": "The date user wants to check-out",
+                        "type": "date"
+                    },
+                    "roomId": {
+                        "description": "The id of the room user wants to book",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "description": "The id of the user that wants to book accommodation",
+                        "type": "integer"
+                    }
+                },
+                "example": {
                     "checkIn": "2019-09-20",
                     "checkOut": "2019-09-21",
                     "roomId": 1,
-                    "userId": 1,
-                    "updatedAt": "2019-09-09T14:22:21.170Z",
-                    "createdAt": "2019-09-09T14:22:21.170Z"
+                    "userId": 1
                 }
-            }
-        },
-        "commentDeleteSuccess": {
-            "properties": {
-                "status": {
-                    "description": "A success text that indicates the comment has been deleted",
-                    "type": "string"
+            },
+            "accBookingSuccess": {
+                "properties": {
+                    "status": {
+                        "description": "Success message returned after a successful booking",
+                        "type": "string"
+                    },
+                    "data": {
+                        "description": "A booking object returned by the server",
+                        "type": "object"
+                    }
                 },
-                "data": {
-                    "description": "An object that only contains an id property whose value is the id of the deleted comment",
+                "example": {
+                    "status": "success",
+                    "data": {
+                        "id": 1,
+                        "checkIn": "2019-09-20",
+                        "checkOut": "2019-09-21",
+                        "roomId": 1,
+                        "userId": 1,
+                        "updatedAt": "2019-09-09T14:22:21.170Z",
+                        "createdAt": "2019-09-09T14:22:21.170Z"
+                    }
+                }
+            },
+            "commentDeleteSuccess": {
+                "properties": {
+                    "status": {
+                        "description": "A success text that indicates the comment has been deleted",
+                        "type": "string"
+                    },
+                    "data": {
+                        "description": "An object that only contains an id property whose value is the id of the deleted comment",
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "status": "success",
+                    "data": {
+                        "id": 2
+                    }
+                }
+            },
+            "notificationSuccess": {
+                "properties": {
+                    "status": {
+                        "description": "Success message",
+                        "type": "string"
+                    },
+                    "data": {
+                        "description": "An array of updated notifications",
+                        "type": "array"
+                    }
+                },
+                "example": {
+                    "status": "success",
+                    "data": [{
+                            "id": 8,
+                            "userId": 18,
+                            "message": "Kingsley arinze just registed with your company token",
+                            "url": "https://app.andela.com/kingleyArinze",
+                            "status": "seen",
+                            "createdAt": "2019-09-15T10:15:24.924Z",
+                            "updatedAt": "2019-09-15T10:15:28.183Z"
+                        },
+                        {
+                            "id": 9,
+                            "userId": 18,
+                            "message": "Kingsley arinze just registed with your company token",
+                            "url": "https://app.andela.com/kingleyArinze",
+                            "status": "seen",
+                            "createdAt": "2019-09-15T10:15:25.792Z",
+                            "updatedAt": "2019-09-15T10:15:28.183Z"
+                        }
+                    ]
+                }
+            },
+            "400": {
+                "properties": {
+                    "status": {
+                        "description": "Client error",
+                        "type": "string"
+                    },
+                    "error": {
+                        "description": "A descriptive error message",
+                        "type": "object"
+                    }
+                },
+                "error": {
+                    "description": "A descriptive error message",
                     "type": "object"
                 }
             },
             "example": {
-                "status": "success",
-                "data": {
-                    "id": 2
+                "status": "fail",
+                "error": {
+                    "message": "There was a validation error"
                 }
             }
         },
-        "notificationSuccess": {
+        "401": {
             "properties": {
                 "status": {
-                    "description": "Success message",
-                    "type": "string"
-                },
-                "data": {
-                    "description": "An array of updated notifications",
-                    "type": "array"
-                }
-            },
-            "example": {
-                "status": "success",
-                "data": [{
-                        "id": 8,
-                        "userId": 18,
-                        "message": "Kingsley arinze just registed with your company token",
-                        "url": "https://app.andela.com/kingleyArinze",
-                        "status": "seen",
-                        "createdAt": "2019-09-15T10:15:24.924Z",
-                        "updatedAt": "2019-09-15T10:15:28.183Z"
-                    },
-                    {
-                        "id": 9,
-                        "userId": 18,
-                        "message": "Kingsley arinze just registed with your company token",
-                        "url": "https://app.andela.com/kingleyArinze",
-                        "status": "seen",
-                        "createdAt": "2019-09-15T10:15:25.792Z",
-                        "updatedAt": "2019-09-15T10:15:28.183Z"
-                    }
-                ]
-            }
-        },
-        "400": {
-            "properties": {
-                "status": {
-                    "description": "Client error",
+                    "description": "Authentication error",
                     "type": "string"
                 },
                 "error": {
@@ -1632,144 +1692,135 @@
                     "type": "object"
                 }
             },
-            "error": {
-                "description": "A descriptive error message",
-                "type": "object"
+            "example": {
+                "status": "fail",
+                "error": {
+                    "message": "Token is required"
+                }
             }
         },
-        "example": {
-            "status": "fail",
-            "error": {
-                "message": "There was a validation error"
-            }
-        }
-    },
-    "401": {
-        "properties": {
-            "status": {
-                "description": "Authentication error",
-                "type": "string"
+        "403": {
+            "properties": {
+                "status": {
+                    "description": "Usually just the text fail",
+                    "type": "string"
+                },
+                "error": {
+                    "description": "A descriptive error message",
+                    "type": "object"
+                }
             },
-            "error": {
-                "description": "A descriptive error message",
-                "type": "object"
+            "example": {
+                "status": "fail",
+                "error": {
+                    "message": "User is unauthorized"
+                }
             }
         },
-        "example": {
-            "status": "fail",
-            "error": {
-                "message": "Token is required"
-            }
-        }
-    },
-    "403": {
-        "properties": {
-            "status": {
-                "description": "Usually just the text fail",
-                "type": "string"
+        "404": {
+            "properties": {
+                "status": {
+                    "description": "Authentication error",
+                    "type": "string"
+                },
+                "error": {
+                    "description": "A descriptive error message",
+                    "type": "object"
+                }
             },
-            "error": {
-                "description": "A descriptive error message",
-                "type": "object"
-            }
-        },
-        "example": {
-            "status": "fail",
-            "error": {
-                "message": "User is unauthorized"
-            }
-        }
-    },
-    "404": {
-        "properties": {
-            "status": {
-                "description": "Authentication error",
-                "type": "string"
-            },
-            "error": {
-                "description": "A descriptive error message",
-                "type": "object"
+            "example": {
+                "status": "fail",
+                "error": {
+                    "message": "Data supplied by the user was not found"
+                }
             }
         },
-        "example": {
-            "status": "fail",
-            "error": {
-                "message": "Data supplied by the user was not found"
-            }
-        }
-    },
-    "500": {
-        "properties": {
-            "status": {
-                "description": "Server error",
-                "type": "string"
+        "500": {
+            "properties": {
+                "status": {
+                    "description": "Server error",
+                    "type": "string"
+                },
+                "error": {
+                    "description": "A descriptive error message",
+                    "type": "object"
+                }
             },
-            "error": {
-                "description": "A descriptive error message",
-                "type": "object"
-            }
-        },
-        "example": {
-            "status": "fail",
-            "error": {
-                "message": "A server error prevented your request from being processed"
-            }
-        }
-    },
-    "updateRequestStatus": {
-        "title": "Update Request Status",
-        "type": "object",
-        "properties": {
-            "statusId": {
-                "description": "Status to be updated",
-                "type": "number"
+            "example": {
+                "status": "fail",
+                "error": {
+                    "message": "A server error prevented your request from being processed"
+                }
+            },
+            "updateRequestStatus": {
+                "title": "Update Request Status",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "description": "Status to be updated",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "status": 1
+                }
             }
         },
-        "example": {
-            "statusId": 1
-        }
-    },
-    "updateUserRequest": {
-        "title": "Update Request Status by user",
-        "type": "object",
-        "properties": {
-            "purpose": {
-                "description": "purpose of trip",
-                "type": "string"
+        "updateRequestStatus": {
+            "title": "Update Request Status",
+            "type": "object",
+            "properties": {
+                "statusId": {
+                    "description": "Status to be updated",
+                    "type": "number"
+                }
             },
-            "rememberMe": {
-                "description": "for remebering users request",
-                "type": "boolean"
-            },
-            "tripType": {
-                "description": "type of trip",
-                "type": "enum"
-            },
-            "origin": {
-                "description": "origin of traveler",
-                "type": "string"
-            },
-            "destination": {
-                "description": "destination of traveler",
-                "type": "string"
-            },
-            "departureDate": {
-                "description": "date to leave",
-                "type": "date"
-            },
-            "returnDate": {
-                "description": "date to return",
-                "type": "date"
+            "example": {
+                "statusId": 1
             }
         },
-        "example": {
-            "purpose": "client requests a physical meeting",
-            "rememberMe": "true",
-            "tripType": "Multi-leg",
-            "origin": "abujah",
-            "destination": "kaduna",
-            "departureDate": "2019-09-12 08:09:07.439-05",
-            "returnDate": "2019-10-12 08:09:07.439-05"
+        "updateUserRequest": {
+            "title": "Update Request Status by user",
+            "type": "object",
+            "properties": {
+                "purpose": {
+                    "description": "purpose of trip",
+                    "type": "string"
+                },
+                "rememberMe": {
+                    "description": "for remebering users request",
+                    "type": "boolean"
+                },
+                "tripType": {
+                    "description": "type of trip",
+                    "type": "enum"
+                },
+                "origin": {
+                    "description": "origin of traveler",
+                    "type": "string"
+                },
+                "destination": {
+                    "description": "destination of traveler",
+                    "type": "string"
+                },
+                "departureDate": {
+                    "description": "date to leave",
+                    "type": "date"
+                },
+                "returnDate": {
+                    "description": "date to return",
+                    "type": "date"
+                }
+            },
+            "example": {
+                "purpose": "client requests a physical meeting",
+                "rememberMe": "true",
+                "tripType": "Multi-leg",
+                "origin": "abujah",
+                "destination": "kaduna",
+                "departureDate": "2019-09-12 08:09:07.439-05",
+                "returnDate": "2019-10-12 08:09:07.439-05"
+            }
         }
     }
 }
