@@ -20,9 +20,12 @@ describe('Facility route endpoints', () => {
   let adminToken;
   const supplierData = { ...newSupplier, email: faker.internet.email() };
   let adminSignUpResponse;
+  let companyUserSignUpResponse;
   before(async () => {
     const reqSupplier = { body: { ...supplierData } };
     const reqCompany = { body: { ...newCompanyAdmin } };
+
+
     const res = {
       status() {
         return this;
@@ -34,9 +37,17 @@ describe('Facility route endpoints', () => {
         return obj;
       }
     };
+
     adminSignUpResponse = await AuthController.companySignUp(reqCompany, res);
+
+    const { data: { signupToken } } = adminSignUpResponse;
+    const reqUser = { body: { ...newCompanyUser, signupToken, roleId: 5 } };
+    companyUserSignUpResponse = await AuthController.userSignup(reqUser, res);
     const supplier = await AuthController.supplierSignup(reqSupplier, res);
     adminToken = supplier.data.user.token;
+  });
+  afterEach(() => {
+    sinon.restore();
   });
   describe('POST /api/facility/supplier', () => {
     it('should return an authentication error - 401', async () => {
@@ -78,8 +89,7 @@ describe('Facility route endpoints', () => {
     adminToken = null;
     let invalidFacilityData = {};
     it('should enable a companyTravelAdmin or a companySuperAdmin to successfully create a facility', async () => {
-      const { data: { signupToken, admin } } = adminSignUpResponse;
-      newCompanyUser.signupToken = signupToken;
+      const { data: { admin } } = adminSignUpResponse;
       adminToken = admin.token;
       const response = await chai
         .request(server)
@@ -87,8 +97,8 @@ describe('Facility route endpoints', () => {
         .send(facilityData).set('Cookie', `token=${adminToken}`);
       expect(response).to.have.status(201);
       expect(response.body.data.facility).to.be.a('object');
-      expect(response.body.data.facility.rooms).to.be.an('array');
-      expect(response.body.data.facility.amenities).to.be.an('array');
+      expect(response.body.data.facility.rooms.length).to.eql(2);
+      expect(response.body.data.facility.amenities.length).to.eql(5);
     });
     it('should prevent a facility from being created with invalid field parameters', async () => {
       invalidFacilityData = { ...facilityData, name: 'w' };
@@ -120,11 +130,7 @@ describe('Facility route endpoints', () => {
       expect(response.body.error.message).to.be.eql('Access denied, Token required');
     });
     it('should prevent an unauthorized user from creating a facility', async () => {
-      const companyUserSignUpResponse = await chai
-        .request(server)
-        .post('/api/auth/signup/user')
-        .send(newCompanyUser);
-      const { body: { data: { token } } } = companyUserSignUpResponse;
+      const { data: { token } } = companyUserSignUpResponse;
       const response = await chai
         .request(server)
         .post('/api/facility/company')
@@ -148,12 +154,11 @@ describe('Facility route endpoints', () => {
           errors: undefined
         }
       };
-      const stubbedMethod = sinon.stub(FacilityService, 'createFacility')
+      sinon.stub(FacilityService, 'createFacility')
         .throws('Failed to create facility. Try again');
       await FacilityController.createCompanyFacility(req, res);
       expect(res.status).to.have.been.calledWith(500);
       expect(res.json).to.have.been.calledWith(errorResponse);
-      if (stubbedMethod.restore) { stubbedMethod.restore(); }
     });
   });
 });
