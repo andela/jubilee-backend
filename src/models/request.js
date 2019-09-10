@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     managerId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'Users',
         key: 'id',
@@ -20,13 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     },
-    accBookingId: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
     statusId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: 2,
       references: {
         model: 'Statuses',
         key: 'id',
@@ -40,7 +37,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     rememberMe: {
       type: DataTypes.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      defaultValue: false
     },
     tripType: {
       type: DataTypes.ENUM,
