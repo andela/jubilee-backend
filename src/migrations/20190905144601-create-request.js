@@ -18,7 +18,7 @@ module.exports = {
     },
     managerId: {
       type: Sequelize.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         key: 'id',
         model: 'Users'
@@ -26,12 +26,10 @@ module.exports = {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     },
-    accBookingId: {
-      type: Sequelize.INTEGER
-    },
     statusId: {
       type: Sequelize.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: 2,
       references: {
         key: 'id',
         model: 'Statuses'
@@ -45,7 +43,8 @@ module.exports = {
     },
     rememberMe: {
       type: Sequelize.BOOLEAN,
-      allowNull: true
+      allowNull: true,
+      defaultValue: false
     },
     tripType: {
       type: Sequelize.ENUM,
