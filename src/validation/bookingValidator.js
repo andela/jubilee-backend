@@ -39,7 +39,7 @@ class BookingValidator {
         .min(Joi.ref('checkIn'))
         .required()
         .error(
-          BookingValidator.validateAccDate('chekOut')
+          BookingValidator.validateAccDate('checkOut')
         ),
       userId: Joi.number()
         .positive()

@@ -70,7 +70,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('userId is required!');
     });
 
     it('should fail validation if userId is empty', async () => {
@@ -88,7 +88,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('userId should not be empty');
     });
 
     it('should fail validation if userId is negative', async () => {
@@ -105,7 +105,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('userId must be a positive number');
     });
 
     it('should fail validation if roomId is not provided', async () => {
@@ -122,7 +122,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('roomId is required!');
     });
 
     it('should fail validation if roomId is empty', async () => {
@@ -140,7 +140,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('roomId should not be empty');
     });
 
     it('should fail validation if roomId is negative', async () => {
@@ -158,7 +158,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('roomId must be a positive number');
     });
 
     it('should fail validation if checkIn is not provided', async () => {
@@ -174,7 +174,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('checkIn is required!');
     });
 
     it('should fail validation if checkIn is in the past', async () => {
@@ -191,7 +191,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('checkIn must be larger than or equal to today');
     });
 
     it('should fail validation if wrong checkIn format is provided', async () => {
@@ -208,7 +208,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('checkIn should be in this format YYYY-MM-DD');
     });
 
     it('should fail validation if checkIn is empty', async () => {
@@ -225,7 +225,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('checkIn should not be empty');
     });
 
     it('should fail validation if checkOut is not provided', async () => {
@@ -241,7 +241,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('checkOut is required!');
     });
 
     it('should fail validation if checkOut not larger than checkIn', async () => {
@@ -258,7 +258,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('checkOut must be larger than or equal to checkIn');
     });
 
     it('should fail validation if wrong checkOut format is provided', async () => {
@@ -275,7 +275,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('checkOut should be in this format YYYY-MM-DD');
     });
 
     it('should fail validation if checkOut is empty', async () => {
@@ -292,7 +292,7 @@ describe('Booking Test', () => {
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
-      expect(response.body.error.message).to.be.a('string');
+      expect(response.body.error.message).to.equal('checkOut should not be empty');
     });
   });
 
