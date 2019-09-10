@@ -11,40 +11,91 @@ module.exports = {
       allowNull: false
     },
     description: {
-      type: Sequelize.TEXT,
+      type: Sequelize.STRING,
       allowNull: false
     },
     state: {
-      type: Sequelize.STRING,
+      type: Sequelize.ENUM,
+      values: [
+        'Abia',
+        'Adamawa',
+        'Anambra',
+        'Akwa Ibom',
+        'Bauchi',
+        'Bayelsa',
+        'Benue',
+        'Borno',
+        'Cross River',
+        'Delta',
+        'Ebonyi',
+        'Enugu',
+        'Edo',
+        'Ekiti',
+        'Abuja',
+        'Gombe',
+        'Imo',
+        'Jigawa',
+        'Kaduna',
+        'Kano',
+        'Katsina',
+        'Kebbi',
+        'Kogi',
+        'Kwara',
+        'Lagos',
+        'Nasarawa',
+        'Niger',
+        'Ogun',
+        'Ondo',
+        'Osun',
+        'Oyo',
+        'Plateau',
+        'Rivers',
+        'Sokoto',
+        'Taraba',
+        'Yobe',
+        'Zamfara'
+      ],
       allowNull: false
     },
     city: {
       type: Sequelize.STRING,
-      allowNull: true
+      allowNull: false
     },
     address: {
       type: Sequelize.STRING,
       allowNull: false
     },
     companyType: {
-      type: Sequelize.STRING,
+      type: Sequelize.ENUM,
+      values: ['company', 'supplier'],
       allowNull: false
     },
     companyId: {
       type: Sequelize.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'Companies',
+        key: 'id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     supplierId: {
       type: Sequelize.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'Companies',
+        key: 'id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     },
     imageUrl: {
       type: Sequelize.STRING,
       allowNull: false
     },
     addOns: {
-      type: Sequelize.ARRAY(Sequelize.STRING),
-      allowNull: true
+      type: Sequelize.ARRAY(Sequelize.STRING)
     },
     createdAt: {
       allowNull: false,

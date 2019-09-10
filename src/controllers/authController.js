@@ -25,7 +25,7 @@ const { updateSupplier } = SupplierService;
 /**
  * A collection of methods that controls authentication responses.
  *
- * @class Auth
+ * @class AuthController
  */
 class AuthController {
   /**
@@ -48,7 +48,6 @@ class AuthController {
       const isSent = await sendVerificationEmail(req, { ...user });
       const { token } = user;
       res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
-      res.cookie('permissionId', defaultRoleId, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, { ...user, emailSent: isSent, roleAssignment }, 201);
     } catch (error) {
       errorResponse(res, {});
@@ -109,6 +108,7 @@ class AuthController {
       const roleAssignment = await assignRole(user.id, defaultRoleId);
       const admin = extractUserData(user);
       const emailSent = await sendWelcomeEmail(req, { companyToken, ...admin });
+      delete company.companyToken;
       res.cookie('token', user.token, { maxAge: 86400000, httpOnly: true });
       return successResponse(res, {
         admin, company, emailSent, signupToken: unhashedCompanyToken, roleAssignment

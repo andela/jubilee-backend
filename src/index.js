@@ -6,8 +6,15 @@ import errorhandler from 'errorhandler';
 import morgan from 'morgan';
 import methodOverride from 'method-override';
 import cookieParser from 'cookie-parser';
+import { createNamespace } from 'cls-hooked';
 import env from './config/env-config';
 import routes from './routes';
+import db from './models';
+
+// Create CLS namespace
+const dbNameSpace = createNamespace('db');
+db.Sequelize.useCLS(dbNameSpace);
+
 
 const isProduction = env.NODE_ENV === 'production';
 

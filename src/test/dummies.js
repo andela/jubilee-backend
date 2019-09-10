@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import faker from 'faker';
 
 export const newUser = {
@@ -51,4 +52,49 @@ export const newCompany = {
   companyAddress: '20, Ania street, Ojomo',
   companySizeId: 2,
   companyPlanId: 3
+};
+
+export const createCompanyFacility = [
+  {
+    firstName: 'Ayodele',
+    lastName: 'Akin',
+    companySizeId: 1,
+    companyPlanId: 2,
+    email: 'daylay43@gmail.com',
+    companyAddress: '30, Ania Street',
+    companyName: 'Andela',
+    password: 'Elijah38490'
+  },
+  {
+    amenities: [
+      1, 5, 5, 6, 7, 8
+    ],
+    rooms: [{
+      occupancyCount: 2,
+      roomCategoryId: 1,
+      description: 'A room for a single dude',
+      roomCount: 3
+    },
+    {
+      occupancyCount: 3,
+      roomCategoryId: 2,
+      description: 'A room for two dudes',
+      roomCount: 3
+    }],
+    description: 'A nice place to stay for all your ever',
+    addOns: ['parking lot', 'free-wifi'],
+    state: 'Ondo',
+    city: 'Akure',
+    address: '30, Ojumu Crescent',
+    name: 'Bliss World',
+    imageUrl: 'http://www.google.com'
+  }
+
+];
+export const newCompanyUser = {
+  firstName: 'Mike',
+  lastName: 'Tyson',
+  email: faker.internet.email(),
+  companyName: 'Andela',
+  password: 'Exunemployed01'
 };

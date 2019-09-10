@@ -4,12 +4,13 @@ import { AuthMiddleware, FacilityMiddleware, RoleMiddleware } from '../middlewar
 import { Permissions } from '../utils';
 
 const router = Router();
-const { addFacilitySupplier } = FacilityController;
+const { addFacilitySupplier, createCompanyFacility } = FacilityController;
 const { authenticate } = AuthMiddleware;
 const { onCreateFacility } = FacilityMiddleware;
 const { verifyRoles } = RoleMiddleware;
-const { supplierAdmin } = Permissions;
+const { supplierAdmin, companyTravelAdmins } = Permissions;
 
-router.post('/supplier', authenticate, verifyRoles(supplierAdmin), onCreateFacility, addFacilitySupplier);
+router.post('/supplier', authenticate, verifyRoles(supplierAdmin), onCreateFacility(), addFacilitySupplier);
+router.post('/company', authenticate, verifyRoles(companyTravelAdmins), onCreateFacility(true), createCompanyFacility);
 
 export default router;
