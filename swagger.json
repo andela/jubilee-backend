@@ -471,6 +471,61 @@
                     }
                 }
             }
+        },
+        "/booking/accommodation": {
+            "post": {
+                "description": "Endpoint for booking accommodations",
+                "summary": "Enables a user book an accommodation in a suppliers' facility",
+                "tags": [
+                    "Booking"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                      "in": "body",
+                      "name": "booking",
+                      "required": true,
+                      "description": "The booking object",
+                      "schema": {
+                        "$ref": "#/requestBody/accommodationBooking"
+                      }
+                    }
+                  ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/requestBody/accBookingSuccess"
+                          }
+                    },
+                    "400": {
+                      "description": "Client error",
+                      "schema": {
+                        "$ref": "#/requestBody/400"
+                      }
+                    },
+                    "401": {
+                        "description": "Client error",
+                        "schema": {
+                          "$ref": "#/requestBody/401"
+                        }
+                      },
+                      "404": {
+                        "description": "Client error",
+                        "schema": {
+                          "$ref": "#/requestBody/404"
+                        }
+                      },
+                      "500": {
+                        "description": "Server error",
+                        "schema": {
+                          "$ref": "#/requestBody/500"
+                        }
+                      }
+                }
+            }
         }
     },
         "requestBody": {

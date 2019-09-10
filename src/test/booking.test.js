@@ -54,7 +54,11 @@ describe('Booking Test', () => {
         .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(201);
-      expect(response.body.data).to.be.a('object');
+      expect(response.body.data).to.include({
+        checkIn: '2030-12-20',
+        checkOut: '2030-12-30',
+        userId: 1
+      });
     });
 
     it('should fail validation if userId is not provided', async () => {

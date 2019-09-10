@@ -31,16 +31,12 @@ class BookingValidator {
         .format('YYYY-MM-DD')
         .min(newdate)
         .required()
-        .error(
-          BookingValidator.validateAccDate('checkIn')
-        ),
+        .error(BookingValidator.validateAccDate('checkIn')),
       checkOut: Joi.date()
         .format('YYYY-MM-DD')
         .min(Joi.ref('checkIn'))
         .required()
-        .error(
-          BookingValidator.validateAccDate('checkOut')
-        ),
+        .error(BookingValidator.validateAccDate('checkOut')),
       userId: Joi.number()
         .positive()
         .required()
