@@ -29,7 +29,7 @@ export default class BookingMiddleware {
       const room = await findRoom({ id: roomId });
 
       if (!user) throw new ApiError(404, `User with id ${userId} does not exist`);
-      if (!room) throw new ApiError(400, `Room with id: ${roomId} does not exist`);
+      if (!room) throw new ApiError(404, `Room with id: ${roomId} does not exist`);
       if (validated) next();
     } catch (err) {
       errorResponse(res, { code: err.status || 500, message: err.message });

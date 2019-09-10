@@ -4,40 +4,31 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import faker from 'faker';
 import server from '../index';
-import { BookingController } from '../controllers';
-import { newSupplier, newFacility, newUser } from './dummies';
+import { BookingController, AuthController } from '../controllers';
+import { newSupplier, newFacility } from './dummies';
 
 chai.use(chaiHttp);
 chai.use(sinonChai);
 
+const { supplierSignup } = AuthController;
+
 describe('Booking Test', () => {
-  let supplierToken;
-  let userToken;
-  let id;
   let roomId;
   let adminToken;
-  const supplierData = { ...newSupplier, email: faker.internet.email() };
   before(async () => {
-    const supplierResponse = await chai
-      .request(server)
-      .post('/api/auth/signup/supplier')
-      .send(supplierData);
-    supplierToken = supplierResponse.body.data.signupToken;
-    adminToken = supplierResponse.body.data.user.token;
-
-    const userData = {
-      ...newUser,
-      email: faker.internet.email(),
-      companyName: supplierData.companyName,
-      signupToken: supplierToken
+    const supplierData = { ...newSupplier, email: faker.internet.email() };
+    const supReq = {
+      body: { ...supplierData }
     };
 
-    const userResponse = await chai
-      .request(server)
-      .post('/api/auth/signup/user')
-      .send(userData);
-    userToken = userResponse.body.data.token;
-    id = userResponse.body.data.id;
+    const res = {
+      cookie() { return this; },
+      status() { return this; },
+      json(obj) { return obj; }
+    };
+
+    const supplierResponse = await supplierSignup(supReq, res);
+    adminToken = supplierResponse.data.user.token;
 
     const roomResponse = await chai
       .request(server)
@@ -53,14 +44,14 @@ describe('Booking Test', () => {
       const booking = {
         checkIn: '2030-12-20',
         checkOut: '2030-12-30',
-        userId: id,
+        userId: 1,
         roomId
       };
 
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(201);
       expect(response.body.data).to.be.a('object');
@@ -75,7 +66,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -93,7 +84,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -110,7 +101,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -127,7 +118,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -145,7 +136,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -163,7 +154,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -179,7 +170,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -196,7 +187,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -213,7 +204,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -230,7 +221,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -246,7 +237,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -263,7 +254,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -280,7 +271,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -297,7 +288,7 @@ describe('Booking Test', () => {
       const response = await chai
         .request(server)
         .post('/api/booking/accommodation')
-        .set('Authorization', `Bearer ${userToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(booking);
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');

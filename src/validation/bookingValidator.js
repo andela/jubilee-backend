@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import baseJoi from '@hapi/joi';
 import joiExtension from '@hapi/joi-date';
 import { ApiError } from '../utils';
@@ -30,52 +31,16 @@ class BookingValidator {
         .format('YYYY-MM-DD')
         .min(newdate)
         .required()
-        .error((errors) => {
-          errors.forEach((err) => {
-            switch (err.type) {
-              case 'any.required':
-                err.message = 'checkIn is required!';
-                break;
-              case 'date.format':
-                err.message = `checkIn should be in this format ${err.context.format}`;
-                break;
-              case 'date.base':
-                err.message = 'checkin should not be empty';
-                break;
-              case 'date.min':
-                err.message = 'checkin must be larger than or equal to today';
-                break;
-              default:
-                break;
-            }
-          });
-          return errors;
-        }),
+        .error(
+          BookingValidator.validateAccDate('checkIn')
+        ),
       checkOut: Joi.date()
         .format('YYYY-MM-DD')
         .min(Joi.ref('checkIn'))
         .required()
-        .error((errors) => {
-          errors.forEach((err) => {
-            switch (err.type) {
-              case 'any.required':
-                err.message = 'checkOut is required!';
-                break;
-              case 'date.format':
-                err.message = `checkOut should be in this format ${err.context.format}`;
-                break;
-              case 'date.base':
-                err.message = 'checkOut should not be empty';
-                break;
-              case 'date.min':
-                err.message = 'checkOut must be larger than checkIn';
-                break;
-              default:
-                break;
-            }
-          });
-          return errors;
-        }),
+        .error(
+          BookingValidator.validateAccDate('chekOut')
+        ),
       userId: Joi.number()
         .positive()
         .required()
@@ -125,6 +90,35 @@ class BookingValidator {
       throw new ApiError(400, error.details[0].message);
     }
     return true;
+  }
+
+  /**
+   * Validates checkIn and checkOut keys
+   * @param {string} key - The key to validate
+   * @returns {Error} Returns a descriptive error message
+   */
+  static validateAccDate(key) {
+    return (errors) => {
+      errors.forEach((err) => {
+        switch (err.type) {
+          case 'any.required':
+            err.message = `${key} is required!`;
+            break;
+          case 'date.format':
+            err.message = `${key} should be in this format ${err.context.format}`;
+            break;
+          case 'date.base':
+            err.message = `${key} should not be empty`;
+            break;
+          case 'date.min':
+            err.message = `${key} must be larger than or equal to ${key === 'checkIn' ? 'today' : 'checkIn'}`;
+            break;
+          default:
+            break;
+        }
+      });
+      return errors;
+    };
   }
 }
 
