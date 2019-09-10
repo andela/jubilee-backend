@@ -8,7 +8,7 @@
     "seed": "sequelize db:seed:all",
     "unseed": "sequelize db:seed:undo",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
-    "migrate:reset": "export NODE_ENV=test || set NODE_ENV=test&& sequelize db:migrate:undo:all",
+    "migrate:reset": "sequelize db:migrate:undo:all",
     "migrate": "sequelize db:migrate",
     "start:dev": "set NODE_ENV=development&& npm run migrate && npm run seed && nodemon --exec babel-node ./src/index.js",
     "start": "node dist/index.js",

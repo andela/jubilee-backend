@@ -411,6 +411,7 @@ describe('Request Endpoints', () => {
       .set('Cookie', `token=${userToken};`);
     expect(response).to.have.status(200);
     expect(response.body.data).to.be.a('array');
+    expect(response.body.status).to.equal('success');
   });
   it('should get request by id in token and param status', async () => {
     const response = await chai
@@ -419,6 +420,16 @@ describe('Request Endpoints', () => {
       .set('Cookie', `token=${userToken}`);
     expect(response).to.have.status(200);
     expect(response.body.data).to.be.a('array');
+    expect(response.body.status).to.equal('success');
+  });
+
+  it('should throw error if wrong status param is passed', async () => {
+    const response = await chai
+      .request(server)
+      .get('/api/users/requests/user/approve')
+      .set('Cookie', `token=${userToken}`);
+    expect(response).to.have.status(400);
+    expect(response.body.error.message).to.equal('Request can only be pending, approved, rejected');
   });
 
   it('should get all request by admins only', async () => {
@@ -438,7 +449,7 @@ describe('Request Endpoints', () => {
       .set('Cookie', `token=${userToken}`);
     expect(response).to.have.status(401);
     expect(response.body.status).to.equal('fail');
-    expect(response.body.error).to.be.a('object');
+    expect(response.body.error.message).to.equal('You are an unauthorized user');
   });
 
   const newlyRequest = { status: 'approved' };
@@ -451,11 +462,12 @@ describe('Request Endpoints', () => {
       .send(newlyRequest);
     expect(response).to.have.status(200);
     expect(response.body.data).to.be.a('object');
+    expect(response.body.status).to.equal('success');
   });
 
   const wrongRequest = { status: 'approve' };
 
-  it('should throw error if wrong status is specified', async () => {
+  it('should throw error if wrong status update is specified', async () => {
     const response = await chai
       .request(server)
       .patch(`/api/users/requests/${newlyCreatedRequest.id}`)
@@ -475,6 +487,6 @@ describe('Request Endpoints', () => {
       .send(newlyRequest);
     expect(response).to.have.status(404);
     expect(response.body.status).to.equal('fail');
-    expect(response.body.error).to.be.a('object');
+    expect(response.body.error.message).to.equal('updateRequest: No such request');
   });
 });

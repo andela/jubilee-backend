@@ -1,4 +1,3 @@
-import sequelize from 'sequelize';
 import db from '../models';
 import { ApiError } from '../utils';
 import RoomService from './roomService';
@@ -81,6 +80,7 @@ export default class RequestService {
     });
     return rooms;
   }
+
 
   /**
     * Get Facility associated with reoom
