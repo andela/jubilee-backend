@@ -1,9 +1,11 @@
-import { Helpers } from '../utils';
+import { Helpers, ApiError } from '../utils';
 import { RoleService } from '../services/index';
 
 const {
   errorResponse
 } = Helpers;
+
+const { getRoles } = RoleService;
 /**
  * Middleware for input validations
  */
@@ -11,14 +13,16 @@ export default class roleMiddleware {
   /**
      * Middleware method for verifying roles
      * @param {array} permissions - The permission array.
+     * @param {array} boolean - To activate verifyUniqueRole funciton
      * @returns {function} - returns a function
      */
-  static verifyRoles(permissions) {
+  static verifyRoles(permissions, boolean = false) {
     return async function foo(req, res, next) {
       try {
         const { id } = req.data;
-        const { roleId } = await RoleService.getRoles(id);
+        const { roleId } = await getRoles(id);
         const permitted = permissions.includes(roleId);
+        if (boolean) if (permitted || id === Number(req.params.userId)) return next();
         if (permitted) {
           return next();
         }

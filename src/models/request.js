@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Request.belongsTo(models.User, {
       as: 'manager',
-      foreignKey: 'requesterId',
+      foreignKey: 'managerId',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
