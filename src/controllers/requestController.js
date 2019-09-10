@@ -1,8 +1,10 @@
 import { RequestService } from '../services';
-import { Helpers } from '../utils';
+import { Helpers, ApiError } from '../utils';
 
+const {
+  getRequests, createTripRequest, getRequest, updateAnyRequest,
+} = RequestService;
 
-const { getRequests, createTripRequest } = RequestService;
 const { successResponse, errorResponse } = Helpers;
 
 /**
@@ -51,4 +53,45 @@ export default class RequestController {
       errorResponse(res, {});
     }
   }
+
+  /**
+   * Get requests.
+   *
+   * @static
+   * @param {Request} req - The request from the endpoint.
+   * @param {Response} res - The response returned by the method.
+   * @returns { JSON } A JSON response with the new user's profile update.
+   * @memberof RequestController
+   */
+  static async getRequest(req, res) {
+    try {
+      const { status } = req.params;
+      const requests = await getRequest(req.data.id, status);
+      if (!requests) throw new ApiError(404, 'No requests available');
+      successResponse(res, requests, 200);
+    } catch (error) {
+      errorResponse(res, { code: error.status, message: `getRequest: ${error.message}` });
+    }
+  }
+
+
+  /**
+   * Updates request.
+   *
+   * @static
+   * @param {Request} req - The request from the endpoint.
+   * @param {Response} res - The response returned by the method.
+   * @returns { JSON } A JSON response with the new user's profile update.
+   * @memberof RequestController
+   */
+  static async updateRequest(req, res) {
+    try {
+      const { requestId } = req.params;
+      const updateRequest = await updateAnyRequest(req.body, { id: requestId });
+      successResponse(res, updateRequest, 200);
+    } catch (error) {
+      errorResponse(res, { code: error.status, message: `updateRequest: ${error.message}` });
+    }
+  }
 }
+

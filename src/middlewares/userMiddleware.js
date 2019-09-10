@@ -37,9 +37,11 @@ export default class UserMiddleware {
        * @param {object} next - Call the next operation.
        * @returns {object} - Returns an object (error or response).
     */
-  static async onUpdateRequest(req, res, next) {
+  static async onRequestStatus(req, res, next) {
     try {
-      const validated = await validateRequestUpdate(req.body);
+      let status = req.body;
+      if (req.params.status) status = req.params;
+      const validated = await validateRequestUpdate(status);
       if (validated) {
         next();
       }
