@@ -20,7 +20,7 @@ describe('Trip Request Endpoint', () => {
 
     expect(response).to.have.status(201);
     expect(response.body.data).to.be.a('object');
-    expect(response.body.data).to.be.a('string');
+    expect(response.body).to.have.property('data');
   });
 
   it('should return validation error requesterId is invalid', async () => {
@@ -35,16 +35,16 @@ describe('Trip Request Endpoint', () => {
     expect(response.body.error.message).to.equal('User does not exist');
   });
 
-  it('should return validation error ManagerId is empty', async () => {
+  it('should return validation error tripType is empty', async () => {
     const response = await chai
       .request(server)
       .set('Cookie', `token=${token};`)
       .post('/api/trip/request')
-      .send({ ...tripRequest, ManagerId: '' });
+      .send({ ...tripRequest, tripType: '' });
     expect(response).to.have.status(400);
     expect(response.body.status).to.equal('fail');
     expect(response.body.error).to.be.a('object');
-    expect(response.body.error.message).to.equal('Please enter a valid ManagerId \n the field must not be empty');
+    expect(response.body.error.message).to.equal('Please select a trip type');
   });
 
   it('should return validation error purpose is empty', async () => {
@@ -58,12 +58,12 @@ describe('Trip Request Endpoint', () => {
     expect(response.body.error).to.be.a('object');
     expect(response.body.error.message).to.equal('Please enter a valid purpose \n the field must not be empty and it must be more than 2 letters');
   });
-  it('should return validation error source is empty', async () => {
+  it('should return validation error origin is empty', async () => {
     const response = await chai
       .request(server)
       .set('Cookie', `token=${token};`)
       .post('/api/trip/request')
-      .send({ ...tripRequest, source: '' });
+      .send({ ...tripRequest, origin: '' });
     expect(response).to.have.status(400);
     expect(response.body.status).to.equal('fail');
     expect(response.body.error).to.be.a('object');
@@ -80,18 +80,7 @@ describe('Trip Request Endpoint', () => {
     expect(response.body.error).to.be.a('object');
     expect(response.body.error.message).to.equal('Please enter a valid destination \n the field must not be empty and it must be more than 2 letters');
   });
-  it('should return validation error ManagerId is empty', async () => {
-    const response = await chai
-      .request(server)
-      .set('Cookie', `token=${token};`)
-      .post('/api/trip/request')
-      .send({ ...tripRequest, accBookingId: '' });
-    expect(response).to.have.status(400);
-    expect(response.body.status).to.equal('fail');
-    expect(response.body.error).to.be.a('object');
-    expect(response.body.error.message).to.equal('Please enter a valid accBookingId \n the field must not be empty');
-  });
-  it('should return validation error ManagerId is empty', async () => {
+  it('should return validation error departureDate is empty', async () => {
     const response = await chai
       .request(server)
       .set('Cookie', `token=${token};`)
