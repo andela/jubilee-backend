@@ -50,10 +50,9 @@ describe('Request route endpoints', () => {
       expect(response).to.have.status(404);
       expect(response.body.error.message).to.be.eql('You have made no request yet');
     });
+
     it('should return a 500 error if something goes wrong while getting the requests', async () => {
-      const req = {
-        body: {}
-      };
+      const req = { body: { } };
       const mockResponse = () => {
         const res = {};
         res.status = sinon.stub().returns(res);

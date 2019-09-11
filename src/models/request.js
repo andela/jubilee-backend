@@ -79,6 +79,10 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
+    Request.hasMany(models.AccommodationBooking, {
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
   };
   return Request;
 };

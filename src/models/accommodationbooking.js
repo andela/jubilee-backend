@@ -37,6 +37,11 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
+
+    AccommodationBooking.belongsTo(models.Request, {
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    })
   };
   return AccommodationBooking;
 };
