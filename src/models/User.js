@@ -81,6 +81,12 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
+    User.hasMany(models.Request, {
+      foreignKey: 'requesterId',
+      as: 'requests',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
   };
   return User;
 };

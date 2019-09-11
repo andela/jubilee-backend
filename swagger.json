@@ -191,8 +191,8 @@
         },
         "/auth/login": {
             "post": {
-                "description": "#",
-                "summary": "#",
+                "description": "User should be logged in",
+                "summary": "Logs in an existing user",
                 "tags": [
                     "Auth"
                 ],
@@ -310,6 +310,38 @@
                     },
                     "schema": {
                         "$ref": "#/requestBody/updateUserProfileRequest"
+                    }
+                }
+            }
+        },
+        "/users/requests": {
+            "get": {
+                "description": "Get all requests for a particular user",
+                "summary": "User can get their request history",
+                "tags": [
+                    "Users",
+                    "Requests"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Access denied"
+                    },
+                    "404": {
+                        "description": "You have not made any request yet"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
                     }
                 }
             }
