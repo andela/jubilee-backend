@@ -97,7 +97,6 @@ export const newCompanyUser = {
   email: faker.internet.email(),
   companyName: 'Andela',
   password: 'Exunemployed01',
-  companyName: faker.company.companyName(),
   companyAddress: '235 ikorudu way',
   companyPlanId: 1,
   companySizeId: 2,
