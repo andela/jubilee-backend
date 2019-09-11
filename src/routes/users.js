@@ -25,7 +25,7 @@ router.put('/profile/:userId', authenticate, isAuthenticated, onUpdateProfile, u
 router.get('/requests', authenticate, getUserRequests);
 router.post('/requests', authenticate, createRequest);
 router.get('/requests', authenticate, verifyRoles(companyAdmins), getAllRequest);// get all requests on table, only by admin and superadmin
-router.get('/requests/user/:status', authenticate, onRequestStatus, getRequest);// get request by userId in the token and specifying status in param
+router.get('/requests/user/:statusId', authenticate, onRequestStatus, getRequest);// get request by userId in the token and specifying status in param
 router.patch('/requests/:requestId', authenticate, verifyRoles(companyAdminManager), onRequestStatus, updateRequest); // update requests by specifying request id in params
 
 router.patch('/role', authenticate, verifyRoles(supplierAdmin), updateUserRole);
