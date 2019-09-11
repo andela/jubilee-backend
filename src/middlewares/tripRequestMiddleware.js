@@ -26,7 +26,7 @@ export default class TripRequestMiddleware {
         const user = await find({ email });
         if (user) {
           req.body.requesterId = user.id;
-          next();
+          return next();
         }
         errorResponse(res, { code: 404, message: 'User does not exist' });
       }
