@@ -3,7 +3,9 @@ import chaiHttp from 'chai-http';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import server from '..';
-import { newCompanyUser, createCompanyFacility, newRequest } from './dummies';
+import {
+  newCompanyUser, createCompanyFacility, newRequest, tripRequest
+} from './dummies';
 import { AuthController, RequestController } from '../controllers';
 import { RequestService } from '../services';
 import db from '../models';
@@ -38,7 +40,11 @@ describe('Request route endpoints', () => {
 
     companyAdminResponse = await companySignUp(reqCompany, res);
     const { data: { signupToken } } = companyAdminResponse;
-    const reqUser = { body: { ...newCompanyUser, email: 'steve@google.com', signupToken, roleId: 5 } };
+    const reqUser = {
+      body: {
+        ...newCompanyUser, email: 'steve@google.com', signupToken, roleId: 5
+      }
+    };
     const companyUserResponse = await userSignup(reqUser, res);
     adminToken = companyUserResponse.data.token;
   });
@@ -72,6 +78,64 @@ describe('Request route endpoints', () => {
       const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${adminToken}`);
       expect(response).to.have.status(200);
       expect(response.body.status).to.equal('success');
+    });
+  });
+
+  describe('Trip Request Endpoint', () => {
+    it('should successfully create a one-way trip request', async () => {
+      const response = await chai
+        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .send(tripRequest);
+      expect(response).to.have.status(201);
+      expect(response.body.data).to.be.a('object');
+      expect(response.body).to.have.property('data');
+    });
+
+    it('should return validation error tripType is empty', async () => {
+      const response = await chai
+        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .send({ ...tripRequest, tripType: '' });
+      expect(response).to.have.status(400);
+      expect(response.body.status).to.equal('fail');
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error.message).to.equal('Please select a trip type');
+    });
+
+    it('should return validation error purpose is empty', async () => {
+      const response = await chai
+        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .send({ ...tripRequest, purpose: '' });
+      expect(response).to.have.status(400);
+      expect(response.body.status).to.equal('fail');
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error.message).to.equal('Please enter a valid purpose \n the field must not be empty and it must be more than 3 letters');
+    });
+    it('should return validation error origin is empty', async () => {
+      const response = await chai
+        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .send({ ...tripRequest, origin: '' });
+      expect(response).to.have.status(400);
+      expect(response.body.status).to.equal('fail');
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error.message).to.equal('Please enter a valid origin \n the field must not be empty and it must be more than 3 letters');
+    });
+    it('should return validation error destination is empty', async () => {
+      const response = await chai
+        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .send({ ...tripRequest, destination: '' });
+      expect(response).to.have.status(400);
+      expect(response.body.status).to.equal('fail');
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error.message).to.equal('Please enter a valid destination \n the field must not be empty and it must be more than 3 letters');
+    });
+    it('should return validation error departureDate is empty', async () => {
+      const response = await chai
+        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .send({ ...tripRequest, departureDate: '' });
+      expect(response).to.have.status(400);
+      expect(response.body.status).to.equal('fail');
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error.message).to.equal('Please input a valid date format: yy-mm-dd');
     });
   });
 });

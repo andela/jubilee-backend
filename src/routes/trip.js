@@ -6,8 +6,8 @@ const router = Router();
 
 const { oneWayTripRequest } = RequestController;
 const { onTripRequest } = TripRequestMiddleware;
-const { isAuthenticated } = AuthMiddleware;
+const { authenticate } = AuthMiddleware;
 
-router.post('/request', isAuthenticated, onTripRequest, oneWayTripRequest);
+router.post('/request', authenticate, onTripRequest, oneWayTripRequest);
 
 export default router;

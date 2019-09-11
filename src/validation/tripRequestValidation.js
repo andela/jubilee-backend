@@ -22,7 +22,7 @@ export default class TripRequestValidation {
       purpose: joi.string().min(3).max(25).required()
         .label('Please enter a valid purpose \n the field must not be empty and it must be more than 3 letters'),
       origin: joi.string().min(3).max(25).required()
-        .label('Please enter a valid source \n the field must not be empty and it must be more than 3 letters'),
+        .label('Please enter a valid origin \n the field must not be empty and it must be more than 3 letters'),
       destination: joi.string().min(3).max(25).required()
         .label('Please enter a valid destination \n the field must not be empty and it must be more than 3 letters'),
       departureDate: joi.date().iso().required().min(newDate)
