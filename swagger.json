@@ -33,6 +33,10 @@
         {
             "name": "Facility",
             "description": "Endpoint for CRUD operations involving Facilities"
+        },
+        {
+            "name": "Requests",
+            "description": "Endpoint for CRUD operations Trip Request"
         }
     ],
     "paths": {
@@ -814,6 +818,77 @@
                         "schema": {
                             "$ref": "#/requestBody/500"
                           }
+                    }
+                }
+            }
+        },
+        "tripRequest": {
+            "title": "One-way Trip Request",
+            "type": "object",
+            "properties": {
+                "tripType": {
+                    "description": "Type of trip request",
+                    "type": "string"
+                },
+                "purpose": {
+                    "description": "Purpose of trip request",
+                    "type": "string"
+                },
+                "origin": {
+                    "description": "Origin of trip request",
+                    "type": "string"
+                },
+                "destination": {
+                    "description": "destination of trip request",
+                    "type": "string"
+                },
+                "departureDate": {
+                    "description": "departureDate of trip request",
+                    "type": "string"
+                }
+            },
+            "example": {
+                "tripType": "One-way",
+                "purpose": "official",
+                "origin": "Abuja",
+                "destination": "Lagos",
+                "departureDate": "2019-11-07"
+              },
+            "required": [
+                "tripType, purpose, origin, destination, departureDate"
+            ]
+        },
+        "/trip/request": {
+            "post": {
+                "description": "Creates a one-way trip request",
+                "summary": "Allows user to create a one-way trip request",
+                "tags": [
+                    "Requests"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "description": "This is the request body object containing trip request",
+                        "schema": {
+                            "$ref": "#/requestBody/tripRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "one-way trip request created successfully"
+                    },
+                    "400": {
+                        "description": "Please fill in the fields"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
                     }
                 }
             }
