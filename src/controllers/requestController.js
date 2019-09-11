@@ -23,7 +23,7 @@ export default class RequestController {
     try {
       const { id } = req.data;
       const requests = await getRequests(id);
-      if (!requests[0]) {
+      if (!requests.length) {
         return errorResponse(res, { code: 404, message: 'You have made no request yet' });
       }
       return successResponse(res, requests, 200);

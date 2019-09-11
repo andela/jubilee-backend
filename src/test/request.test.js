@@ -3,9 +3,12 @@ import chaiHttp from 'chai-http';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import server from '..';
-import { newCompanyUser, createCompanyFacility } from './dummies';
+import { newCompanyUser, createCompanyFacility, newRequest } from './dummies';
 import { AuthController, RequestController } from '../controllers';
 import { RequestService } from '../services';
+import db from '../models';
+
+const { Request } = db;
 
 const { companySignUp, userSignup } = AuthController;
 
@@ -17,7 +20,6 @@ const [companyAdmin] = createCompanyFacility;
 describe('Request route endpoints', () => {
   let adminToken;
   let companyAdminResponse;
-  // let companyUserResponse;
 
   before(async () => {
     const reqCompany = { body: { ...companyAdmin, email: 'baystef@slack.com', companyName: 'paystack' } };
@@ -64,6 +66,12 @@ describe('Request route endpoints', () => {
       sinon.stub(RequestService, 'getRequests').throws();
       await RequestController.getUserRequests(req, res);
       expect(res.status).to.have.been.calledWith(500);
+    });
+    it('should get a request successfuly', async () => {
+      await Request.create(newRequest);
+      const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${adminToken}`);
+      expect(response).to.have.status(200);
+      expect(response.body.status).to.equal('success');
     });
   });
 });

@@ -98,3 +98,13 @@ export const newCompanyUser = {
   companyName: 'Andela',
   password: 'Exunemployed01'
 };
+export const newRequest = {
+  requesterId: 12,
+  purpose: 'Business Meeting',
+  rememberMe: true,
+  tripType: 'One-way',
+  origin: 'Lagos',
+  destination: 'Abuja',
+  departureDate: '2019-11-07',
+  returnDate: '2019-11-21',
+};

@@ -8,7 +8,12 @@ import RoomService from './roomService';
 import RequestService from './requestService';
 
 export {
-  UserService, BookingService, CompanyService,
-  SupplierService, RoleService, FacilityService,
-  RequestService, RoomService,
+  UserService,
+  BookingService,
+  CompanyService,
+  SupplierService,
+  RoleService,
+  FacilityService,
+  RequestService,
+  RoomService,
 };
