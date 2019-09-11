@@ -224,6 +224,27 @@
                 }
             }
         },
+        "/auth/logout": {
+            "get": {
+                "description": "Logout user",
+                "summary": "Logout user",
+                "tags": [
+                    "Auth"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [],
+                "responses": {
+                    "200": {
+                        "description": "Logout successfully"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users/profile/{userId}": {
             "get": {
                 "description": "Populates user details on the profile",

@@ -31,7 +31,7 @@ export default class RequestService {
 
   /**
     * Allows user to create a trip request
-    * @param {object} tripreq - the id of assigned user.
+    * @param {object} tripreq - the trip details object.
     * @return {Promise<object>} A promise object with trip request detail.
     * @memberof RequestService
     */

@@ -17,16 +17,14 @@ export default class TripRequestValidation {
        */
   static async tripRequest(tripObject) {
     const schema = {
+      tripType: joi.string().valid('One-way', 'Round-Trip', 'Multi-leg').required()
+        .label('Please select a trip type'),
       purpose: joi.string().min(3).max(25).required()
-        .label('Please enter a valid purpose \n the field must not be empty and it must be more than 2 letters'),
-      source: joi.string().min(3).max(25).required()
-        .label('Please enter a valid source \n the field must not be empty and it must be more than 2 letters'),
+        .label('Please enter a valid purpose \n the field must not be empty and it must be more than 3 letters'),
+      origin: joi.string().min(3).max(25).required()
+        .label('Please enter a valid source \n the field must not be empty and it must be more than 3 letters'),
       destination: joi.string().min(3).max(25).required()
-        .label('Please enter a valid destination \n the field must not be empty and it must be more than 2 letters'),
-      accBookingId: joi.number().required()
-        .label('Please enter a valid accBookingId \n the field must not be empty'),
-      ManagerId: joi.number().required()
-        .label('Please enter a valid ManagerId \n the field must not be empty'),
+        .label('Please enter a valid destination \n the field must not be empty and it must be more than 3 letters'),
       departureDate: joi.date().iso().required().min(newDate)
         .label('Please input a valid date format: yy-mm-dd')
     };
