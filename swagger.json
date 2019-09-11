@@ -471,6 +471,61 @@
                     }
                 }
             }
+        },
+        "/booking/accommodation": {
+            "post": {
+                "description": "Endpoint for booking accommodations",
+                "summary": "Enables a user book an accommodation in a suppliers' facility",
+                "tags": [
+                    "Booking"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                      "in": "body",
+                      "name": "booking",
+                      "required": true,
+                      "description": "The booking object",
+                      "schema": {
+                        "$ref": "#/requestBody/accommodationBooking"
+                      }
+                    }
+                  ],
+                "responses": {
+                    "201": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/requestBody/accBookingSuccess"
+                          }
+                    },
+                    "400": {
+                      "description": "Client error",
+                      "schema": {
+                        "$ref": "#/requestBody/400"
+                      }
+                    },
+                    "401": {
+                        "description": "Client error",
+                        "schema": {
+                          "$ref": "#/requestBody/401"
+                        }
+                      },
+                      "404": {
+                        "description": "Client error",
+                        "schema": {
+                          "$ref": "#/requestBody/404"
+                        }
+                      },
+                      "500": {
+                        "description": "Server error",
+                        "schema": {
+                          "$ref": "#/requestBody/500"
+                        }
+                      }
+                }
+            }
         }
     },
         "requestBody": {
@@ -898,7 +953,131 @@
                     "amenities": [1,2,3,4],
                     "addOns": ["wifi","coffee shop"]
                 }
-              }
+              },
+              "accommodationBooking": {
+                "title": "Accommodation Booking",
+                "type": "object",
+                "properties": {
+                    "checkIn": {
+                        "description": "The date user wants to check-in",
+                        "type": "date"
+                    },
+                    "checkOut": {
+                        "description": "The date user wants to check-out",
+                        "type": "date"
+                    },
+                    "roomId": {
+                        "description": "The id of the room user wants to book",
+                        "type": "integer"
+                    },
+                    "userId": {
+                        "description": "The id of the user that wants to book accommodation",
+                        "type": "integer"
+                    }
+                },
+                "example": {
+                    "checkIn": "2019-09-20",
+                    "checkOut": "2019-09-21",
+                    "roomId": 1,
+                    "userId": 1
+                }
+              },
+              "accBookingSuccess": {
+                  "properties": {
+                      "status": {
+                          "description": "Success message returned after a successful booking",
+                          "type": "string"
+                      },
+                      "data": {
+                          "description": "A booking object returned by the server",
+                          "type": "object"
+                      }
+                  },
+                  "example": {
+                    "status": "success",
+                    "data": {
+                        "id": 1,
+                        "checkIn": "2019-09-20",
+                        "checkOut": "2019-09-21",
+                        "roomId": 1,
+                        "userId": 1,
+                        "updatedAt": "2019-09-09T14:22:21.170Z",
+                        "createdAt": "2019-09-09T14:22:21.170Z"
+                    }
+                }
+              },
+              "400": {
+                "properties": {
+                    "status": {
+                        "description": "Client error",
+                        "type":"string"
+                    },
+                    "error": {
+                        "description": "A descriptive error message",
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "status": "fail",
+                    "error": {
+                        "message": "There was a validation error"
+                    }
+                }
+            },
+            "401": {
+                "properties": {
+                    "status": {
+                        "description": "Authentication error",
+                        "type":"string"
+                    },
+                    "error": {
+                        "description": "A descriptive error message",
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "status": "fail",
+                    "error": {
+                        "message": "Token is required"
+                    }
+                }
+            },
+            "404": {
+                "properties": {
+                    "status": {
+                        "description": "Authentication error",
+                        "type":"string"
+                    },
+                    "error": {
+                        "description": "A descriptive error message",
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "status": "fail",
+                    "error": {
+                        "message": "Data supplied by the user was not found"
+                    }
+                }
+            },
+            "500": {
+                "properties": {
+                    "status": {
+                        "description": "Server error",
+                        "type":"string"
+                    },
+                    "error": {
+                        "description": "A descriptive error message",
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "status": "fail",
+                    "error": {
+                        "message": "A server error prevented your request from being processed"
+                    }
+                }
+            }
         }
     }
     
