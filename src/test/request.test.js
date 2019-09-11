@@ -429,7 +429,7 @@ describe('Request Endpoints', () => {
       .get('/api/users/requests/user/approve')
       .set('Cookie', `token=${userToken}`);
     expect(response).to.have.status(400);
-    expect(response.body.error.message).to.equal('Request can only be pending, approved, rejected');
+    expect(response.body.error.message).to.equal('Request statusId is required can only be 1, 2, 3 - approved, pending, rejected');
   });
 
   it('should get all request by admins only', async () => {
@@ -476,7 +476,7 @@ describe('Request Endpoints', () => {
     expect(response).to.have.status(400);
     expect(response.body.status).to.equal('fail');
     expect(response.body.error).to.be.a('object');
-    expect(response.body.error.message).to.equal('Request can only be pending, approved, rejected');
+    expect(response.body.error.message).to.equal('Request statusId is required can only be 1, 2, 3 - approved, pending, rejected');
   });
 
   it('should throw error if wrong request id is specified', async () => {

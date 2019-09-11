@@ -99,7 +99,6 @@ export const newCompanyUser = {
   passportNo: 'Ae760bk',
   email: faker.internet.email(),
   password: 'Exunemployed01',
-  companyName: faker.company.companyName(),
   companyAddress: '235 ikorudu way',
   companyPlanId: 1,
   companySizeId: 2,
