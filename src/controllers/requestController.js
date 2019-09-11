@@ -28,7 +28,7 @@ export default class RequestController {
       }
       return successResponse(res, requests, 200);
     } catch (e) {
-      return errorResponse(res, { code: 500, message: e.message });
+      errorResponse(res, { code: 500, message: e.message });
     }
   }
 }
