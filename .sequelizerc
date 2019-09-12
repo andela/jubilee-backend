@@ -6,7 +6,7 @@ const path = require('path');
 module.exports = isProduction ? {
   "config": path.resolve('./dist/config', 'config.js'),
   "models-path": path.resolve('./dist/models'),
-  "seeders-path": path.resolve('./dist/dataase/seeders'),
+  "seeders-path": path.resolve('./dist/database/seeders'),
   "migrations-path": path.resolve('./dist/database/migrations')
 } : {
    "config": path.resolve('./src/config', 'config.js'),

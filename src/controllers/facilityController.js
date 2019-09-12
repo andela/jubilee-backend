@@ -38,7 +38,7 @@ class FacilityController {
  * @param {Request} req - The request from the endpoint.
  * @param {Response} res - The response returned by the method.
  * @returns { JSON } A JSON response with the registered company's details and a JWT.
- * @memberof Auth
+ * @memberof FacilityController
  */
   static async addFacilitySupplier(req, res) {
     try {
@@ -80,8 +80,8 @@ class FacilityController {
  * @static
  * @param {Request} req - The request from the endpoint.
  * @param {Response} res - The response returned by the method.
- * @returns { JSON } A JSON response with the registered company's details and a JWT.
- * @memberof Auth
+ * @returns { JSON } A JSON response with the details of the updated room.
+ * @memberof FacilityController
  */
   static async amenitiesUpdate(req, res) {
     try {
