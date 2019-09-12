@@ -65,15 +65,11 @@ class FacilityController {
     try {
       let { roomId } = req.params;
       roomId = Number(roomId);
-      console.log('roomid: ', roomId);
       const { roomStatus } = req.body;
-      console.log('room status: ', roomStatus);
       const roomUpdated = await roomStatusUpdate(roomId, roomStatus);
-      console.log('room update: ', roomUpdated);
       return successResponse(res, roomUpdated, 200);
     } catch (error) {
       const status = error.status || 500;
-      console.log('error: ', error.message);
       errorResponse(res, { code: status, message: error.message });
     }
   }
