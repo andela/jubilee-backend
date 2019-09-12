@@ -515,13 +515,22 @@
                         "description": "Success"
                     },
                     "401": {
-                      "description": "Validation / authentication Error"
+                      "description": "Client Error",
+                      "schema": {
+                        "$ref": "#/requestBody/401"
+                      }
                     },
                     "403": {
-                        "description": "Unauthorized Request (You don't have the require permission)"
+                        "description": "Client Error",
+                        "schema": {
+                            "$ref": "#/requestBody/403"
+                          }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "Server Error",
+                        "schema": {
+                            "$ref": "#/requestBody/500"
+                          }
                     }
                 }
             }
@@ -563,13 +572,22 @@
                         "description": "Success"
                     },
                     "401": {
-                      "description": "Validation / authentication Error"
+                      "description": "Client Error",
+                      "schema": {
+                        "$ref": "#/requestBody/401"
+                      }
                     },
                     "403": {
-                        "description": "Unauthorized Request (You don't have the require permission)"
+                        "description": "Client Error",
+                        "schema": {
+                            "$ref": "#/requestBody/403"
+                          }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "Server Error",
+                        "schema": {
+                            "$ref": "#/requestBody/500"
+                          }
                     }
                 }
             }
