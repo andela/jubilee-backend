@@ -17,7 +17,7 @@ class Notification {
   static async notify(notificationData, toUsers) {
     const notifications = toUsers.map((user) => {
       const notification = { ...notificationData, userId: user.id };
-      return Notification.add(notification, user.id);
+      return this.add(notification, user.id);
     });
     return Promise.all(notifications);
   }
