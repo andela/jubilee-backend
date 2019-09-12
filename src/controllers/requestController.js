@@ -43,7 +43,13 @@ export default class RequestController {
   static async oneWayTripRequest(req, res) {
     try {
       const { body } = req;
+      const {
+        firstName, lastName, gender,
+      } = req.data;
       const oneWayTrip = await createTripRequest({ ...body });
+      oneWayTrip.firstName = firstName;
+      oneWayTrip.lastName = lastName;
+      oneWayTrip.gender = gender;
       return successResponse(res, oneWayTrip, 201);
     } catch (error) {
       errorResponse(res, {});

@@ -94,6 +94,8 @@ export const createCompanyFacility = [
 export const newCompanyUser = {
   firstName: 'Mike',
   lastName: 'Tyson',
+  gender: 'male',
+  lineManager: 'Jude',
   email: faker.internet.email(),
   companyName: 'Andela',
   password: 'Exunemployed01'
