@@ -21,10 +21,10 @@ class MockController {
     try {
       const { notificationData, toUsers } = req.body;
       const notifications = await notify(notificationData, toUsers);
-      return successResponse(res, { notifications }, 201);
+      return successResponse(res, notifications, 201);
     } catch (err) {
-      console.log(err);
-      return errorResponse(res, {});
+      const message = err.message || 'Internal server error';
+      return errorResponse(res, { message });
     }
   }
 }
