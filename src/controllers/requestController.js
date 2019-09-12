@@ -1,5 +1,5 @@
 import { RequestService } from '../services';
-import { Helpers } from '../utils';
+import { Helpers, Mailer } from '../utils';
 
 
 const { getRequests, createTripRequest } = RequestService;

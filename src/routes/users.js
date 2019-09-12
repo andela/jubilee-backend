@@ -8,13 +8,14 @@ const router = Router();
 const { updateUserRole } = RoleController;
 const { verifyRoles } = RoleMiddleware;
 const { getUserRequests } = RequestController;
-const { userProfile, updateProfile } = UserController;
+const { getProfile, updateProfile, toggleEmailNotification } = UserController;
 const { isAuthenticated, authenticate } = AuthMiddleware;
 const { supplierAdmin } = Permissions;
 
 router.get('/requests', authenticate, getUserRequests);
-router.get('/profile/:userId', isAuthenticated, userProfile);
+router.get('/profile/:userId', isAuthenticated, getProfile);
 router.put('/profile/:userId', isAuthenticated, updateProfile);
+router.patch('/:userId/notification', isAuthenticated, toggleEmailNotification);
 
 router.patch('/role', authenticate, verifyRoles(supplierAdmin), updateUserRole);
 
