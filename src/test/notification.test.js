@@ -64,3 +64,55 @@ describe('Notification service methods', () => {
     });
   });
 });
+
+describe('Notification mock route', () => {
+  const toUsers = [];
+  before(async () => {
+    const response = await chai
+      .request(server)
+      .post('/api/auth/signup/supplier')
+      .send({ ...newSupplier, email: faker.internet.email() });
+    const { user: userOne } = response.body.data;
+    toUsers.push(userOne);
+  });
+  it('should create a new notification for a specific user', async () => {
+    const response = await chai
+      .request(server)
+      .post('/api/mock/notification')
+      .send({ notificationData: newNotification, toUsers });
+    expect(response).to.have.status(201);
+    expect(response.body.status).to.equal('success');
+    expect(response.body).to.have.property('data');
+    expect(response.body.data).to.be.an('array');
+    expect(response.body.data.length).to.equal(1);
+  });
+  it('should create new notifications for multiple users', async () => {
+    // create second user
+    const userResponse = await chai.request(server).post('/api/auth/signup/supplier')
+      .send({ ...newSupplier, email: faker.internet.email() });
+    const { user: userTwo } = userResponse.body.data;
+    toUsers.push(userTwo);
+    // create notification
+    const response = await chai
+      .request(server)
+      .post('/api/mock/notification')
+      .send({ notificationData: newNotification, toUsers });
+    expect(response).to.have.status(201);
+    expect(response.body.status).to.equal('success');
+    expect(response.body).to.have.property('data');
+    expect(response.body.data).to.be.an('array');
+    expect(response.body.data.length).to.equal(2);
+  });
+  it('should return a server error for missing required fields', async () => {
+    const response = await chai
+      .request(server)
+      .post('/api/mock/notification')
+      .send({ notificationData: newNotification });
+    expect(response).to.have.status(500);
+    expect(response.body.status).to.equal('fail');
+    expect(response.body).to.have.property('error');
+    expect(response.body.error).to.be.an('object');
+    expect(response.body.error).to.have.property('message');
+    expect(response.body.error.message).to.equal('Double check that the required parameters are provided');
+  });
+});

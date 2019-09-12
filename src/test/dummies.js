@@ -153,5 +153,4 @@ export const newNotification = {
   status: 'unseen',
   message: 'A new user was created',
   url: 'lormipsu.com',
-  userId: 1
 };

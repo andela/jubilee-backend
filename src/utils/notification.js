@@ -15,11 +15,13 @@ class Notification {
    * @memberof Notification
    */
   static async notify(notificationData, toUsers) {
-    const notifications = toUsers.map((user) => {
-      const notification = { ...notificationData, userId: user.id };
-      return Notification.add(notification, user.id);
-    });
-    return Promise.all(notifications);
+    try {
+      const notifications = toUsers.map((user) => Notification
+        .add({ ...notificationData, userId: user.id }, user.id));
+      return Promise.all(notifications);
+    } catch (err) {
+      throw new Error('Double check that the required parameters are provided');
+    }
   }
 
   /**
