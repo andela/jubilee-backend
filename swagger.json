@@ -366,11 +366,9 @@
                 "produces": [
                     "application/json"
                 ],
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
+                "security": [{
+                    "Bearer": []
+                }],
                 "responses": {
                     "200": {
                         "description": "Success"
@@ -640,7 +638,7 @@
                 "produces": [
                     "application/json"
                 ],
-                 "security": {
+                "security": {
                     "Bearer": []
                 },
                 "parameters": [{
@@ -675,13 +673,10 @@
                 "produces": [
                     "application/json"
                 ],
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "parameters": [
-                    {
+                "security": [{
+                    "Bearer": []
+                }],
+                "parameters": [{
                         "in": "path",
                         "name": "facilityId",
                         "required": true,
@@ -694,21 +689,21 @@
                         "description": "The Id of the room category to be updated"
                     },
                     {
-                      "in": "body",
-                      "name": "body",
-                      "required": true,
-                      "description": "This is the request body object containing a the details of the facility created",
-                      "schema": {
-                        "$ref": "#/requestBody/companyFacilityCreationRequest"
-                      }
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "description": "This is the request body object containing a the details of the facility created",
+                        "schema": {
+                            "$ref": "#/requestBody/companyFacilityCreationRequest"
+                        }
                     }
-                  ],
+                ],
                 "responses": {
                     "201": {
                         "description": "Successfully created new facility"
                     },
                     "400": {
-                      "description": "Invalid input parameters"
+                        "description": "Invalid input parameters"
                     },
                     "401": {
                         "description": "Unautheticated Request (You are not logged in)"
@@ -717,13 +712,13 @@
                         "description": "Unauthorized Request (You don't have the require permission)"
                     },
                     "500": {
-                        "description":"Internal Server Error"
+                        "description": "Internal Server Error"
                     }
                 }
             }
         },
-        "/facility/supplier/{facilityId}/{roomId}":{
-            "patch" : {
+        "/facility/supplier/{facilityId}/{roomId}": {
+            "patch": {
                 "description": "updates room category availability",
                 "summary": "Enables a suppliers admin to update room availability",
                 "tags": [
@@ -732,55 +727,52 @@
                 "produces": [
                     "application/json"
                 ],
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "parameters": [
-                    {
+                "security": [{
+                    "Bearer": []
+                }],
+                "parameters": [{
                         "in": "path",
                         "name": "facilityId",
                         "required": true,
                         "description": "The Id of the facility to be updated"
                     },
                     {
-                      "in": "body",
-                      "name": "body",
-                      "required": true,
-                      "description": "This is the request body object containing the room availability status",
-                      "schema": {
-                        "$ref": "#/requestBody/updateFacilityroomCategory"
-                      }
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "description": "This is the request body object containing the room availability status",
+                        "schema": {
+                            "$ref": "#/requestBody/updateFacilityroomCategory"
+                        }
                     }
-                  ],
-                  "responses": {
+                ],
+                "responses": {
                     "201": {
                         "description": "Success"
                     },
                     "401": {
-                      "description": "Client Error",
-                      "schema": {
-                        "$ref": "#/requestBody/401"
-                      }
+                        "description": "Client Error",
+                        "schema": {
+                            "$ref": "#/requestBody/401"
+                        }
                     },
                     "403": {
                         "description": "Client Error",
                         "schema": {
                             "$ref": "#/requestBody/403"
-                          }
+                        }
                     },
                     "500": {
                         "description": "Server Error",
                         "schema": {
                             "$ref": "#/requestBody/500"
-                          }
+                        }
                     }
                 }
             }
         },
         "/facility/supplier/{facilityId}/": {
-            "patch" : {
+            "patch": {
                 "description": "updates facility amenities",
                 "summary": "Enables a suppliers admin to update amenities",
                 "tags": [
@@ -790,38 +782,36 @@
                     "application/json"
                 ],
                 "security": [],
-                "parameters": [
-                    {
-                      "in": "body",
-                      "name": "body",
-                      "required": true,
-                      "description": "This is the request body object containing the room amenities",
-                      "schema": {
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "description": "This is the request body object containing the room amenities",
+                    "schema": {
                         "$ref": "#/requestBody/updateFacilityamenities"
-                      }
                     }
-                  ],
-                  "responses": {
+                }],
+                "responses": {
                     "201": {
                         "description": "Success"
                     },
                     "401": {
-                      "description": "Client Error",
-                      "schema": {
-                        "$ref": "#/requestBody/401"
-                      }
+                        "description": "Client Error",
+                        "schema": {
+                            "$ref": "#/requestBody/401"
+                        }
                     },
                     "403": {
                         "description": "Client Error",
                         "schema": {
                             "$ref": "#/requestBody/403"
-                          }
+                        }
                     },
                     "500": {
                         "description": "Server Error",
                         "schema": {
                             "$ref": "#/requestBody/500"
-                          }
+                        }
                     }
                 }
             }
@@ -857,7 +847,7 @@
                 "origin": "Abuja",
                 "destination": "Lagos",
                 "departureDate": "2019-11-07"
-              },
+            },
             "required": [
                 "tripType, purpose, origin, destination, departureDate"
             ]
@@ -873,17 +863,15 @@
                     "application/json"
                 ],
                 "security": [],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "required": true,
-                        "description": "This is the request body object containing trip request",
-                        "schema": {
-                            "$ref": "#/requestBody/tripRequest"
-                        }
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "description": "This is the request body object containing trip request",
+                    "schema": {
+                        "$ref": "#/requestBody/tripRequest"
                     }
-                ],
+                }],
                 "responses": {
                     "201": {
                         "description": "one-way trip request created successfully"
@@ -907,48 +895,46 @@
                 "produces": [
                     "application/json"
                 ],
-                "parameters": [
-                    {
-                      "in": "body",
-                      "name": "booking",
-                      "required": true,
-                      "description": "The booking object",
-                      "schema": {
+                "parameters": [{
+                    "in": "body",
+                    "name": "booking",
+                    "required": true,
+                    "description": "The booking object",
+                    "schema": {
                         "$ref": "#/requestBody/accommodationBooking"
-                      }
                     }
-                  ],
+                }],
                 "responses": {
                     "201": {
                         "description": "Success",
                         "schema": {
                             "$ref": "#/requestBody/accBookingSuccess"
-                          }
+                        }
                     },
                     "400": {
-                      "description": "Client error",
-                      "schema": {
-                        "$ref": "#/requestBody/400"
-                      }
+                        "description": "Client error",
+                        "schema": {
+                            "$ref": "#/requestBody/400"
+                        }
                     },
                     "401": {
                         "description": "Client error",
                         "schema": {
-                          "$ref": "#/requestBody/401"
+                            "$ref": "#/requestBody/401"
                         }
-                      },
-                      "404": {
+                    },
+                    "404": {
                         "description": "Client error",
                         "schema": {
-                          "$ref": "#/requestBody/404"
+                            "$ref": "#/requestBody/404"
                         }
-                      },
-                      "500": {
+                    },
+                    "500": {
                         "description": "Server error",
                         "schema": {
-                          "$ref": "#/requestBody/500"
+                            "$ref": "#/requestBody/500"
                         }
-                      }
+                    }
                 }
             }
         },
@@ -962,36 +948,34 @@
                 "produces": [
                     "application/json"
                 ],
-                "parameters": [
-                    {
-                      "in": "body",
-                      "name": "comment",
-                      "required": true,
-                      "description": "The comment object",
-                      "schema": {
+                "parameters": [{
+                    "in": "body",
+                    "name": "comment",
+                    "required": true,
+                    "description": "The comment object",
+                    "schema": {
                         "$ref": "#/requestBody/commentRequest"
-                      }
                     }
-                  ],
+                }],
                 "responses": {
                     "201": {
                         "description": "Successfully created comment"
                     },
                     "400": {
-                      "description": "Invalid input parameters"
+                        "description": "Invalid input parameters"
                     },
                     "401": {
                         "description": "Unauthenticated Request"
-                      },
-                      "403": {
+                    },
+                    "403": {
                         "description": "Unauthorized Request"
-                      },
-                      "404": {
+                    },
+                    "404": {
                         "description": "Non-existent record"
-                      },
-                      "500": {
+                    },
+                    "500": {
                         "description": "Internal Server error"
-                      }
+                    }
                 }
             }
         }
@@ -1212,29 +1196,29 @@
                 },
                 "example": {
                     "amenities": [
-                        1,5,5,6,7,8
-                        ],
+                        1, 5, 5, 6, 7, 8
+                    ],
                     "rooms": [{
-                        "occupancyCount": 2,
-                        "roomCategoryId": 1,
-                        "description": "A room for a single dude",
-                        "roomCount": 3
-                    },
-                    {
-                        "occupancyCount": 3,
-                        "roomCategoryId": 2,
-                        "description": "A room for two dudes",
-                        "roomCount": 3
-                    }],
+                            "occupancyCount": 2,
+                            "roomCategoryId": 1,
+                            "description": "A room for a single dude",
+                            "roomCount": 3
+                        },
+                        {
+                            "occupancyCount": 3,
+                            "roomCategoryId": 2,
+                            "description": "A room for two dudes",
+                            "roomCount": 3
+                        }
+                    ],
                     "description": "A nice place to stay for all your ever",
-                    "addOns":["parking lot", "free-wifi"],
+                    "addOns": ["parking lot", "free-wifi"],
                     "state": "Ondo",
                     "city": "Akure",
                     "address": "30, Ojumu Crescent",
                     "name": "Bliss World",
                     "imageUrl": "http://www.google.com"
-                }
-                ,
+                },
                 "required": [
                     "name, state, city,address,description,imageUrl,rooms,amenities,addOns"
                 ]
@@ -1420,26 +1404,26 @@
                     "amenities": [1, 2, 3, 4],
                     "addOns": ["wifi", "coffee shop"]
                 }
-              },
-              "commentRequest": {
-                  "title": "Comment",
-                  "type": "object",
-                  "properties": {
+            },
+            "commentRequest": {
+                "title": "Comment",
+                "type": "object",
+                "properties": {
                     "requestId": {
                         "description": "The id of the travel request",
                         "type": "number"
                     },
                     "message": {
-                         "description":  "The body of a comment",
+                        "description": "The body of a comment",
                         "type": "date"
                     }
-                  },
-                  "example": {
+                },
+                "example": {
                     "requestId": 1,
                     "message": "What's happening with your trip ?"
                 }
-              },
-              "accommodationBooking": {
+            },
+            "accommodationBooking": {
                 "title": "Accommodation Booking",
                 "type": "object",
                 "properties": {
@@ -1466,19 +1450,19 @@
                     "roomId": 1,
                     "userId": 1
                 }
-              },
-              "accBookingSuccess": {
-                  "properties": {
-                      "status": {
-                          "description": "Success message returned after a successful booking",
-                          "type": "string"
-                      },
-                      "data": {
-                          "description": "A booking object returned by the server",
-                          "type": "object"
-                      }
-                  },
-                  "example": {
+            },
+            "accBookingSuccess": {
+                "properties": {
+                    "status": {
+                        "description": "Success message returned after a successful booking",
+                        "type": "string"
+                    },
+                    "data": {
+                        "description": "A booking object returned by the server",
+                        "type": "object"
+                    }
+                },
+                "example": {
                     "status": "success",
                     "data": {
                         "id": 1,
@@ -1490,12 +1474,12 @@
                         "createdAt": "2019-09-09T14:22:21.170Z"
                     }
                 }
-              },
-              "400": {
+            },
+            "400": {
                 "properties": {
                     "status": {
                         "description": "Client error",
-                        "type":"string"
+                        "type": "string"
                     },
                     "error": {
                         "description": "A descriptive error message",
@@ -1513,7 +1497,7 @@
                 "properties": {
                     "status": {
                         "description": "Authentication error",
-                        "type":"string"
+                        "type": "string"
                     },
                     "error": {
                         "description": "A descriptive error message",
@@ -1531,7 +1515,7 @@
                 "properties": {
                     "status": {
                         "description": "Authentication error",
-                        "type":"string"
+                        "type": "string"
                     },
                     "error": {
                         "description": "A descriptive error message",
@@ -1549,7 +1533,7 @@
                 "properties": {
                     "status": {
                         "description": "Server error",
-                        "type":"string"
+                        "type": "string"
                     },
                     "error": {
                         "description": "A descriptive error message",
