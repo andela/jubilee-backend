@@ -482,8 +482,24 @@
                 "produces": [
                     "application/json"
                 ],
-                "security": [],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "parameters": [
+                    {
+                        "in": "path",
+                        "name": "facilityId",
+                        "required": true,
+                        "description": "TThe id of facility to be updated"
+                    },
+                    {
+                        "in": "path",
+                        "name": "roomId",
+                        "required": true,
+                        "description": "The Id of the room category to be updated"
+                    },
                     {
                       "in": "body",
                       "name": "body",
@@ -520,8 +536,18 @@
                 "produces": [
                     "application/json"
                 ],
-                "security": [],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "parameters": [
+                    {
+                        "in": "path",
+                        "name": "facilityId",
+                        "required": true,
+                        "description": "The Id of the facility to be updated"
+                    },
                     {
                       "in": "body",
                       "name": "body",
