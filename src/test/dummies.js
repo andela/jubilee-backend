@@ -96,6 +96,7 @@ export const newCompanyUser = {
   lastName: 'Tyson',
   gender: 'male',
   lineManager: 'Jude',
+  passportNo: 'Ae760bk',
   email: faker.internet.email(),
   companyName: 'Andela',
   password: 'Exunemployed01',
@@ -129,5 +130,5 @@ export const tripRequest = {
   tripType: 'One-way',
   origin: 'Abuja',
   destination: 'Lagos',
-  departureDate: '2019-11-07'
+  departureDate: '2020-11-07'
 };
