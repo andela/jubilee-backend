@@ -99,7 +99,7 @@ class FacilityService {
   }
 
   /**
-   * Deletes anemities from a facility
+   * Updates the room category status.
    * @static
    * @param {number} roomId - Facility data to be recorded in the database.
    * @param {string} roomStatus - status of availability.
@@ -111,6 +111,30 @@ class FacilityService {
       { returning: true, where: { id: roomId } });
     if (!rowaffected) throw new Error('Not Found');
     return room;
+  }
+
+  /**
+   * updates amenities
+   * @static
+   * @param {array} amenities - status of availability.
+   * @param {number} facilityId - facility id.
+   * @returns {Promise<object>} A promise object with facility detail.
+   * @memberof FacilityService
+   */
+  static async amenitiesUpdate(amenities, facilityId) {
+    try {
+      const result = await sequelize.transaction(async () => {
+        await AmenityFacility.destroy({ where: { facilityId } });
+        const facilityAmenities = FacilityService.sortFacilityAmenities(amenities, facilityId);
+        await AmenityFacility.bulkCreate(facilityAmenities);
+        const options = { include: ['amenities'] };
+        const facility = await FacilityService.findFacilityById(facilityId, options);
+        return facility;
+      });
+      return result;
+    } catch (err) {
+      throw new Error('Failed to create facility. Try again');
+    }
   }
 }
 
