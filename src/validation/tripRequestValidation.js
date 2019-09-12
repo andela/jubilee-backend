@@ -1,6 +1,14 @@
-import joi from '@hapi/joi';
+import baseJoi from '@hapi/joi';
+import joiExtension from '@hapi/joi-date';
+import { ApiError } from '../utils';
 
-const newDate = new Date();
+const Joi = baseJoi.extend(joiExtension);
+const dateObj = new Date();
+const month = dateObj.getMonth() + 1;
+const today = dateObj.getDate();
+const year = dateObj.getFullYear();
+
+const newdate = `${year}-${month}-${today}`;
 
 /**
    * This class holds all methods used for trip request validation
@@ -17,21 +25,138 @@ export default class TripRequestValidation {
        */
   static async tripRequest(tripObject) {
     const schema = {
-      tripType: joi.string().valid('One-way', 'Round-Trip', 'Multi-leg').required()
-        .label('Please select a trip type'),
-      purpose: joi.string().min(3).max(25).required()
-        .label('Please enter a valid purpose \n the field must not be empty and it must be more than 3 letters'),
-      origin: joi.string().min(3).max(25).required()
-        .label('Please enter a valid origin \n the field must not be empty and it must be more than 3 letters'),
-      destination: joi.string().min(3).max(25).required()
-        .label('Please enter a valid destination \n the field must not be empty and it must be more than 3 letters'),
-      departureDate: joi.date().iso().required().min(newDate)
-        .label('Please input a valid date format: yy-mm-dd')
+      tripType: Joi.string()
+        .valid('One-way', 'Round-Trip', 'Multi-leg')
+        .required()
+        .error((errors) => {
+          errors.forEach((err) => {
+            switch (err.type) {
+              case 'any.required':
+                err.message = 'tripType is required!';
+                break;
+              case 'any.empty':
+                err.message = 'tripType should not be empty';
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
+        }),
+      departureDate: Joi.date()
+        .format('YYYY-MM-DD')
+        .min(newdate)
+        .required()
+        .error(TripRequestValidation.validateTripDate('departureDate')),
+      purpose: Joi.string()
+        .min(3)
+        .max(255)
+        .required()
+        .error((errors) => {
+          errors.forEach((err) => {
+            switch (err.type) {
+              case 'any.required':
+                err.message = 'purpose is required!';
+                break;
+              case 'string.min':
+                err.message = 'purpose must not be less than 3 letters';
+                break;
+              case 'string.max':
+                err.message = 'it must not exceed 255 letters';
+                break;
+              case 'any.empty':
+                err.message = 'purpose should not be empty';
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
+        }),
+      origin: Joi.string()
+        .min(3)
+        .max(25)
+        .required()
+        .error((errors) => {
+          errors.forEach((err) => {
+            switch (err.type) {
+              case 'any.required':
+                err.message = 'origin is required!';
+                break;
+              case 'string.min':
+                err.message = 'origin must not be less than 3 letters';
+                break;
+              case 'string.max':
+                err.message = 'it must not exceed 25 letters';
+                break;
+              case 'any.empty':
+                err.message = 'origin should not be empty';
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
+        }),
+      destination: Joi.string()
+        .min(3)
+        .max(25)
+        .required()
+        .error((errors) => {
+          errors.forEach((err) => {
+            switch (err.type) {
+              case 'any.required':
+                err.message = 'destination is required!';
+                break;
+              case 'string.min':
+                err.message = 'destination must not be less than 3 letters';
+                break;
+              case 'string.max':
+                err.message = 'destination must not exceed 25 letters';
+                break;
+              case 'any.empty':
+                err.message = 'destination should not be empty';
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
+        })
     };
-    const { error } = joi.validate({ ...tripObject }, schema);
+    const { error } = Joi.validate({ ...tripObject }, schema);
     if (error) {
-      throw error;
+      throw new ApiError(400, error.details[0].message);
     }
     return true;
+  }
+
+  /**
+   * Validates departureDate and returnDate keys
+   * @param {string} key - The key to validate
+   * @returns {Error} Returns a descriptive error message
+   */
+  static validateTripDate(key) {
+    return (errors) => {
+      errors.forEach((err) => {
+        switch (err.type) {
+          case 'any.required':
+            err.message = `${key} is required!`;
+            break;
+          case 'date.format':
+            err.message = `${key} should be in this format ${err.context.format}`;
+            break;
+          case 'date.base':
+            err.message = `${key} should not be empty`;
+            break;
+          case 'date.min':
+            err.message = `${key} must be larger than or equal to ${key === 'departureDate' ? 'today' : 'departureDate'}`;
+            break;
+          default:
+            break;
+        }
+      });
+      return errors;
+    };
   }
 }

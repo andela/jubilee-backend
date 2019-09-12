@@ -1,5 +1,5 @@
 import { TripRequestValidation } from '../validation';
-import { Helpers } from '../utils';
+import { Helpers, ApiError } from '../utils';
 import { UserService } from '../services';
 
 const { errorResponse } = Helpers;
@@ -23,18 +23,22 @@ export default class TripRequestMiddleware {
       const { email } = req.data;
       if (validated) {
         const user = await find({ email });
+        const requesterObj = {
+          requesterFirstName: user.firstName,
+          requesterLastName: user.lastName,
+          requesterGender: user.gender,
+          requesterlineManager: user.lineManager,
+          requesterPassportNo: user.passportNo,
+        };
         if (user) {
           req.body.requesterId = user.id;
-          req.data.firstName = user.firstName;
-          req.data.lastName = user.lastName;
-          req.data.gender = user.gender;
-          req.data.lineManager = user.lineManager;
+          req.requester = requesterObj;
           return next();
         }
-        errorResponse(res, { code: 404, message: 'User does not exist' });
+        throw new ApiError(404, 'User does not exist');
       }
     } catch (error) {
-      errorResponse(res, { code: 400, message: error.details[0].context.label });
+      errorResponse(res, { code: error.status || 500, message: error.message });
     }
   }
 
@@ -48,23 +52,23 @@ export default class TripRequestMiddleware {
   static async tripCheckUser(req, res, next) {
     try {
       const {
-        firstName, lastName, gender, lineManager
-      } = req.data;
-      if (firstName === null) {
-        errorResponse(res, { code: 400, message: 'Please update your profile with your firstName' });
+        requesterfirstName, requesterlastName, requestergender, requesterlineManager
+      } = req.requester;
+      if (requesterfirstName === null) {
+        throw new ApiError(400, 'Please update your profile with your firstName');
       }
-      if (lastName === null) {
-        errorResponse(res, { code: 400, message: 'Please update your profile with your lastName' });
+      if (requesterlastName === null) {
+        throw new ApiError(400, 'Please update your profile with your lastName');
       }
-      if (gender === null) {
-        errorResponse(res, { code: 400, message: 'Please update your profile with your gender' });
+      if (requestergender === null) {
+        throw new ApiError(400, 'Please update your profile with your gender');
       }
-      if (lineManager === null) {
-        errorResponse(res, { code: 400, message: 'Please update your profile with your lineManager' });
+      if (requesterlineManager === null) {
+        throw new ApiError(400, 'Please update your profile with your lineManager');
       }
       next();
     } catch (error) {
-      errorResponse(res, {});
+      errorResponse(res, { code: error.status || 500, message: error.message });
     }
   }
 }
