@@ -21,7 +21,7 @@ class SocketIO {
         global.activeSockets[socketId] = socket;
         socket.emit('connected', 'Socket.io registered!, you\'ll now recieve real-time updates while you remain online');
         socket.on('disconnect', () => {
-          global.activeSockets[socketId] = null;
+          global.activeSockets.splice(socketId, 1);
         });
       }
     });
