@@ -10,7 +10,7 @@ import { createNamespace } from 'cls-hooked';
 import env from './config/env-config';
 import routes from './routes';
 import db from './models';
-
+import socketIO from './utils/socketIO';
 // Create CLS namespace
 const dbNameSpace = createNamespace('db');
 db.Sequelize.useCLS(dbNameSpace);
@@ -90,5 +90,7 @@ const server = app.listen(process.env.PORT || 3000, () => {
   // eslint-disable-next-line no-console
   console.log(`Listening on port ${server.address().port}`);
 });
+
+socketIO.initialize(server);
 
 export default app;
