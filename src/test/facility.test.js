@@ -86,13 +86,13 @@ describe('Facility route endpoints', () => {
     });
   });
   describe('PATCH /api/facility/supplier/:supplierId/:roomId', () => {
-    it('should successfully update a room category - 200', async () => {
+    it('should successfully update a room category - 201', async () => {
       const response = await chai
         .request(server)
         .patch(`/api/facility/supplier/${2}/${3}`)
         .send({ roomStatus: 'unavailable' })
         .set('authorization', `Bearer ${adminToken}`);
-      expect(response).to.have.status(200);
+      expect(response).to.have.status(201);
       expect(response.body.status).to.equal('success');
       expect(response.body).to.have.property('data');
       expect(response.body.data).to.be.a('object');
