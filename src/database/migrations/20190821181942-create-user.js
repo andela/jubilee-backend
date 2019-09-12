@@ -80,6 +80,14 @@ module.exports = {
       allowNull: true,
       defaultValue: false
     },
+    emailNotify: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: true
+    },
+    appNotify: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: true
+    },
     username: {
       type: Sequelize.STRING,
       unique: true,
