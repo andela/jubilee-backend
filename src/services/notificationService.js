@@ -108,7 +108,7 @@ class NotificationService {
     * @returns {Promise<array>} - An instance of notification table including it's relationships.
     * @memberof NotificationService
 */
-  static async delete(notificationId) {
+  static async deleteOne(notificationId) {
     return await Notification.destroy({
       where: { id: notificationId },
     });
