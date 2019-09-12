@@ -5,9 +5,9 @@ import { TripRequestMiddleware, AuthMiddleware } from '../middlewares';
 const router = Router();
 
 const { oneWayTripRequest } = RequestController;
-const { onTripRequest } = TripRequestMiddleware;
+const { onTripRequest, tripCheckUser } = TripRequestMiddleware;
 const { authenticate } = AuthMiddleware;
 
-router.post('/request', authenticate, onTripRequest, oneWayTripRequest);
+router.post('/request', authenticate, onTripRequest, tripCheckUser, oneWayTripRequest);
 
 export default router;

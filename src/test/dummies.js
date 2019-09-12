@@ -94,7 +94,9 @@ export const createCompanyFacility = [
 export const newCompanyUser = {
   firstName: 'Mike',
   lastName: 'Tyson',
-  email: 'mikeTyson@andela.com',
+  gender: 'male',
+  lineManager: 'Jude',
+  email: faker.internet.email(),
   companyName: 'Andela',
   password: 'Exunemployed01',
   companyAddress: '235 ikorudu way',
