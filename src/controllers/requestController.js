@@ -3,8 +3,7 @@ import { Helpers, ApiError } from '../utils';
 
 
 const {
-  getRequests, getRequest, updateAnyRequest,
-  getAllRequest
+  getRequests, getRequest, updateAnyRequest, createRequest
 } = RequestService;
 
 const { successResponse, errorResponse } = Helpers;
@@ -45,29 +44,10 @@ export default class RequestController {
    * @returns { JSON } A JSON response with the new user's profile update.
    * @memberof RequestController
    */
-  static async getAllRequest(req, res) {
-    try {
-      const requests = await getAllRequest();
-      if (!requests) throw new ApiError(404, 'No requests available');
-      successResponse(res, requests, 200);
-    } catch (error) {
-      errorResponse(res, { code: error.status, message: `getAllRequest: ${error.message}` });
-    }
-  }
-
-  /**
-   * Get requests.
-   *
-   * @static
-   * @param {Request} req - The request from the endpoint.
-   * @param {Response} res - The response returned by the method.
-   * @returns { JSON } A JSON response with the new user's profile update.
-   * @memberof RequestController
-   */
   static async getRequest(req, res) {
     try {
-      const { status } = req.params;
-      const requests = await getRequest(req.data.id, status);
+      const { statusId } = req.params;
+      const requests = await getRequest(req.data.id, statusId);
       if (!requests) throw new ApiError(404, 'No requests available');
       successResponse(res, requests, 200);
     } catch (error) {
@@ -92,6 +72,24 @@ export default class RequestController {
       successResponse(res, updateRequest, 200);
     } catch (error) {
       errorResponse(res, { code: error.status, message: `updateRequest: ${error.message}` });
+    }
+  }
+
+  /**
+   * Updates request.
+   *
+   * @static
+   * @param {Request} req - The request from the endpoint.
+   * @param {Response} res - The response returned by the method.
+   * @returns { JSON } A JSON response with the new user's profile update.
+   * @memberof RequestController
+   */
+  static async createRequest(req, res) {
+    try {
+      const newRequest = await createRequest(req.body);
+      successResponse(res, newRequest, 201);
+    } catch (error) {
+      errorResponse(res, { code: error.status, message: `createRequest: ${error.message}` });
     }
   }
 }

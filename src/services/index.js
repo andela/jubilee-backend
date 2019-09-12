@@ -16,5 +16,4 @@ export {
   FacilityService,
   RequestService,
   RoomService,
-}
-
+};

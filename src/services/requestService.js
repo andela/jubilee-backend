@@ -12,7 +12,7 @@ export default class RequestService {
   * Get user's request history from database
   * @static
   * @param {integer} id - The user id
-  * @returns {Promise<object>} A promise object with user requests.
+  * @returns {Promise<object>} A promise object with user Requests.
   * @memberof RequestService
   */
   static async getRequests(id) {
@@ -31,45 +31,25 @@ export default class RequestService {
     });
   }
 
-
-  /**
-    * Get all Requests
-    * @return {Promise<object>} A promise object with role detail.
-    * @memberof RequestService
-    */
-  static async getAllRequest() {
-    const requests = await Request.sequelize.query('SELECT * FROM requests', { type: sequelize.QueryTypes.SELECT });
-    return requests;
-  }
-
-  /**
-    * Get all Users Requests
-    * @param { integer } userId
-    * @return {Promise<object>} A promise object with role detail.
-    * @memberof RequestService
-    */
-  static async myRequests(userId) {
-    const requests = await Request.sequelize.query(`SELECT * FROM requests Where "requesterId"=${userId}`, { type: sequelize.QueryTypes.SELECT });
-    return requests;
-  }
-
   /**
     * Get Request by id and status
     * @param {object} id - the id of assigned manager || requester.
-    * @param {object} status - the status of the request.
+    * @param {object} statusId - the status of the request.
     * @return {Promise<object>} A promise object with role detail.
     * @memberof RequestService
     */
-  static async getRequest(id, status) {
-    const requests = await Request.sequelize.query(
-      `select requests.id, requests."requesterId", requests."managerId", requests."accBookingId", requests.status, 
-      requests."tripType", requests.purpose, requests.origin, requests.destination, requests."departureDate",
-      requests."returnDate", "Users".id as userId, "Users"."firstName", "Users"."lastName", "Users".email  FROM requests INNER JOIN 
-      "Users" ON requests."requesterId"="Users".id WHERE (("requesterId"=${id} OR "managerId"=${id}) AND status='${status}');
-    `, { type: sequelize.QueryTypes.SELECT }
-    );
+  static async getRequest(id, statusId) {
+    const requests = await Request.findOne({
+      include: [
+        {
+          model: User,
+          as: 'requester',
+          attributes: ['firstName', 'lastName']
+        }],
+      where: { statusId }
+    });
     if (requests.length === 0) throw new ApiError(404, 'No such request');
-    return requests;
+    return requests.dataValues;
   }
 
   /**
@@ -90,7 +70,7 @@ export default class RequestService {
       if (!bool) throw new ApiError(404, 'No such request');
       return user.dataValues;
     } catch (error) {
-      throw new ApiError(error.status || 500, `requestService: update - ${error.message}`);
+      throw new ApiError(error.status || 500, error.message);
     }
   }
 
@@ -98,7 +78,7 @@ export default class RequestService {
    * Function for Create query
    *
    * @param {Object} req - Object of fields used to create
-   * @memberof UserService
+   * @memberof RequestService
    * @returns {Promise<object>} A promise object with user detail.
    */
   static async createRequest(req) {

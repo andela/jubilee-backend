@@ -4,7 +4,7 @@ import { UserController, RoleController, RequestController } from '../controller
 import { AuthMiddleware, RoleMiddleware, UserMiddleware } from '../middlewares';
 
 const { verifyRoles } = RoleMiddleware;
-const { supplierAdmin, companyAdmins, companyAdminManager } = Permissions;
+const { supplierAdmin, companyAdminManager } = Permissions;
 
 const router = Router();
 
@@ -14,7 +14,7 @@ const {
   userProfile, updateProfile
 } = UserController;
 const {
-  getAllRequest, getRequest, updateRequest
+  getRequest, updateRequest, createRequest
 } = RequestController;
 const { isAuthenticated, authenticate } = AuthMiddleware;
 const { onUpdateProfile, onRequestStatus } = UserMiddleware;
@@ -24,8 +24,7 @@ router.put('/profile/:userId', authenticate, isAuthenticated, onUpdateProfile, u
 
 router.get('/requests', authenticate, getUserRequests);
 router.post('/requests', authenticate, createRequest);
-router.get('/requests', authenticate, verifyRoles(companyAdmins), getAllRequest);// get all requests on table, only by admin and superadmin
-router.get('/requests/user/:statusId', authenticate, onRequestStatus, getRequest);// get request by userId in the token and specifying status in param
+router.get('/requests/:statusId', authenticate, verifyRoles(companyAdminManager), onRequestStatus, getRequest);// get request by userId in the token and specifying status in param
 router.patch('/requests/:requestId', authenticate, verifyRoles(companyAdminManager), onRequestStatus, updateRequest); // update requests by specifying request id in params
 
 router.patch('/role', authenticate, verifyRoles(supplierAdmin), updateUserRole);
