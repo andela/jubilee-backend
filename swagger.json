@@ -472,6 +472,82 @@
                 }
             }
         },
+        "/facility/supplier/{facilityId}/{roomId}":{
+            "patch" : {
+                "description": "updates room category availability",
+                "summary": "Enables a suppliers admin to update room availability",
+                "tags": [
+                    "Facility"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                      "in": "body",
+                      "name": "body",
+                      "required": true,
+                      "description": "This is the request body object containing the room availability status",
+                      "schema": {
+                        "$ref": "#/requestBody/updateFacilityroomCategory"
+                      }
+                    }
+                  ],
+                  "responses": {
+                    "201": {
+                        "description": "Success"
+                    },
+                    "401": {
+                      "description": "Validation / authentication Error"
+                    },
+                    "403": {
+                        "description": "Unauthorized Request (You don't have the require permission)"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/facility/supplier/{facilityId}/": {
+            "patch" : {
+                "description": "updates facility amenities",
+                "summary": "Enables a suppliers admin to update amenities",
+                "tags": [
+                    "Facility"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                      "in": "body",
+                      "name": "body",
+                      "required": true,
+                      "description": "This is the request body object containing the room amenities",
+                      "schema": {
+                        "$ref": "#/requestBody/updateFacilityamenities"
+                      }
+                    }
+                  ],
+                  "responses": {
+                    "201": {
+                        "description": "Success"
+                    },
+                    "401": {
+                      "description": "Validation / authentication Error"
+                    },
+                    "403": {
+                        "description": "Unauthorized Request (You don't have the require permission)"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/booking/accommodation": {
             "post": {
                 "description": "Endpoint for booking accommodations",
@@ -783,6 +859,38 @@
                 ,
                 "required": [
                     "name, state, city,address,description,imageUrl,rooms,amenities,addOns"
+                ]
+            },
+            "updateFacilityroomCategory": {
+                "title": "Update room category",
+                "type": "object",
+                "properties": {
+                    "roomStatus": {
+                        "description": "status of room category",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "roomStatus": "unavailable"
+                },
+                "required": [
+                    "roomStatus"
+                ]
+            },
+            "updateFacilityamenities": {
+                "title": "Update amenities of a facility",
+                "type": "object",
+                "properties": {
+                    "amenities": {
+                        "description": "ids of amenities to be updated",
+                        "type": "array"
+                    }
+                },
+                "example": {
+                    "amenities": [4, 5, 1]
+                },
+                "required": [
+                    "amenities"
                 ]
             },
             "loginRequest": {
