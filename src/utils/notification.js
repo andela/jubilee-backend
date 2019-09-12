@@ -17,7 +17,7 @@ class Notification {
   static async notify(notificationData, toUsers) {
     const notifications = toUsers.map((user) => {
       const notification = { ...notificationData, userId: user.id };
-      return this.add(notification, user.id);
+      return Notification.add(notification, user.id);
     });
     return Promise.all(notifications);
   }
@@ -34,7 +34,7 @@ class Notification {
     try {
       await global.activeSockets[socketId].emit('notification', notification);
     } catch (err) {
-      throw new Error('Failed to send realtime notification');
+      // This user isn't online ATM, thats Ok, we move still.
     }
   }
 
@@ -48,10 +48,10 @@ class Notification {
   static async add(notificationData, socketId) {
     try {
       const notification = await create(notificationData);
-      await this.realTimeNotify(notification, socketId);
+      await Notification.realTimeNotify(notification, socketId);
       return notification;
     } catch (err) {
-      throw new Error(err.message || 'Failed to create notification');
+      throw new Error('Failed to create notification');
     }
   }
 }

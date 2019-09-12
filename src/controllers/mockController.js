@@ -23,6 +23,7 @@ class MockController {
       const notifications = await notify(notificationData, toUsers);
       return successResponse(res, { notifications }, 201);
     } catch (err) {
+      console.log(err);
       return errorResponse(res, {});
     }
   }
