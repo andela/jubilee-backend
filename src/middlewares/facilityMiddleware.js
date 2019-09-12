@@ -44,12 +44,9 @@ export default class FacilityMiddleware {
     */
   static async authenticateFacility(req, res, next) {
     try {
-      console.log('request params: ', req.params);
       let { facilityId } = req.params;
       facilityId = Number(facilityId);
-      console.log('facility id: ', facilityId);
       const { dataValues: facility } = await findFacilityById(facilityId);
-      console.log('found facility: ', facility);
       if (facility) {
         return next();
       }
