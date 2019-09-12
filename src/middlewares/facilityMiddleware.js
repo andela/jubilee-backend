@@ -42,7 +42,7 @@ export default class FacilityMiddleware {
     * @memberof FacilityMiddleware
     *
     */
-  static async authenticateFacility(req, res, next) {
+  static async verifyFacility(req, res, next) {
     try {
       let { facilityId } = req.params;
       facilityId = Number(facilityId);

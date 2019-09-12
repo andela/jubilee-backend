@@ -8,13 +8,13 @@ const {
   addFacilitySupplier, createCompanyFacility, roomUpdate, amenitiesUpdate
 } = FacilityController;
 const { authenticate } = AuthMiddleware;
-const { onCreateFacility, authenticateFacility } = FacilityMiddleware;
+const { onCreateFacility, verifyFacility } = FacilityMiddleware;
 const { verifyRoles } = RoleMiddleware;
 const { supplierAdmin, companyTravelAdmins } = Permissions;
 
 router.post('/supplier', authenticate, verifyRoles(supplierAdmin), onCreateFacility(), addFacilitySupplier);
 router.post('/company', authenticate, verifyRoles(companyTravelAdmins), onCreateFacility(true), createCompanyFacility);
-router.patch('/supplier/:facilityId/:roomId', authenticate, verifyRoles(supplierAdmin), authenticateFacility, roomUpdate);
-router.patch('/supplier/:facilityId/', authenticate, verifyRoles(supplierAdmin), authenticateFacility, amenitiesUpdate);
+router.patch('/supplier/:facilityId/:roomId', authenticate, verifyRoles(supplierAdmin), verifyFacility, roomUpdate);
+router.patch('/supplier/:facilityId/', authenticate, verifyRoles(supplierAdmin), verifyFacility, amenitiesUpdate);
 
 export default router;
