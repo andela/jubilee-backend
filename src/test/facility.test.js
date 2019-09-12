@@ -98,6 +98,18 @@ describe('Facility route endpoints', () => {
       expect(response.body.data).to.be.a('object');
       expect(response.body.data).to.have.property('roomStatus');
     });
+    it('should successfully update amenities of a facility- 201', async () => {
+      const response = await chai
+        .request(server)
+        .patch(`/api/facility/supplier/${2}/`)
+        .send({ amenities: [3, 6, 1] })
+        .set('authorization', `Bearer ${adminToken}`);
+      expect(response).to.have.status(201);
+      expect(response.body.status).to.equal('success');
+      expect(response.body).to.have.property('data');
+      expect(response.body.data).to.be.a('object');
+      expect(response.body.data).to.have.property('amenities');
+    });
   });
   describe('POST /api/facility/company', () => {
     adminToken = null;
