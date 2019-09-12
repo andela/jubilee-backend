@@ -65,15 +65,14 @@ export default class RequestController {
    */
   static async getRequest(req, res) {
     try {
-      const { status } = req.params;
-      const requests = await getRequest(req.data.id, status);
+      const { statusId } = req.params;
+      const requests = await getRequest(req.data.id, statusId);
       if (!requests) throw new ApiError(404, 'No requests available');
       successResponse(res, requests, 200);
     } catch (error) {
       errorResponse(res, { code: error.status, message: `getRequest: ${error.message}` });
     }
   }
-
 
   /**
    * Updates request.

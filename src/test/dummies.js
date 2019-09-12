@@ -103,7 +103,7 @@ export const newCompanyUser = {
   companyAddress: '235 ikorudu way',
   companyPlanId: 1,
   companySizeId: 2,
-}
+};
 
 export const newTestCompany = {
   email: 'kolajide@admin.com',
@@ -116,7 +116,6 @@ export const newTestCompany = {
   companySizeId: 2,
 };
 export const newRequest = {
-  requesterId: 12,
   purpose: 'Business Meeting',
   rememberMe: true,
   tripType: 'One-way',

@@ -16,8 +16,10 @@ export default class RequestValidator {
      */
   static async validateRequestUpdate(request) {
     const schema = {
-      status: joi.number().valid([1, 2, 3, '1', '2', '3']).required()
-        .label('Request statusId is required can only be 1, 2, 3 - approved, pending, rejected'),
+      statusId: joi.valid([1, 2, 3, '1', '2', '3'])
+        .label('Request statusId can only be values 1, 2, 3 - approved, pending, rejected'),
+      requestId: joi.number()
+        .label('Request Id can only be a number'),
     };
     const { error } = joi.validate({ ...request }, schema);
     if (error) {

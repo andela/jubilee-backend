@@ -39,13 +39,16 @@ export default class UserMiddleware {
     */
   static async onRequestStatus(req, res, next) {
     try {
-      let status = req.body;
-      if (req.params.statusId) {
-        req.params.statusId = Number(req.params.statusId);
-        status = req.params;
+      let status;
+      if (req.body && req.params) {
+        if (req.params.requestId) req.params.requestId = Number(req.params.requestId);
+        status = { ...req.body, ...req.params };
+      } else if (req.params) {
+        status = { ...req.params };
+      } else {
+        status = { ...req.body };
       }
-      const validated = await validateRequestUpdate(status);
-      if (validated) {
+      if (await validateRequestUpdate(status)) {
         next();
       }
     } catch (error) {
