@@ -867,7 +867,7 @@
                     "state": "Lagos",
                     "birthdate": "2010-01-01",
                     "phoneNumber": "08063345598",
-                    "signupToken": "$2a$10$qgfis3R/7Cbt36/xdWBufe.bbWUED0TPzy2vqvpefOg6b4zmTth2W"
+                    "signupToken": "supplier.1.5861@4680"
                   },
                 "required": [
                     "firstName, lastName, email, password"
