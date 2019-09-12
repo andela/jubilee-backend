@@ -20,7 +20,8 @@ chai.use(sinonChai);
 const [companyAdmin] = createCompanyFacility;
 
 describe('Request route endpoints', () => {
-  let adminToken;
+  let userToken;
+  let userId;
   let companyAdminResponse;
   let requester;
   before(async () => {
@@ -46,8 +47,8 @@ describe('Request route endpoints', () => {
       }
     };
     const companyUserResponse = await userSignup(reqUser, res);
-    requester = companyUserResponse.data;
-    adminToken = companyUserResponse.data.token;
+    userToken = companyUserResponse.data.token;
+    userId = companyUserResponse.data.id;
   });
   afterEach(() => {
     sinon.restore();
@@ -55,7 +56,7 @@ describe('Request route endpoints', () => {
 
   describe('GET api/users/requests', () => {
     it('should return 404 for user with no request yet', async () => {
-      const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${adminToken}`);
+      const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${userToken}`);
       expect(response).to.have.status(404);
       expect(response.body.error.message).to.be.eql('You have made no request yet');
     });
@@ -75,8 +76,8 @@ describe('Request route endpoints', () => {
       expect(res.status).to.have.been.calledWith(500);
     });
     it('should get a request successfuly', async () => {
-      await Request.create({ ...newRequest, requesterId: requester.id });
-      const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${adminToken}`);
+      await Request.create({ ...newRequest, requesterId: userId });
+      const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${userToken}`);
       expect(response).to.have.status(200);
       expect(response.body.status).to.equal('success');
     });
