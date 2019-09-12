@@ -97,6 +97,21 @@ class FacilityService {
       throw new Error('Failed to create facility. Try again');
     }
   }
+
+  /**
+   * Deletes anemities from a facility
+   * @static
+   * @param {number} roomId - Facility data to be recorded in the database.
+   * @param {string} roomStatus - status of availability.
+   * @returns {Promise<object>} A promise object with facility detail.
+   * @memberof FacilityService
+   */
+  static async roomStatusUpdate(roomId, roomStatus) {
+    const [rowaffected, [room]] = await Room.update({ roomStatus },
+      { returning: true, where: { id: roomId } });
+    if (!rowaffected) throw new Error('Not Found');
+    return room;
+  }
 }
 
 export default FacilityService;

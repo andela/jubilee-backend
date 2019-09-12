@@ -85,6 +85,20 @@ describe('Facility route endpoints', () => {
       expect(response.body.data).to.have.property('amenities');
     });
   });
+  describe('PATCH /api/facility/supplier/:supplierId/:roomId', () => {
+    it('should successfully update a room category - 200', async () => {
+      const response = await chai
+        .request(server)
+        .patch(`/api/facility/supplier/${2}/${3}`)
+        .send({ roomStatus: 'unavailable' })
+        .set('authorization', `Bearer ${adminToken}`);
+      expect(response).to.have.status(200);
+      expect(response.body.status).to.equal('success');
+      expect(response.body).to.have.property('data');
+      expect(response.body.data).to.be.a('object');
+      expect(response.body.data).to.have.property('roomStatus');
+    });
+  });
   describe('POST /api/facility/company', () => {
     adminToken = null;
     let invalidFacilityData = {};

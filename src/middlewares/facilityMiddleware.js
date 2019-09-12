@@ -1,8 +1,10 @@
 import { FacilityValidator } from '../validation';
+import { FacilityService } from '../services';
 import { Helpers } from '../utils';
 
 const { validateFacility } = FacilityValidator;
 const { errorResponse } = Helpers;
+const { findFacilityById } = FacilityService;
 /**
  *
  * Its a collection of middlewares on the Facility Route
@@ -29,5 +31,30 @@ export default class FacilityMiddleware {
         errorResponse(res, { code: 400, message: error.details[0].context.label });
       }
     };
+  }
+
+  /**
+    * Middleware method to authenticate facility.
+    * @param {object} req - The request from the endpoint.
+    * @param {object} res - The response returned by the method.
+    * @param {object} next - Call the next operation.
+    *@returns {object} - Returns an object (error or response).
+    * @memberof FacilityMiddleware
+    *
+    */
+  static async authenticateFacility(req, res, next) {
+    try {
+      console.log('request params: ', req.params);
+      let { facilityId } = req.params;
+      facilityId = Number(facilityId);
+      console.log('facility id: ', facilityId);
+      const { dataValues: facility } = await findFacilityById(facilityId);
+      console.log('found facility: ', facility);
+      if (facility) {
+        return next();
+      }
+    } catch (err) {
+      errorResponse(res, { code: 401, message: err.message });
+    }
   }
 }
