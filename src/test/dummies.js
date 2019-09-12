@@ -111,7 +111,6 @@ export const newRequest = {
   departureDate: '2019-11-07',
   returnDate: '2019-11-21',
 };
-
 export const tripRequest = {
   purpose: 'Official',
   tripType: 'One-way',
@@ -135,4 +134,11 @@ export const mockResponse = {
   json(obj) {
     return obj;
   }
+}; 
+
+export const newNotification = {
+  status: 'unseen',
+  message: 'A new user was created',
+  url: 'lormipsu.com',
+  userId: 1
 };
