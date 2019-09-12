@@ -55,7 +55,6 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE'
       },
       password: { type: DataTypes.STRING, allowNull: true },
-      role: { type: DataTypes.STRING, allowNull: true, defaultValue: 'user' },
       isVerified: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
