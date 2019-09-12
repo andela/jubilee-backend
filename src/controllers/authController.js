@@ -215,7 +215,7 @@ class AuthController {
       const { token } = req.query;
       const { email } = verifyToken(token);
       const url = `${req.protocol}s://${req.get('host')}/api/auth/password/reset/${email}`;
-      successResponse(res, `Goto ${url} using POST Method with body "password": "newpassword" and "confirmPassword": "newpassword"`, 200);
+      successResponse(res, `Goto ${url} using POST Method with body 'password': 'newpassword' and 'confirmPassword': 'newpassword'`, 200);
     } catch (err) {
       const status = err.status || 500;
       errorResponse(res, { code: status, message: `Verification unsuccessful, ${err.message}` });
