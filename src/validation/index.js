@@ -10,6 +10,6 @@ export {
   PasswordValidator,
   FacilityValidator,
   BookingValidator,
-  TripRequestValidation
+  TripRequestValidation,
   OtherValidators
 };
