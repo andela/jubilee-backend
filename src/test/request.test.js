@@ -394,14 +394,8 @@ describe('Request Endpoints', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    const response = await chai
-      .request(server)
-      .post('/api/users/requests')
-      .set('Cookie', `token=${companyAdminToken};`)
-      .send(request);
-    expect(response).to.have.status(201);
-    expect(response.body.data).to.be.a('object');
-    newlyCreatedRequest = response.body.data;
+    const response = await Request.create(request);
+    newlyCreatedRequest = response.dataValues;
   });
   it('should get request by id in token and param status', async () => {
     const response = await chai
