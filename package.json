@@ -4,17 +4,17 @@
   "description": "Barefoot Nomad - Making company travel and accomodation easy and convenient.",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc --reporter=text --reporter=html mocha src/test/*.*.js --timeout 10000 -c --require @babel/register --exit",
+    "test": "set NODE_ENV=test&& nyc --reporter=text --reporter=html mocha src/test/*.*.js --timeout 10000 -c --require @babel/register --exit",
     "seed": "sequelize db:seed:all",
     "unseed": "sequelize db:seed:undo",
     "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
     "migrate:reset": "sequelize db:migrate:undo:all",
     "migrate": "sequelize db:migrate",
-    "start:dev": "npm run migrate && npm run seed && nodemon --exec babel-node ./src/index.js",
+    "start:dev": "set NODE_ENV=development&& npm run migrate && npm run seed && nodemon --exec babel-node ./src/index.js",
     "start": "node dist/index.js",
     "build": "babel src -d dist",
     "prestart": "sequelize db:migrate",
-    "pretest": "cross-env NODE_ENV=test npm run migrate:reset && cross-env NODE_ENV=test  npm run migrate && cross-env NODE_ENV=test npm run seed"
+    "pretest": "set NODE_ENV=test&& npm run migrate:reset && set NODE_ENV=test&&  npm run migrate && set NODE_ENV=test&& npm run seed"
   },
   "repository": {
     "type": "git",
