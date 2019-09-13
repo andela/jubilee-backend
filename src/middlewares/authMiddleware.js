@@ -142,8 +142,7 @@ export default class AuthMiddleware {
     try {
       const token = checkToken(req);
       if (!token) return errorResponse(res, { code: 401, message: 'Access denied, Token required' });
-      const decoded = verifyToken(token);
-      req.data = decoded;
+      req.data = verifyToken(token);
       next();
     } catch (err) {
       errorResponse(res, { code: 401, message: err.message });
