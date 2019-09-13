@@ -9,13 +9,10 @@ const { supplierAdmin, companyAdminManager } = Permissions;
 const router = Router();
 
 const { updateUserRole } = RoleController;
-const { getUserRequests } = RequestController;
+const { getRequest, updateRequest, getUserRequests } = RequestController;
 const {
   userProfile, updateProfile
 } = UserController;
-const {
-  getRequest, updateRequest, createRequest
-} = RequestController;
 const { isAuthenticated, authenticate } = AuthMiddleware;
 const { onUpdateProfile, onRequestStatus } = UserMiddleware;
 
