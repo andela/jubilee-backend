@@ -26,7 +26,7 @@ export default class RequestValidator {
         .label('RememberMe can only be boolean - True or false'),
       tripType: joi.string()
         .label('tripType can only be of any of the three - One-way, Round-Trip, Multi-leg'),
-      orign: joi.string()
+      origin: joi.string()
         .label('orign must be a string'),
       destination: joi.string()
         .label('destination must be a string'),

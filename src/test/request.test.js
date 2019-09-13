@@ -115,7 +115,7 @@ describe('Request Endpoints', () => {
   it('should throw an error if trip request body contains statusId || requesterId', async () => {
     const response = await chai
       .request(server)
-      .put(`/api/users/requests/${newlyCreatedRequest.id}`)
+      .put(`/api/users/requests/${newlyCreatedRequest.id}/update`)
       .set('Cookie', `token=${userToken}`)
       .send({ statusId: 1, purpose: 'just official' });
     expect(response).to.have.status(401);
@@ -126,7 +126,7 @@ describe('Request Endpoints', () => {
   it('User should be able to update trip request', async () => {
     const response = await chai
       .request(server)
-      .put(`/api/users/requests/${newlyCreatedRequest.id}`)
+      .put(`/api/users/requests/${newlyCreatedRequest.id}/update`)
       .set('Cookie', `token=${userToken}`)
       .send({ purpose: 'just official', rememberMe: true, departureDate: new Date() });
     expect(response).to.have.status(200);

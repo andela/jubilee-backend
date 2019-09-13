@@ -379,12 +379,12 @@
                 }
             }
         },
-        "/users/requests/user/{status}": {
+        "/users/requests/{statusId}": {
             "get": {
-                "description": "Gets users requests by specifying status parameter. `Token is required`",
-                "summary": "Gets all requests of such status",
+                "description": "Manager Gets users requests by specifying status parameter. `Token is required`",
+                "summary": "Manager Gets all requests of such status",
                 "tags": [
-                    "Users"
+                    "Requests"
                 ],
                 "produces": [
                     "application/json"
@@ -394,7 +394,7 @@
                 }],
                 "parameters": [{
                     "in": "path",
-                    "name": "status",
+                    "name": "statusId",
                     "required": true,
                     "description": "The status of the requests"
                 }],
@@ -416,7 +416,7 @@
                 "description": "Updates a single request by assigned manager. `Token of Manager/Admins is required`",
                 "summary": "Manager can update the request status",
                 "tags": [
-                    "Users"
+                    "Requests"
                 ],
                 "produces": [
                     "application/json"
@@ -437,6 +437,92 @@
                         "description": "This is the request body object containing request update",
                         "schema": {
                             "$ref": "#/requestBody/updateRequestStatus"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "You are an authorized user"
+                    },
+                    "400": {
+                        "description": "Request can only be pending, approved, rejected"
+                    },
+                    "404": {
+                        "description": " Not such request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    },
+                    "schema": {
+                        "$ref": "#/requestBody/updateRequestStatus"
+                    }
+                }
+            }
+        },
+        "/users/requests/{requestId}/edit": {
+            "get": {
+                "description": "User Gets trip requests for editing by specifying requestId. `Token is required`",
+                "summary": "User Gets a single request for edit",
+                "tags": [
+                    "Requests"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [{
+                    "Bearer": []
+                }],
+                "parameters": [{
+                    "in": "path",
+                    "name": "requestId",
+                    "required": true,
+                    "description": "The requestId of the requests"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "This request is not pending"
+                    },
+                    "401": {
+                        "description": "You have no permission to edit this request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/users/requests/{requestId}/update": {
+            "put": {
+                "description": "Updates a single request by assigned user. `Token of user is required`",
+                "summary": "user can update the request status",
+                "tags": [
+                    "Requests"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [{
+                    "Bearer": []
+                }],
+                "parameters": [{
+                        "in": "path",
+                        "name": "requestId",
+                        "required": true,
+                        "description": "The Id of the request to be updated"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "description": "This is the request body object containing request update",
+                        "schema": {
+                            "$ref": "#/requestBody/updateUserRequest"
                         }
                     }
                 ],
@@ -1190,13 +1276,56 @@
             "title": "Update Request Status",
             "type": "object",
             "properties": {
-                "status": {
+                "statusId": {
                     "description": "Status to be updated",
-                    "type": "string"
+                    "type": "number"
                 }
             },
             "example": {
-                "status": 1
+                "statusId": 1
+            }
+        },
+        "updateUserRequest": {
+            "title": "Update Request Status by user",
+            "type": "object",
+            "properties": {
+                "purpose": {
+                    "description": "purpose of trip",
+                    "type": "string"
+                },
+                "rememberMe": {
+                    "description": "for remebering users request",
+                    "type": "boolean"
+                },
+                "tripType": {
+                    "description": "type of trip",
+                    "type": "enum"
+                },
+                "origin": {
+                    "description": "origin of traveler",
+                    "type": "string"
+                },
+                "destination": {
+                    "description": "destination of traveler",
+                    "type": "string"
+                },
+                "departureDate": {
+                    "description": "date to leave",
+                    "type": "date"
+                },
+                "returnDate": {
+                    "description": "date to return",
+                    "type": "date"
+                }
+            },
+            "example": {
+                "purpose": "client requests a physical meeting",
+                "rememberMe": "true",
+                "tripType": "Multi-leg",
+                "origin": "abujah",
+                "destination": "kaduna",
+                "departureDate": "2019-09-12 08:09:07.439-05",
+                "returnDate": "2019-10-12 08:09:07.439-05"
             }
         }
     }

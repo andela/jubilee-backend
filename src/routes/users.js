@@ -26,7 +26,7 @@ router.get('/requests', authenticate, getUserRequests);
 router.get('/requests/:statusId', authenticate, verifyRoles(companyAdminManager), onRequestStatus, getRequest);// get request by userId in the token and specifying status in param
 router.patch('/requests/:requestId', authenticate, verifyRoles(companyAdminManager), onRequestStatus, updateRequest); // update requests by specifying request id in params
 router.get('/requests/:requestId/edit', authenticate, isUsersOwnIsStatus, onRequestStatus, getRequestByIdUserId);// get a single request by userId and requestId
-router.put('/requests/:requestId', authenticate, isUsersOwnIsStatus, onRequestStatus, updateUserRequest);
+router.put('/requests/:requestId/update', authenticate, isUsersOwnIsStatus, onRequestStatus, updateUserRequest);
 
 router.patch('/role', authenticate, verifyRoles(supplierAdmin), updateUserRole);
 
