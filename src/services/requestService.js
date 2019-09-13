@@ -1,15 +1,93 @@
-import sequelize from 'sequelize';
 import db from '../models';
 import { ApiError } from '../utils';
+import RoomService from './roomService';
+import FacilityService from './facilityService';
 
-const { Request, Status, User } = db;
+const {
+  Request, Status, User, AccommodationBooking
+} = db;
 
+const { findRoom } = RoomService;
+const { findFacilityById } = FacilityService;
 /**
  * RoleService class, interface for RoleUser model
  */
 export default class RequestService {
   /**
-  * Get user's request history from database
+    * Get a request by any field
+    * @return {Promise<object>} A promise object with role detail.
+    * @param {object} fieldObj An object of specified field
+    * @memberof RequestService
+    */
+  static async getRequestByFields(fieldObj) {
+    const requestObj = await Request.findOne({
+      where: fieldObj
+    });
+    return requestObj.dataValues;
+  }
+
+
+  /**
+    * Get Request by id and status
+    * @param {object} id - the id of assigned manager || requester.
+    * @param {object} requestId - the status of the request.
+    * @return {Promise<object>} A promise object with role detail.
+    * @memberof RequestService
+    */
+  static async getRequestByIdUserId(id, requestId) {
+    const requests = await Request.findOne({
+      include: [
+        {
+          model: User,
+          as: 'requester',
+          attributes: ['firstName', 'lastName']
+        },
+        {
+          model: AccommodationBooking,
+          as: 'bookings',
+          attributes: ['checkIn', 'checkOut', 'roomId']
+        }
+      ],
+      where: { requesterId: id, id: requestId }
+    });
+    if (requests.length === 0) throw new ApiError(404, 'No such request');
+    const rooms = await RequestService.requestRoooms(requests.dataValues.bookings);
+    const facilities = await RequestService.roomFacility(rooms);
+    const result = { data: requests.dataValues, rooms, facilities };
+    return result;
+  }
+
+  /**
+    * Get Rooms associated with request
+    * @param {array} bookingArray - an array of booked rooms
+    * @return {Promise<object>} A promise object with role detail.
+    * @memberof RequestService
+    */
+  static async requestRoooms(bookingArray) {
+    const rooms = [];
+    bookingArray.forEach(async (element) => {
+      rooms.push(await findRoom({ id: element.roomId }));
+    });
+    return rooms;
+  }
+
+  /**
+    * Get Facility associated with reoom
+    * @param {array} roomArray - an array of booked rooms
+    * @return {Promise<object>} A promise object with role detail.
+    * @memberof RequestService
+    */
+  static async roomFacility(roomArray) {
+    const facilities = [];
+    if (roomArray.length === 0) return [];
+    roomArray.forEach(async (element) => {
+      facilities.push(await findFacilityById(element.facilityId));
+    });
+    return facilities;
+  }
+
+  /**
+  * Get user's request history from daabase
   * @static
   * @param {integer} id - The user id
   * @returns {Promise<object>} A promise object with user Requests.
@@ -69,22 +147,6 @@ export default class RequestService {
       const [bool, [user]] = result;
       if (!bool) throw new ApiError(404, 'No such request');
       return user.dataValues;
-    } catch (error) {
-      throw new ApiError(error.status || 500, error.message);
-    }
-  }
-
-  /**
-   * Function for Create query
-   *
-   * @param {Object} req - Object of fields used to create
-   * @memberof RequestService
-   * @returns {Promise<object>} A promise object with user detail.
-   */
-  static async createRequest(req) {
-    try {
-      const { dataValues: newRequest } = await Request.create(req);
-      return newRequest;
     } catch (error) {
       throw new ApiError(error.status || 500, error.message);
     }

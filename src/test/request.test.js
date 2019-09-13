@@ -72,16 +72,10 @@ describe('Request Endpoints', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    const response = await chai
-      .request(server)
-      .post('/api/users/requests')
-      .set('Cookie', `token=${companyAdminToken};`)
-      .send(request);
-    expect(response).to.have.status(201);
-    expect(response.body.data).to.be.a('object');
-    newlyCreatedRequest = response.body.data;
+    const response = await Request.create(request);
+    newlyCreatedRequest = response.dataValues;
   });
-  it('should get request by id in token and param status', async () => {
+  it('MANAGER should get request by id in token and param status', async () => {
     const response = await chai
       .request(server)
       .get(`/api/users/requests/${newlyCreatedRequest.statusId}`)
@@ -99,19 +93,67 @@ describe('Request Endpoints', () => {
     expect(response.body.error.message).to.equal('Request statusId can only be values 1, 2, 3 - approved, pending, rejected');
   });
 
-  const newlyRequest = { statusId: 1 };
-
-  it('should update request by request id in params', async () => {
+  it('User should be able to get trip request for edit', async () => {
     const response = await chai
       .request(server)
-      .patch(`/api/users/requests/${newlyCreatedRequest.id}`)
-      .set('Cookie', `token=${companyAdminToken};`)
-      .send(newlyRequest);
+      .get(`/api/users/requests/${newlyCreatedRequest.id}/edit`)
+      .set('Cookie', `token=${userToken}`);
     expect(response).to.have.status(200);
     expect(response.body.status).to.equal('success');
   });
 
-  it('should throw error if wrong requestId is specified', async () => {
+  it('should throw an error if user does not own the trip request', async () => {
+    const response = await chai
+      .request(server)
+      .get(`/api/users/requests/${newlyCreatedRequest.id}/edit`)
+      .set('Cookie', `token=${companyAdminToken}`);
+    expect(response).to.have.status(401);
+    expect(response.body.status).to.equal('fail');
+    expect(response.body.error.message).to.equal('You have no permission to edit this request');
+  });
+
+  it('should throw an error if trip request body contains statusId || requesterId', async () => {
+    const response = await chai
+      .request(server)
+      .put(`/api/users/requests/${newlyCreatedRequest.id}`)
+      .set('Cookie', `token=${userToken}`)
+      .send({ statusId: 1, purpose: 'just official' });
+    expect(response).to.have.status(401);
+    expect(response.body.status).to.equal('fail');
+    expect(response.body.error.message).to.equal('You can not edit this field');
+  });
+
+  it('User should be able to update trip request', async () => {
+    const response = await chai
+      .request(server)
+      .put(`/api/users/requests/${newlyCreatedRequest.id}`)
+      .set('Cookie', `token=${userToken}`)
+      .send({ purpose: 'just official', rememberMe: true, departureDate: new Date() });
+    expect(response).to.have.status(200);
+    expect(response.body.status).to.equal('success');
+  });
+
+  const newlyRequest = { statusId: 1 };
+
+  it('MANAGER should update request by request id in params', async () => {
+    const response = await chai
+      .request(server)
+      .patch(`/api/users/requests/${newlyCreatedRequest.id}`)
+      .set('Cookie', `token=${companyAdminToken}`)
+      .send(newlyRequest);
+    expect(response).to.have.status(200);
+    expect(response.body.status).to.equal('success');
+  });
+  it('should throw an error for user if request is NOT PENDING', async () => {
+    const response = await chai
+      .request(server)
+      .get(`/api/users/requests/${newlyCreatedRequest.id}/edit`)
+      .set('Cookie', `token=${userToken}`);
+    expect(response).to.have.status(400);
+    expect(response.body.status).to.equal('fail');
+  });
+
+  it('should throw error if wrong requestId is specified by MANAGER', async () => {
     const response = await chai
       .request(server)
       .patch('/api/users/requests/hh')
@@ -124,7 +166,7 @@ describe('Request Endpoints', () => {
 
   const wrongRequest = { statusId: '6' };
 
-  it('should throw error if wrong status update is specified', async () => {
+  it('should throw error if wrong status update is specified by MANAGER', async () => {
     const response = await chai
       .request(server)
       .patch(`/api/users/requests/${newlyCreatedRequest.id}`)
@@ -135,7 +177,7 @@ describe('Request Endpoints', () => {
     expect(response.body.error.message).to.equal('Request statusId can only be values 1, 2, 3 - approved, pending, rejected');
   });
 
-  it('should throw error if wrong request id is specified', async () => {
+  it('should throw error if wrong request id is specified by MANAGER', async () => {
     const response = await chai
       .request(server)
       .patch('/api/users/requests/1234')
