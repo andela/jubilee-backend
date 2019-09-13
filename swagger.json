@@ -412,12 +412,12 @@
                 }
             }
         },
-        "/users/requests/user/{status}": {
+        "/users/requests/{statusId}": {
             "get": {
-                "description": "Gets users requests by specifying status parameter. `Token is required`",
-                "summary": "Gets all requests of such status",
+                "description": "Manager Gets users requests by specifying status parameter. `Token is required`",
+                "summary": "Manager Gets all requests of such status",
                 "tags": [
-                    "Users"
+                    "Requests"
                 ],
                 "produces": [
                     "application/json"
@@ -427,7 +427,7 @@
                 }],
                 "parameters": [{
                     "in": "path",
-                    "name": "status",
+                    "name": "statusId",
                     "required": true,
                     "description": "The status of the requests"
                 }],
@@ -449,7 +449,7 @@
                 "description": "Updates a single request by assigned manager. `Token of Manager/Admins is required`",
                 "summary": "Manager can update the request status",
                 "tags": [
-                    "Users"
+                    "Requests"
                 ],
                 "produces": [
                     "application/json"
@@ -1712,11 +1712,11 @@
             "properties": {
                 "status": {
                     "description": "Status to be updated",
-                    "type": "string"
+                    "type": "number"
                 }
             },
             "example": {
-                "status": 1
+                "statusId": 1
             }
         }
     }
