@@ -27,7 +27,7 @@ export default class TripRequestMiddleware {
           requesterFirstName: user.firstName,
           requesterLastName: user.lastName,
           requesterGender: user.gender,
-          requesterlineManager: user.lineManager,
+          requesterLineManager: user.lineManager,
           requesterPassportNo: user.passportNo,
         };
         if (user) {
@@ -43,29 +43,33 @@ export default class TripRequestMiddleware {
   }
 
   /**
-     * Middleware method for trip request validation
-     * @param {object} req - The request from the endpoint.
-     * @param {object} res - The response returned by the method.
-     * @param {object} next - Call the next operation.
+     * Validation of requester keys
+     * @param {string} value - Value of key to validate.
+     * @param {param} key - The key to validate.
      * @returns {object} - Returns an object (error or response).
      */
+  static tripUserChecker(value, key) {
+    if (!key) {
+      throw new ApiError(400, `Please update your profile with your ${value}`);
+    }
+  }
+
+  /**
+       * Middleware method for trip request validation
+       * @param {object} req - The request from the endpoint.
+       * @param {object} res - The response returned by the method.
+       * @param {object} next - Call the next operation.
+       * @returns {object} - Returns an object (error or response).
+       */
   static async tripCheckUser(req, res, next) {
     try {
+      const { tripUserChecker } = TripRequestMiddleware;
       const {
-        requesterfirstName, requesterlastName, requestergender, requesterlineManager
+        requesterGender, requesterLineManager, requesterPassportNo
       } = req.requester;
-      if (requesterfirstName === null) {
-        throw new ApiError(400, 'Please update your profile with your firstName');
-      }
-      if (requesterlastName === null) {
-        throw new ApiError(400, 'Please update your profile with your lastName');
-      }
-      if (requestergender === null) {
-        throw new ApiError(400, 'Please update your profile with your gender');
-      }
-      if (requesterlineManager === null) {
-        throw new ApiError(400, 'Please update your profile with your lineManager');
-      }
+      tripUserChecker('Gender', requesterGender);
+      tripUserChecker('Line Manager', requesterLineManager);
+      tripUserChecker('PassportNo', requesterPassportNo);
       next();
     } catch (error) {
       errorResponse(res, { code: error.status || 500, message: error.message });
