@@ -6,7 +6,6 @@ import RequestService from './requestService';
 import SupplierService from './supplierService';
 import FacilityService from './facilityService';
 import RoomService from './roomService';
-import RequestService from './requestService';
 import CommentService from './commentService';
 
 export {

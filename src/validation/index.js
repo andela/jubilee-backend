@@ -14,6 +14,6 @@ export {
   BookingValidator,
   ProfileValidator,
   RequestValidator,
-  TripRequestValidation
+  TripRequestValidation,
   OtherValidators
 };
