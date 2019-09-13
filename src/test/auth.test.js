@@ -9,7 +9,6 @@ const { generateToken } = Helpers;
 
 chai.use(chaiHttp);
 let newlyCreatedUser;
-let companyAdmin;
 let newUserPasswordReset;
 let supplierToken;
 let companyToken;

@@ -22,7 +22,7 @@ const [companyAdmin] = createCompanyFacility;
 describe('Request route endpoints', () => {
   let adminToken;
   let companyAdminResponse;
-
+  let requester;
   before(async () => {
     const reqCompany = { body: { ...companyAdmin, email: 'baystef@slack.com', companyName: 'paystack' } };
 
@@ -46,6 +46,7 @@ describe('Request route endpoints', () => {
       }
     };
     const companyUserResponse = await userSignup(reqUser, res);
+    requester = companyUserResponse.data;
     adminToken = companyUserResponse.data.token;
   });
   afterEach(() => {
@@ -74,7 +75,7 @@ describe('Request route endpoints', () => {
       expect(res.status).to.have.been.calledWith(500);
     });
     it('should get a request successfuly', async () => {
-      await Request.create(newRequest);
+      await Request.create({ ...newRequest, requesterId: requester.id });
       const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${adminToken}`);
       expect(response).to.have.status(200);
       expect(response.body.status).to.equal('success');
