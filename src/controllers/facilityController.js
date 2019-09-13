@@ -67,7 +67,9 @@ class FacilityController {
       roomId = Number(roomId);
       const { roomStatus } = req.body;
       const roomUpdated = await roomStatusUpdate(roomId, roomStatus);
-      return successResponse(res, roomUpdated, 201);
+      if (roomUpdated) {
+        return successResponse(res, roomUpdated, 201);
+      }
     } catch (error) {
       const status = error.status || 500;
       errorResponse(res, { code: status, message: error.message });

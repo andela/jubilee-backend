@@ -98,6 +98,18 @@ describe('Facility route endpoints', () => {
       expect(response.body.data).to.be.a('object');
       expect(response.body.data).to.have.property('roomStatus');
     });
+    it('should return error if room category does not exist - 404', async () => {
+      const response = await chai
+        .request(server)
+        .patch(`/api/facility/supplier/${2}/${8}`)
+        .send({ roomStatus: 'unavailable' })
+        .set('authorization', `Bearer ${adminToken}`);
+      expect(response).to.have.status(404);
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error).to.have.property('message');
+      expect(response.body.error.message)
+        .to.equal('Room category not found');
+    });
     it('should successfully update amenities of a facility- 201', async () => {
       const response = await chai
         .request(server)
@@ -109,6 +121,30 @@ describe('Facility route endpoints', () => {
       expect(response.body).to.have.property('data');
       expect(response.body.data).to.be.a('object');
       expect(response.body.data).to.have.property('amenities');
+      expect(response.body.data.amenities.length).to.eql(3);
+    });
+    it('should return an error if facility does not exist- 404', async () => {
+      const response = await chai
+        .request(server)
+        .patch(`/api/facility/supplier/${30}/`)
+        .send({ amenities: [3, 6, 1] })
+        .set('authorization', `Bearer ${adminToken}`);
+      expect(response).to.have.status(404);
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error).to.have.property('message');
+      expect(response.body.error.message)
+        .to.equal('This facility does not exist');
+    });
+    it('should return an error if user does not have the required roles- 403', async () => {
+      const { data: { token } } = companyUserSignUpResponse;
+      const response = await chai
+        .request(server)
+        .patch(`/api/facility/supplier/${2}/`)
+        .send({ amenities: [3, 6, 1] })
+        .set('authorization', `Bearer ${token}`);
+      expect(response).to.have.status(403);
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error).to.have.property('message');
     });
   });
   describe('POST /api/facility/company', () => {
