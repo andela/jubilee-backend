@@ -44,8 +44,8 @@ export default class RequestController {
     try {
       const { body } = req;
       const { requester } = req;
+      delete body.returnDate;
       const oneWayTrip = await createTripRequest({ ...body });
-      delete oneWayTrip.returnDate;
       return successResponse(res, { ...oneWayTrip, ...requester }, 201);
     } catch (error) {
       errorResponse(res, {});
