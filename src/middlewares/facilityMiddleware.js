@@ -51,7 +51,7 @@ export default class FacilityMiddleware {
         return next();
       }
     } catch (err) {
-      errorResponse(res, { code: 401, message: err.message });
+      errorResponse(res, { code: 404, message: 'This facility does not exist' });
     }
   }
 }

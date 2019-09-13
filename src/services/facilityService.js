@@ -1,5 +1,5 @@
 import db from '../models';
-import { Helpers } from '../utils';
+import { Helpers, ApiError } from '../utils';
 
 
 const {
@@ -109,7 +109,7 @@ class FacilityService {
   static async roomStatusUpdate(roomId, roomStatus) {
     const [rowaffected, [room]] = await Room.update({ roomStatus },
       { returning: true, where: { id: roomId } });
-    if (!rowaffected) throw new Error('Not Found');
+    if (!rowaffected) throw new ApiError(404, 'Room category not found');
     return room;
   }
 
