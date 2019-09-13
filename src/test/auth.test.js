@@ -154,8 +154,6 @@ describe('Auth route endpoints', () => {
   it('should signup a company and return status 201', async () => {
     const response = await chai.request(server).post('/api/auth/signup/company').send(newCompany);
     companyToken = response.body.data.signupToken;
-    const { body: { data: { admin } } } = response;
-    companyAdmin = { ...admin };
     expect(response).to.have.status(201);
     expect(response.body.status).to.equal('success');
     expect(response.body.data).to.be.a('object');
