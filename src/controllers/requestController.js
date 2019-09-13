@@ -51,4 +51,16 @@ export default class RequestController {
       errorResponse(res, {});
     }
   }
+
+  /**
+  *  creates a Multi-city trip request
+  * @static
+  * @param {Request} req - The request from the endpoint.
+  * @param {Response} res - The response returned by the method.
+  * @returns { JSON } - A JSON object containing success or failure details.
+  * @memberof RequestController
+  */
+  static async multiCityRequest(req, res) {
+    const requests = await createTripRequest()
+  };
 }
