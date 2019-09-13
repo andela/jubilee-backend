@@ -50,12 +50,21 @@ export default class RequestController {
       const { managerId } = oneWayTrip;
       const manager = await find({ id: managerId });
       const user = await find({ id });
-      if (manager.emailNotify) await Mailer.sendRequestMail();
+      const {
+        emailNotify, email, firstName, appNotify
+      } = manager;
+      const staffName = `${user.firstName} ${user.lastName}`;
+      const dashboardLink = `${req.protocol}s://${req.get('host')}/api/users/profile/${managerId.id}`;
+      if (emailNotify) {
+        await Mailer.sendMail({
+          email, emailTemplateId: 'd-4fa2b9e8173d4e4ba6b3d5f5e4c14308', firstName, urlLink: dashboardLink, staffName
+        });
+      }
       const notificationData = {
-        message: `${user.firstName} ${user.lastName} created a new travel request`,
+        message: `${staffName} created a new travel request`,
         url: 'https://barefootnomand/user/emma/trip/3'
       };
-      if (manager.appNotify) await Notification.notify(notificationData, [manager]);
+      if (appNotify) await Notification.notify(notificationData, [manager]);
       return successResponse(res, { ...oneWayTrip, ...requester }, 201);
     } catch (err) {
       errorResponse(res, {});
