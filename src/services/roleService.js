@@ -1,6 +1,6 @@
 import db from '../models';
 
-const { RoleUser } = db;
+const { RoleUser, Role } = db;
 
 /**
  * RoleService class, interface for RoleUser model
@@ -40,5 +40,19 @@ export default class RoleService {
       { returning: true, where: { userId } });
     if (!rowaffected) throw new Error('Not Found');
     return user;
+  }
+
+  /**
+   * Obtain role label in the database
+   *
+   * @param {integer} roleId - The user Id
+   * @returns {Promise<object>} A promise object with role label.
+   */
+  static async getRoleLabel(roleId) {
+    const label = await Role.findOne({
+      where: { id: roleId },
+      attributes: ['id', 'label']
+    });
+    return label.dataValues.label;
   }
 }

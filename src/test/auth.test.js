@@ -330,7 +330,7 @@ describe('GET /api/auth/verify?token', () => {
   it('should not be able to sign in user if email is false', async () => {
     const response = await chai.request(server)
       .get('/api/auth/wrongSocial');
-    expect(response).to.have.status(403);
+    expect(response).to.have.status(401);
   });
 });
 describe('POST /api/auth/login', () => {

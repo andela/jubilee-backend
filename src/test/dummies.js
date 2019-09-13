@@ -94,12 +94,25 @@ export const createCompanyFacility = [
 export const newCompanyUser = {
   firstName: 'Mike',
   lastName: 'Tyson',
-  email: faker.internet.email(),
+  email: 'mikeTyson@andela.com',
   companyName: 'Andela',
-  password: 'Exunemployed01'
+  password: 'Exunemployed01',
+  companyAddress: '235 ikorudu way',
+  companyPlanId: 1,
+  companySizeId: 2,
+};
+
+export const newTestCompany = {
+  email: 'kolajide@admin.com',
+  firstName: 'kola',
+  lastName: 'jidee',
+  password: 'tmobnvar..Ds66u',
+  companyName: faker.company.companyName(),
+  companyAddress: '235 ikorudu way',
+  companyPlanId: 1,
+  companySizeId: 2,
 };
 export const newRequest = {
-  requesterId: 12,
   purpose: 'Business Meeting',
   rememberMe: true,
   tripType: 'One-way',

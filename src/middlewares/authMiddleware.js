@@ -117,13 +117,12 @@ export default class AuthMiddleware {
     try {
       const { userId } = req.params;
       const token = checkToken(req);
-      const decoded = verifyToken(token);
-      req.user = decoded;
-      const { id } = decoded;
+      const { id } = verifyToken(token);
+
       if (Number(userId) === id) {
         next();
       } else {
-        throw new ApiError(401, 'Access denied, check your inputed details');
+        throw new ApiError(401, 'Access denied, you cannot access these resource');
       }
     } catch (err) {
       const status = err.status || 500;

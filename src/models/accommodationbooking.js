@@ -23,22 +23,38 @@ module.exports = (sequelize, DataTypes) => {
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
+      },
+      requestId: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
+        references: {
+          key: 'id',
+          model: 'Requests'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       }
     },
     {}
   );
   AccommodationBooking.associate = (models) => {
     AccommodationBooking.belongsTo(models.Room, {
+      as: 'room',
+      foreignKey: 'roomId',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
 
     AccommodationBooking.belongsTo(models.User, {
+      as: 'user',
+      foreignKey: 'userId',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });
 
     AccommodationBooking.belongsTo(models.Request, {
+      as: 'request',
+      foreignKey: 'requestId',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });

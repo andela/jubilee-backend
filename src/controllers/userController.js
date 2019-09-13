@@ -6,7 +6,6 @@ const {
 } = Helpers;
 
 const { find, updateAny } = UserService;
-
 /**
  * A collection of methods that controls user's interaction via the User routes
  *
@@ -29,7 +28,7 @@ class UserController {
       const userResponse = extractUserData(user);
       successResponse(res, userResponse, 200);
     } catch (error) {
-      errorResponse(res, { code: error.statusCode, message: error.message });
+      errorResponse(res, { code: error.status, message: error.message });
     }
   }
 
@@ -49,7 +48,7 @@ class UserController {
       const userResponse = extractUserData(user);
       successResponse(res, userResponse, 200);
     } catch (error) {
-      errorResponse(res, { code: error.statusCode, message: error.message });
+      errorResponse(res, { code: error.status, message: error.message });
     }
   }
 }

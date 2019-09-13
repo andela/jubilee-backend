@@ -3,7 +3,7 @@ import passport from '../config/passport';
 import { AuthController } from '../controllers';
 import { rightEmail, wrongEmail } from '../test/features';
 import {
-  PasswordMiddleware, AuthMiddleware
+  PasswordMiddleware, AuthMiddleware,
 } from '../middlewares';
 
 
