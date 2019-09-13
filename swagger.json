@@ -37,6 +37,10 @@
         {
             "name": "Requests",
             "description": "Endpoint for CRUD operations Trip Request"
+        },
+        {
+            "name": "Comment",
+            "description": "Endpoint for CRUD operations on Comment"
         }
     ],
     "paths": {
@@ -947,6 +951,49 @@
                       }
                 }
             }
+        },
+        "/comment": {
+            "post": {
+                "description": "Endpoint for creating a comment",
+                "summary": "Enables a user to add a comment to a travel request",
+                "tags": [
+                    "Comment"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                      "in": "body",
+                      "name": "comment",
+                      "required": true,
+                      "description": "The comment object",
+                      "schema": {
+                        "$ref": "#/requestBody/commentRequest"
+                      }
+                    }
+                  ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully created comment"
+                    },
+                    "400": {
+                      "description": "Invalid input parameters"
+                    },
+                    "401": {
+                        "description": "Unauthenticated Request"
+                      },
+                      "403": {
+                        "description": "Unauthorized Request"
+                      },
+                      "404": {
+                        "description": "Non-existent record"
+                      },
+                      "500": {
+                        "description": "Internal Server error"
+                      }
+                }
+            }
         }
     },
     "requestBody": {
@@ -1372,6 +1419,24 @@
                     ],
                     "amenities": [1, 2, 3, 4],
                     "addOns": ["wifi", "coffee shop"]
+                }
+              },
+              "commentRequest": {
+                  "title": "Comment",
+                  "type": "object",
+                  "properties": {
+                    "requestId": {
+                        "description": "The id of the travel request",
+                        "type": "number"
+                    },
+                    "message": {
+                         "description":  "The body of a comment",
+                        "type": "date"
+                    }
+                  },
+                  "example": {
+                    "requestId": 1,
+                    "message": "What's happening with your trip ?"
                 }
               },
               "accommodationBooking": {
