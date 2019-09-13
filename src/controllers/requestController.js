@@ -74,22 +74,4 @@ export default class RequestController {
       errorResponse(res, { code: error.status, message: `updateRequest: ${error.message}` });
     }
   }
-
-  /**
-   * Updates request.
-   *
-   * @static
-   * @param {Request} req - The request from the endpoint.
-   * @param {Response} res - The response returned by the method.
-   * @returns { JSON } A JSON response with the new user's profile update.
-   * @memberof RequestController
-   */
-  static async createRequest(req, res) {
-    try {
-      const newRequest = await createRequest(req.body);
-      successResponse(res, newRequest, 201);
-    } catch (error) {
-      errorResponse(res, { code: error.status, message: `createRequest: ${error.message}` });
-    }
-  }
 }

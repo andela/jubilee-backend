@@ -23,7 +23,6 @@ router.get('/profile/:userId', authenticate, isAuthenticated, userProfile);
 router.put('/profile/:userId', authenticate, isAuthenticated, onUpdateProfile, updateProfile);
 
 router.get('/requests', authenticate, getUserRequests);
-router.post('/requests', authenticate, createRequest);
 router.get('/requests/:statusId', authenticate, verifyRoles(companyAdminManager), onRequestStatus, getRequest);// get request by userId in the token and specifying status in param
 router.patch('/requests/:requestId', authenticate, verifyRoles(companyAdminManager), onRequestStatus, updateRequest); // update requests by specifying request id in params
 

@@ -73,20 +73,4 @@ export default class RequestService {
       throw new ApiError(error.status || 500, error.message);
     }
   }
-
-  /**
-   * Function for Create query
-   *
-   * @param {Object} req - Object of fields used to create
-   * @memberof RequestService
-   * @returns {Promise<object>} A promise object with user detail.
-   */
-  static async createRequest(req) {
-    try {
-      const { dataValues: newRequest } = await Request.create(req);
-      return newRequest;
-    } catch (error) {
-      throw new ApiError(error.status || 500, error.message);
-    }
-  }
 }
