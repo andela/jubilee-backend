@@ -39,4 +39,16 @@ export default class RequestService {
     const { dataValues: newTripRequest } = await Request.create(tripreq);
     return newTripRequest;
   }
+
+  /**
+   * Fetches a request instance from the database based on it's primary key.
+   * @static
+   * @param {integer} requestId - Primary key of the request to be fetched.
+   * @param {object} options - Additional query information
+   * @returns {Promise<array>} - An instance of Request table including it's relationships.
+   * @memberof FacilityService
+   */
+  static async findRequestById(requestId, options = {}) {
+    return Request.findByPk(requestId, options);
+  }
 }

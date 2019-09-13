@@ -119,3 +119,20 @@ export const tripRequest = {
   destination: 'Lagos',
   departureDate: '2020-11-07'
 };
+
+export const commentData = {
+  message: 'I am thinking the trip may not be neccessary as the CEO would need you to get him some pounded yam over the weekend'
+};
+
+
+export const mockResponse = {
+  status() {
+    return this;
+  },
+  cookie() {
+    return this;
+  },
+  json(obj) {
+    return obj;
+  }
+};
