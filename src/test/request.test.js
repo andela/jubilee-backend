@@ -193,7 +193,7 @@ describe('Request Endpoints', () => {
 describe('Request route endpoints', () => {
   let adminToken;
   let companyAdminResponse;
-
+  let requester;
   before(async () => {
     const reqCompany = { body: { ...companyAdmin, email: 'baystef@slack.com', companyName: 'paystack' } };
 
@@ -217,6 +217,7 @@ describe('Request route endpoints', () => {
       }
     };
     const companyUserResponse = await userSignup(reqUser, res);
+    requester = companyUserResponse.data;
     adminToken = companyUserResponse.data.token;
   });
   afterEach(() => {

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Users',
+        model: 'User',
         key: 'id',
       },
       onUpdate: 'CASCADE',
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Users',
+        model: 'User',
         key: 'id',
       },
       onUpdate: 'CASCADE',
@@ -64,8 +64,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Request.associate = (models) => {
     Request.belongsTo(models.User, {
+      foreignKey: 'requesterId',
       as: 'requester',
-      foreignKey: 'requesterId'
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     });
     Request.belongsTo(models.User, {
       as: 'manager',
@@ -81,6 +83,12 @@ module.exports = (sequelize, DataTypes) => {
     });
     Request.hasMany(models.AccommodationBooking, {
       as: 'bookings',
+      foreignKey: 'requestId',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    });
+    Request.hasMany(models.Comment, {
+      as: 'comments',
       foreignKey: 'requestId',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'

@@ -17,7 +17,7 @@ class FacilityController {
    * @static
    * @param {Request} req - The request from the endpoint.
    * @param {Response} res - The response returned by the method.
-   * @returns { JSON } A JSON response containing .
+   * @returns { JSON } A JSON response containing details of the new created facility.
    * @memberof FacilityController
    */
   static async createCompanyFacility(req, res) {
