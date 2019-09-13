@@ -12,7 +12,7 @@ const {
   hashPassword, generateTokenOnSignup,
 } = Helpers;
 const { createCompany, updateCompanyById } = CompanyService;
-const { sendVerificationEmail, sendResetMail, sendWelcomeEmail, sendMail } = Mailer;
+const { sendMail } = Mailer;
 
 const {
   create, updateById, updatePassword, find, socialLogin,

@@ -14,9 +14,12 @@ class Mailer {
  * Sends an email to the user
  *
  * @param {object} options mail options
- * @param {string} options.toUser Recipient email address
+ * @param {string} options.email Recipient email address
+ * @param {string} options.emailTemplateId Unique email template Id
  * @param {string} options.firstName Recipient firstName
- * @param {string} options.resetPasswordLink Password reset link
+ * @param {string} options.urlLink Link inside the mail
+ * @param {string} options.companyToken Unique company token
+ * @param {string} options.staffName Full staff name
  * @returns {Promise} Sendgrid response
  * @memberof Mailer
  */
