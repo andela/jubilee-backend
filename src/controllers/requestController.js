@@ -1,9 +1,10 @@
-import { RequestService } from '../services';
-import { Helpers, Mailer } from '../utils';
+import { RequestService, UserService } from '../services';
+import { Helpers, Mailer, Notification } from '../utils';
 
 
 const { getRequests, createTripRequest } = RequestService;
 const { successResponse, errorResponse } = Helpers;
+const { find } = UserService;
 
 /**
  * A collection of methods that controls user requests.
@@ -42,12 +43,21 @@ export default class RequestController {
    */
   static async oneWayTripRequest(req, res) {
     try {
-      const { body } = req;
+      const { body, data: { id } } = req;
       const { requester } = req;
-      delete body.returnDate;
       const oneWayTrip = await createTripRequest({ ...body });
+      delete oneWayTrip.returnDate;
+      const { managerId } = oneWayTrip;
+      const manager = await find({ id: managerId });
+      const user = await find({ id });
+      if (manager.emailNotify) await Mailer.sendRequestMail();
+      const notificationData = {
+        message: `${user.firstName} ${user.lastName} created a new travel request`,
+        url: 'https://barefootnomand/user/emma/trip/3'
+      };
+      if (manager.appNotify) await Notification.notify(notificationData, [manager]);
       return successResponse(res, { ...oneWayTrip, ...requester }, 201);
-    } catch (error) {
+    } catch (err) {
       errorResponse(res, {});
     }
   }

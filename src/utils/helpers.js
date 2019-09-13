@@ -170,6 +170,7 @@ class Helpers {
       supplierId: user.supplierId,
       companyId: user.companyId,
       isVerified: user.isVerified,
+      emailNotify: user.emailNotify,
       role: user.role,
       department: user.department,
       lineManager: user.lineManager,

@@ -65,9 +65,9 @@ class UserController {
   static async toggleEmailNotification(req, res) {
     try {
       const id = req.params.userId;
-      const user = await updateById(req.body, { id });
+      const user = await updateById(req.body, id);
       const userResponse = extractUserData(user);
-      successResponse(res, userResponse, 200);
+      successResponse(res, { emailNotify: userResponse.emailNotify }, 200);
     } catch (error) {
       errorResponse(res, { code: error.statusCode, message: error.message });
     }
