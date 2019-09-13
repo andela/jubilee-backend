@@ -1,5 +1,5 @@
 import db from '../models';
-import { Helpers } from '../utils';
+import { Helpers, ApiError } from '../utils';
 
 
 const {
@@ -89,6 +89,45 @@ class FacilityService {
         await AmenityFacility.bulkCreate(facilityAmenities);
         await Room.bulkCreate(updatedRooms);
         const options = { include: ['rooms', 'amenities'] };
+        const facility = await FacilityService.findFacilityById(facilityId, options);
+        return facility;
+      });
+      return result;
+    } catch (err) {
+      throw new Error('Failed to create facility. Try again');
+    }
+  }
+
+  /**
+   * Updates the room category status.
+   * @static
+   * @param {number} roomId - Facility data to be recorded in the database.
+   * @param {string} roomStatus - status of availability.
+   * @returns {Promise<object>} A promise object with facility detail.
+   * @memberof FacilityService
+   */
+  static async roomStatusUpdate(roomId, roomStatus) {
+    const [rowaffected, [room]] = await Room.update({ roomStatus },
+      { returning: true, where: { id: roomId } });
+    if (!rowaffected) throw new ApiError(404, 'Room category not found');
+    return room;
+  }
+
+  /**
+   * updates amenities
+   * @static
+   * @param {array} amenities - status of availability.
+   * @param {number} facilityId - facility id.
+   * @returns {Promise<object>} A promise object with facility detail.
+   * @memberof FacilityService
+   */
+  static async amenitiesUpdate(amenities, facilityId) {
+    try {
+      const result = await sequelize.transaction(async () => {
+        await AmenityFacility.destroy({ where: { facilityId } });
+        const facilityAmenities = FacilityService.sortFacilityAmenities(amenities, facilityId);
+        await AmenityFacility.bulkCreate(facilityAmenities);
+        const options = { include: ['amenities'] };
         const facility = await FacilityService.findFacilityById(facilityId, options);
         return facility;
       });

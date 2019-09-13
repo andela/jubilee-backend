@@ -35,7 +35,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE'
-
+    },
+    roomStatus: {
+      type: DataTypes.ENUM('available', 'unavailable'),
+      allowNull: false,
+      defaultValue: 'available'
     }
   }, {});
 
