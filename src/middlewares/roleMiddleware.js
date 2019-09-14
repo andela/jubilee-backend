@@ -16,13 +16,12 @@ export default class roleMiddleware {
      * @param {array} boolean - To activate verifyUniqueRole funciton
      * @returns {function} - returns a function
      */
-  static verifyRoles(permissions, boolean = false) {
+  static verifyRoles(permissions) {
     return async function foo(req, res, next) {
       try {
         const { id } = req.data;
         const { roleId } = await getRoles(id);
         const permitted = permissions.includes(roleId);
-        if (boolean) if (permitted || id === Number(req.params.userId)) return next();
         if (permitted) {
           return next();
         }
