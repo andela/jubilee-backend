@@ -1710,7 +1710,7 @@
             "title": "Update Request Status",
             "type": "object",
             "properties": {
-                "status": {
+                "statusId": {
                     "description": "Status to be updated",
                     "type": "number"
                 }
