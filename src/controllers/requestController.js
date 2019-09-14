@@ -2,7 +2,7 @@ import { RequestService } from '../services';
 import { Helpers } from '../utils';
 
 
-const { getRequests, createTripRequest, saveUserRecord } = RequestService;
+const { getRequests, createTripRequest } = RequestService;
 const { successResponse, errorResponse } = Helpers;
 let oneWayTrip;
 
