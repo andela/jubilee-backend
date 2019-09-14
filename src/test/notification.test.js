@@ -2,20 +2,28 @@ import chai, { expect } from 'chai';
 import faker from 'faker';
 import { newNotification, newSupplier } from './dummies';
 import { NotificationService } from '../services';
+import { AuthController } from '../controllers';
 import server from '..';
 
 const {
   create, fetchAll, fetchUnread, findById, deleteOne, markAllAsRead, markOneAsRead
 } = NotificationService;
+const { supplierSignup } = AuthController;
 describe('Notification service methods', () => {
   let notificationId;
   let userId;
+  const req = {
+    body: { ...newSupplier, email: faker.internet.email() }
+  };
+
+  const res = {
+    cookie() { return this; },
+    status() { return this; },
+    json(obj) { return obj; }
+  };
   before(async () => {
-    const response = await chai
-      .request(server)
-      .post('/api/auth/signup/supplier')
-      .send({ ...newSupplier, email: faker.internet.email() });
-    userId = response.body.data.user.id;
+    const response = await supplierSignup(req, res);
+    userId = response.data.user.id;
     await create({ ...newNotification, userId });
   });
   describe('Create method', () => {
@@ -67,14 +75,22 @@ describe('Notification service methods', () => {
 
 describe('Notification mock route', () => {
   const toUsers = [];
+  const req = {
+    body: { ...newSupplier, email: faker.internet.email() }
+  };
+
+  const res = {
+    cookie() { return this; },
+    status() { return this; },
+    json(obj) { return obj; }
+  };
+
   before(async () => {
-    const response = await chai
-      .request(server)
-      .post('/api/auth/signup/supplier')
-      .send({ ...newSupplier, email: faker.internet.email() });
-    const { user: userOne } = response.body.data;
+    let userOne = await supplierSignup(req, res);
+    userOne = userOne.data.user;
     toUsers.push(userOne);
   });
+
   it('should create a new notification for a specific user', async () => {
     const response = await chai
       .request(server)
@@ -88,9 +104,11 @@ describe('Notification mock route', () => {
   });
   it('should create new notifications for multiple users', async () => {
     // create second user
-    const userResponse = await chai.request(server).post('/api/auth/signup/supplier')
-      .send({ ...newSupplier, email: faker.internet.email() });
-    const { user: userTwo } = userResponse.body.data;
+    const req = {
+      body: { ...newSupplier, email: faker.internet.email() }
+    };
+    let userTwo = await supplierSignup(req, res);
+    userTwo = userTwo.data.user;
     toUsers.push(userTwo);
     // create notification
     const response = await chai
