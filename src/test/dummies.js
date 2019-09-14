@@ -128,7 +128,7 @@ export const tripRequest = {
   tripType: 'One-way',
   origin: 'Abuja',
   destination: 'Lagos',
-  departureDate: '2020-11-07'
+  departureDate: '2020-11-07',
 };
 
 export const commentData = {
