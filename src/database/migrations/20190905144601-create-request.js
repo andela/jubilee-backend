@@ -41,7 +41,7 @@ module.exports = {
       type: Sequelize.STRING,
       allowNull: true
     },
-    rememberMe: {
+    rememberUserData: {
       type: Sequelize.BOOLEAN,
       allowNull: true,
       defaultValue: false
