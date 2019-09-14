@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
-    rememberMe: {
+    rememberUserData: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
       defaultValue: false
@@ -52,6 +52,22 @@ module.exports = (sequelize, DataTypes) => {
     destination: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    passportNumber: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    passportName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    lineManager: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    accommodation: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
     departureDate: {
       type: DataTypes.DATE,

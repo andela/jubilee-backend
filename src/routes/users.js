@@ -13,8 +13,8 @@ const { isAuthenticated, authenticate } = AuthMiddleware;
 const { supplierAdmin } = Permissions;
 
 router.get('/requests', authenticate, getUserRequests);
-router.get('/profile/:userId', isAuthenticated, userProfile);
-router.put('/profile/:userId', isAuthenticated, updateProfile);
+router.get('/:userId', isAuthenticated, userProfile);
+router.put('/:userId', isAuthenticated, updateProfile);
 
 router.patch('/role', authenticate, verifyRoles(supplierAdmin), updateUserRole);
 

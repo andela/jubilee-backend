@@ -73,6 +73,26 @@ export default class TripRequestValidation {
           });
           return errors;
         }),
+      rememberUserData: Joi.bool()
+        .required()
+        .error((errors) => {
+          errors.forEach((err) => {
+            switch (err.type) {
+              case 'any.required':
+                err.message = 'rememberUserData is required!';
+                break;
+              case 'any.string':
+                err.message = 'rememberUserData must be a boolean';
+                break;
+              case 'any.empty':
+                err.message = 'rememberUserData should not be empty';
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
+        }),
       origin: Joi.string()
         .min(3)
         .max(25)
