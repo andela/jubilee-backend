@@ -122,7 +122,7 @@ export default class RequestService {
 
   /**
     * Get Request by id and status
-    * @param {object} id - the id of assigned manager || requester.
+    * @param {object} id - the id of assigned manager
     * @param {object} statusId - the status of the request.
     * @return {Promise<object>} A promise object with role detail.
     * @memberof RequestService
@@ -135,9 +135,9 @@ export default class RequestService {
           as: 'requester',
           attributes: ['firstName', 'lastName']
         }],
-      where: { statusId }
+      where: { statusId, managerId: id }
     });
-    if (requests.length === 0) throw new ApiError(404, 'No such request');
+    if (!requests.dataValues.id) throw new ApiError(404, 'No such request');
     return requests.dataValues;
   }
 
@@ -155,8 +155,8 @@ export default class RequestService {
         updateValues,
         { where: obj, returning: true }
       );
-      const [bool, [user]] = result;
-      if (!bool) throw new ApiError(404, 'No such request');
+      const [updated, [user]] = result;
+      if (!updated) throw new ApiError(404, 'No such request');
       return user.dataValues;
     } catch (error) {
       throw new ApiError(error.status || 500, error.message);
