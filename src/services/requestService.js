@@ -55,28 +55,6 @@ export default class RequestService {
   }
 
   /**
-    * Get all Requests
-    * @return {Promise<object>} A promise object with role detail.
-    * @memberof RequestService
-    */
-  static async getAllRequest() {
-    const requests = await Request.sequelize.query('SELECT * FROM requests', { type: sequelize.QueryTypes.SELECT });
-    return requests;
-  }
-
-
-  /**
-    * Get all Users Requests
-    * @param { integer } userId
-    * @return {Promise<object>} A promise object with role detail.
-    * @memberof RequestService
-    */
-  static async myRequests(userId) {
-    const requests = await Request.sequelize.query(`SELECT * FROM requests Where "requesterId"=${userId}`, { type: sequelize.QueryTypes.SELECT });
-    return requests;
-  }
-
-  /**
     * Get Request by id and status
     * @param {object} id - the id of assigned manager || requester.
     * @param {object} statusId - the status of the request.
