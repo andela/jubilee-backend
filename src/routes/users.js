@@ -14,7 +14,7 @@ const {
   userProfile, updateProfile
 } = UserController;
 const {
-  getRequest, updateRequest, createRequest
+  getRequest, updateRequest
 } = RequestController;
 const { isAuthenticated, authenticate } = AuthMiddleware;
 const { onUpdateProfile, onRequestStatus } = UserMiddleware;

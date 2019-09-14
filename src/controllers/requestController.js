@@ -65,7 +65,7 @@ export default class RequestController {
    */
   static async getRequest(req, res) {
     try {
-      const { statusId } = req.params;
+      const statusId = Number(req.params.statusId);
       const requests = await getRequest(req.data.id, statusId);
       if (!requests) throw new ApiError(404, 'No requests available');
       successResponse(res, requests, 200);

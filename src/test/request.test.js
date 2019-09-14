@@ -25,7 +25,7 @@ let userToken;
 
 const [companyAdmin] = createCompanyFacility;
 
-describe('User Route Endpoints', () => {
+describe('Requester and Manager Route Endpoints', () => {
   it('should signup a company and return status 201', async () => {
     const response = await chai.request(server).post('/api/auth/signup/company').send(newTestCompany);
     newlyCreatedCompany = response.body.data;
