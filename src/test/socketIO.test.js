@@ -3,7 +3,9 @@ import io from 'socket.io-client';
 import faker from 'faker';
 import server from '..';
 import { newNotification, newSupplier } from './dummies';
+import { AuthController } from '../controllers';
 
+const { supplierSignup } = AuthController;
 describe('Socket.io implemenations test', async () => {
   let user;
   const socketUrl = 'http://0.0.0.0:3000';
@@ -13,6 +15,14 @@ describe('Socket.io implemenations test', async () => {
     query: {
       socketId: ''
     }
+  };
+  const req = {
+    body: { ...newSupplier, email: faker.internet.email() }
+  };
+  const res = {
+    cookie() { return this; },
+    status() { return this; },
+    json(obj) { return obj; }
   };
 
   const checkNotification = (client, done) => {
@@ -38,11 +48,8 @@ describe('Socket.io implemenations test', async () => {
   };
 
   before(async () => {
-    const response = await chai
-      .request(server)
-      .post('/api/auth/signup/supplier')
-      .send({ ...newSupplier, email: faker.internet.email() });
-    user = response.body.data.user;
+    const response = await supplierSignup(req, res);
+    user = response.data.user;
     options.query.socketId = user.id;
   });
 
