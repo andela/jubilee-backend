@@ -93,11 +93,10 @@ class NotificationService {
     * @memberof NotificationService
 */
   static async markAllAsRead(userId) {
-    const [rowAffected, [notification]] = await Notification.update({ status: 'seen' }, {
+    const [, notification] = await Notification.update({ status: 'seen' }, {
       where: { userId, status: 'unseen' },
       returning: true
     });
-    if (!rowAffected) throw new Error('Not Found');
     return notification;
   }
 
