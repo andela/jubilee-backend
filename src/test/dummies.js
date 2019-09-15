@@ -134,7 +134,7 @@ export const mockResponse = {
   json(obj) {
     return obj;
   }
-}; 
+};
 
 export const newNotification = {
   status: 'unseen',
