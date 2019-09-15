@@ -41,6 +41,10 @@
         {
             "name": "Comment",
             "description": "Endpoint for CRUD operations on Comment"
+        },
+        {
+            "name": "Notifications",
+            "description": "Endpoint for manipulating notifications"
         }
     ],
     "paths": {
@@ -885,6 +889,39 @@
                 }
             }
         },
+        "/notification/status/seen": {
+            "patch": {
+                "description": "Endpoint for marking all unseen notifications as seen for a particular user",
+                "summary": "Enables a logged in user to mark all his/her unseen notifications as seen",
+                "tags": [
+                    "Notifications"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "required": true,
+                    "description": "This is the request body object containing trip request",
+                    "schema": {
+                        "$ref": "#/requestBody/tripRequest"
+                    }
+                }],
+                "responses": {
+                    "201": {
+                        "description": "one-way trip request created successfully"
+                    },
+                    "400": {
+                        "description": "Please fill in the fields"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/booking/accommodation": {
             "post": {
                 "description": "Endpoint for booking accommodations",
@@ -1550,6 +1587,40 @@
                 }
             }
         },
+        "notificationSuccess": {
+            "properties": {
+                "status": {
+                    "description": "Success message",
+                    "type": "string"
+                },
+                "data": {
+                    "description": "An array of updated notifications",
+                    "type": "array"
+                }
+            },
+            "example": {
+                "status": "success",
+                "data": [{
+                        "id": 8,
+                        "userId": 18,
+                        "message": "Kingsley arinze just registed with your company token",
+                        "url": "https://app.andela.com/kingleyArinze",
+                        "status": "seen",
+                        "createdAt": "2019-09-15T10:15:24.924Z",
+                        "updatedAt": "2019-09-15T10:15:28.183Z"
+                    },
+                    {
+                        "id": 9,
+                        "userId": 18,
+                        "message": "Kingsley arinze just registed with your company token",
+                        "url": "https://app.andela.com/kingleyArinze",
+                        "status": "seen",
+                        "createdAt": "2019-09-15T10:15:25.792Z",
+                        "updatedAt": "2019-09-15T10:15:28.183Z"
+                    }
+                ]
+            }
+        },
         "400": {
             "properties": {
                 "status": {
@@ -1561,83 +1632,87 @@
                     "type": "object"
                 }
             },
-            "example": {
-                "status": "fail",
-                "error": {
-                    "message": "There was a validation error"
-                }
+            "error": {
+                "description": "A descriptive error message",
+                "type": "object"
             }
         },
-        "401": {
-            "properties": {
-                "status": {
-                    "description": "Authentication error",
-                    "type": "string"
-                },
-                "error": {
-                    "description": "A descriptive error message",
-                    "type": "object"
-                }
+        "example": {
+            "status": "fail",
+            "error": {
+                "message": "There was a validation error"
+            }
+        }
+    },
+    "401": {
+        "properties": {
+            "status": {
+                "description": "Authentication error",
+                "type": "string"
             },
-            "example": {
-                "status": "fail",
-                "error": {
-                    "message": "Token is required"
-                }
+            "error": {
+                "description": "A descriptive error message",
+                "type": "object"
             }
         },
-        "403": {
-            "properties": {
-                "status": {
-                    "description": "Usually just the text fail",
-                    "type": "string"
-                },
-                "error": {
-                    "description": "A descriptive error message",
-                    "type": "object"
-                }
+        "example": {
+            "status": "fail",
+            "error": {
+                "message": "Token is required"
+            }
+        }
+    },
+    "403": {
+        "properties": {
+            "status": {
+                "description": "Usually just the text fail",
+                "type": "string"
             },
-            "example": {
-                "status": "fail",
-                "error": {
-                    "message": "User is unauthorized"
-                }
+            "error": {
+                "description": "A descriptive error message",
+                "type": "object"
             }
         },
-        "404": {
-            "properties": {
-                "status": {
-                    "description": "Authentication error",
-                    "type": "string"
-                },
-                "error": {
-                    "description": "A descriptive error message",
-                    "type": "object"
-                }
+        "example": {
+            "status": "fail",
+            "error": {
+                "message": "User is unauthorized"
+            }
+        }
+    },
+    "404": {
+        "properties": {
+            "status": {
+                "description": "Authentication error",
+                "type": "string"
             },
-            "example": {
-                "status": "fail",
-                "error": {
-                    "message": "Data supplied by the user was not found"
-                }
+            "error": {
+                "description": "A descriptive error message",
+                "type": "object"
             }
         },
-        "500": {
-            "properties": {
-                "status": {
-                    "description": "Server error",
-                    "type": "string"
-                },
-                "error": {
-                    "description": "A descriptive error message",
-                    "type": "object"
-                }
+        "example": {
+            "status": "fail",
+            "error": {
+                "message": "Data supplied by the user was not found"
+            }
+        }
+    },
+    "500": {
+        "properties": {
+            "status": {
+                "description": "Server error",
+                "type": "string"
             },
-            "example": {
-                "status": "fail",
-                "error": {
-                    "message": "A server error prevented your request from being processed"
-                }
+            "error": {
+                "description": "A descriptive error message",
+                "type": "object"
+            }
+        },
+        "example": {
+            "status": "fail",
+            "error": {
+                "message": "A server error prevented your request from being processed"
             }
         }
     },

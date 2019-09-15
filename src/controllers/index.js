@@ -15,11 +15,8 @@ export {
   FacilityController,
   BookingController,
   RequestController,
-<<<<<<< HEAD
   CommentController,
-  MockController
-=======
+  MockController,
   MockController,
   NotificationController
->>>>>>> feature(notification): implement endpoint to allow users mark all notifications as read
 };
