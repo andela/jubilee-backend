@@ -134,3 +134,47 @@ describe('Notification mock route', () => {
     expect(response.body.error.message).to.equal('Double check that the required parameters are provided');
   });
 });
+
+describe('Mark all notifications as read', () => {
+  let token;
+  let userId;
+  const req = {
+    body: { ...newSupplier, email: faker.internet.email() }
+  };
+
+  const res = {
+    cookie() { return this; },
+    status() { return this; },
+    json(obj) { return obj; }
+  };
+
+  before(async () => {
+    const response = await supplierSignup(req, res);
+    token = response.data.user.token;
+    userId = response.data.user.id;
+  });
+
+  it('should return success when no notification status was updated', async () => {
+    const response = await chai
+      .request(server)
+      .patch('/api/notification/status/seen')
+      .set('authorization', `Bearer ${token}`);
+    expect(response).to.have.status(200);
+    expect(response.body.status).to.equal('success');
+    expect(response.body).to.have.property('data');
+    expect(response.body.data).to.be.an('array');
+    expect(response.body.data.length).to.equal(0);
+  });
+  it('should return success when notifications status are updated to seen', async () => {
+    await create({ ...newNotification, userId });
+    const response = await chai
+      .request(server)
+      .patch('/api/notification/status/seen')
+      .set('authorization', `Bearer ${token}`);
+    expect(response).to.have.status(200);
+    expect(response.body.status).to.equal('success');
+    expect(response.body).to.have.property('data');
+    expect(response.body.data).to.be.an('array');
+    expect(response.body.data.length).to.equal(1);
+  });
+});
