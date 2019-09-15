@@ -194,7 +194,6 @@ describe('Request route endpoints', () => {
   let userToken;
   let userId;
   let companyAdminResponse;
-  let requester;
   before(async () => {
     const reqCompany = { body: { ...companyAdmin, email: 'baystef@slack.com', companyName: 'paystack' } };
 
