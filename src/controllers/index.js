@@ -17,6 +17,5 @@ export {
   RequestController,
   CommentController,
   MockController,
-  MockController,
   NotificationController
 };

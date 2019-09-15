@@ -789,6 +789,9 @@
                 "tags": [
                     "Comment"
                 ],
+                "produces": [
+                    "application/json"
+                ],
                 "parameters": [
                     {
                       "in": "body",
@@ -817,7 +820,7 @@
                         "description": "Non-existent record"
                       },
                       "500": {
-                        "description": "Internal Server Error"
+                        "description": "Internal Server error"
                       }
                 }
             }
