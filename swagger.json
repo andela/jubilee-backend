@@ -379,6 +379,48 @@
                 }
             }
         },
+        "/users/request/stats": {
+            "post": {
+                "description": "Get all requests for a particular user within timeframe",
+                "summary": "User can get their request history within a timeframe",
+                "tags": [
+                    "Users"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "description": "This is the request body object containing trip request dates",
+                        "schema": {
+                            "$ref": "#/requestBody/getUserTripStats"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Access denied"
+                    },
+                    "404": {
+                        "description": "You have not made any request yet"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users/role": {
             "patch": {
                 "description": "Updates User Role",
@@ -1060,6 +1102,27 @@
                   },
                 "required": [
                     "tripType, purpose, origin, destination, departureDate, managerId"
+                ]
+            },
+            "getUserTripStats": {
+                "title": "Trip Stats",
+                "type": "object",
+                "properties": {
+                    "startDate": {
+                        "description": "Start date of the request",
+                        "type": "string"
+                    },
+                    "endDate": {
+                        "description": "End date of the request",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "startDate": "2019-09-16",
+                    "endDate": "2019-09-16"
+                  },
+                "required": [
+                    "startDate, endDate"
                 ]
             },
             "companySignUpRequest": {
