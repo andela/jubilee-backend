@@ -18,7 +18,8 @@ class NotificationService {
    * @memberof NotificationService
    */
   static async findById(notificationId, options = {}) {
-    return await Notification.findByPk(notificationId, options);
+    const notification = await Notification.findByPk(notificationId, options);
+    return notification;
   }
 
   /**
