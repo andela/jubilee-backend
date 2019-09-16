@@ -4,7 +4,7 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import server from '..';
 import {
-  newCompanyUser, createCompanyFacility, newRequest, tripRequest
+  newCompanyUser, createCompanyFacility, newRequest, tripRequest, returnTripRequest
 } from './dummies';
 import { AuthController, RequestController } from '../controllers';
 import { RequestService } from '../services';
@@ -94,7 +94,8 @@ describe('Request route endpoints', () => {
         purpose: 'Official',
         origin: 'Abuja',
         destination: 'Lagos',
-        departureDate: '2020-11-07T00:00:00.000Z'
+        departureDate: '2020-11-07T00:00:00.000Z',
+        tripType: 'One-way',
       });
     });
 
@@ -204,6 +205,39 @@ describe('Request route endpoints', () => {
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
       expect(response.body.error.message).to.equal('departureDate should not be empty');
+    });
+    it('should return validation error returnDate is selected in a One-way Trip', async () => {
+      const response = await chai
+        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .send({ ...tripRequest, returnDate: '2020-11-07' });
+      expect(response).to.have.status(400);
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error.message).to.equal('Return date is not required');
+    });
+
+    it('should successfully create a return trip request', async () => {
+      const response = await chai
+        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .send(returnTripRequest);
+      expect(response).to.have.status(201);
+      expect(response.body.data).to.include({
+        nameAsOnPassport: 'Daniel Smith',
+        gender: 'male',
+        purpose: 'Official',
+        origin: 'Abuja',
+        destination: 'Lagos',
+        tripType: 'Round-Trip',
+        departureDate: '2020-11-07T00:00:00.000Z',
+        returnDate: '2020-11-07T00:00:00.000Z',
+      });
+    });
+    it('should return validation error returnDate is not selected in a Round-Trip', async () => {
+      const response = await chai
+        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .send({ ...tripRequest, returnDate: '' });
+      expect(response).to.have.status(400);
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error.message).to.equal('returnDate should not be empty');
     });
   });
 });

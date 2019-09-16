@@ -66,6 +66,11 @@ export default class TripRequestValidation {
         .min(newdate)
         .required()
         .error(TripRequestValidation.validateTripDate('departureDate')),
+      returnDate: Joi.date()
+        .format('YYYY-MM-DD')
+        .allow(null)
+        .min(Joi.ref('departureDate'))
+        .error(TripRequestValidation.validateTripDate('returnDate')),
       purpose: Joi.string()
         .min(3)
         .max(255)
@@ -225,28 +230,6 @@ export default class TripRequestValidation {
           });
           return errors;
         }),
-    };
-    const { error } = Joi.validate({ ...tripObject }, schema);
-    if (error) {
-      throw new ApiError(400, error.details[0].message);
-    }
-    return true;
-  }
-
-  /**
-       * Validates Trip Request paramenters
-       *
-       * @param {object} tripObject - The request object
-       * @param {object} res - The request response object
-       * @returns {object} - returns an object (error or response).
-       */
-  static async tripRequestReturn(tripObject) {
-    const schema = {
-      returnDate: Joi.date()
-        .format('YYYY-MM-DD')
-        .min(Joi.ref('departureDate'))
-        .required()
-        .error(TripRequestValidation.validateTripDate('returnDate')),
     };
     const { error } = Joi.validate({ ...tripObject }, schema);
     if (error) {

@@ -20,17 +20,18 @@ export default class TripRequestMiddleware {
   static async onTripRequest(req, res, next) {
     try {
       const validated = await tripRequest(req.body);
-      const { tripType } = req.body;
+      const { tripType, returnDate } = req.body;
       const { id } = req.data;
-      if (tripType === 'One-way' && validated) {
-        delete validated.returnDate;
+      if (validated) {
         req.body.requesterId = id;
-        return next();
+        if (tripType === 'One-way' && returnDate) {
+          throw new ApiError(400, 'Return date is not required');
+        }
+        if (tripType === 'Round-Trip' && !returnDate) {
+          throw new ApiError(400, 'Return date is required');
+        }
       }
-      const retrunTripValidated = await tripRequestReturn(validated);
-      if (tripType === 'Round-Trip' && retrunTripValidated) return next();
-      console.log(tripType);
-      throw new ApiError(400, 'tripType is invalid');
+      return next();
     } catch (error) {
       errorResponse(res, { code: error.status || 500, message: error.message });
     }

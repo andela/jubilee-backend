@@ -126,6 +126,18 @@ export const tripRequest = {
   managerId: '14'
 };
 
+export const returnTripRequest = {
+  nameAsOnPassport: 'Daniel Smith',
+  gender: 'male',
+  purpose: 'Official',
+  tripType: 'Round-Trip',
+  origin: 'Abuja',
+  destination: 'Lagos',
+  departureDate: '2020-11-07',
+  returnDate: '2020-11-07',
+  managerId: '14'
+};
+
 export const commentData = {
   message: 'I am thinking the trip may not be neccessary as the CEO would need you to get him some pounded yam over the weekend'
 };
