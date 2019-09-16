@@ -6,6 +6,7 @@ import BookingMiddleware from './bookingMiddleware';
 import UserMiddleware from './userMiddleware';
 import TripRequestMiddleware from './tripRequestMiddleware';
 import CommentMiddleware from './commentMiddleware';
+import RequestMiddleware from './requestMiddleware';
 
 export {
   PasswordMiddleware,
@@ -16,4 +17,5 @@ export {
   UserMiddleware,
   TripRequestMiddleware,
   CommentMiddleware,
+  RequestMiddleware
 };

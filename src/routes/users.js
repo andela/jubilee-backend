@@ -1,7 +1,9 @@
 import { Router } from 'express';
 import { Permissions } from '../utils';
 import { UserController, RoleController, RequestController } from '../controllers';
-import { AuthMiddleware, RoleMiddleware, UserMiddleware } from '../middlewares';
+import {
+  AuthMiddleware, RoleMiddleware, UserMiddleware, RequestMiddleware
+} from '../middlewares';
 
 const { verifyRoles } = RoleMiddleware;
 const { supplierAdmin, companyAdminManager } = Permissions;
@@ -17,7 +19,8 @@ const {
   getRequestByIdUserId, updateUserRequest
 } = RequestController;
 const { isAuthenticated, authenticate } = AuthMiddleware;
-const { onUpdateProfile, onRequestStatus, isUsersOwnIsStatus } = UserMiddleware;
+const { onUpdateProfile } = UserMiddleware;
+const { onRequestStatus, isUsersOwnIsStatus } = RequestMiddleware;
 
 router.get('/profile/:userId', authenticate, isAuthenticated, userProfile);
 router.put('/profile/:userId', authenticate, isAuthenticated, onUpdateProfile, updateProfile);
