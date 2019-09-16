@@ -58,17 +58,17 @@ export default class RequestService {
    * @static
    * @param {sting} startDate - Request start date
    * @param {sting} endDate - Request end date
-   * @param {integer} requestId - Primary key of the request to be fetched.
+   * @param {integer} userId - Primary key of the request to be fetched.
    * @returns {Promise<string>} - Number of counts.
    * @memberof FacilityService
    */
-  static async search(startDate, endDate, requestId) {
+  static async searchByTime(startDate, endDate, userId) {
     const request = await Request.findAndCountAll({
       where: {
         createdAt: {
           [Op.between]: [startDate, endDate]
         },
-        requesterId: requestId
+        requesterId: userId
       }
     });
     return request.count;

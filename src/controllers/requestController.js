@@ -2,7 +2,7 @@ import { RequestService } from '../services';
 import { Helpers } from '../utils';
 
 
-const { getRequests, createTripRequest, search } = RequestService;
+const { getRequests, createTripRequest, searchByTime } = RequestService;
 const { successResponse, errorResponse } = Helpers;
 
 /**
@@ -40,11 +40,11 @@ export default class RequestController {
  * @returns { JSON } - A JSON object containing success or failure details.
  * @memberof RequestController
  */
-  static async getTripRequests(req, res) {
+  static async getTripRequestsStats(req, res) {
     try {
       const { startDate, endDate } = req.body;
       const { id } = req.data;
-      const result = await search(startDate, endDate, id);
+      const result = await searchByTime(startDate, endDate, id);
       return successResponse(res, result, 200);
     } catch (err) {
       errorResponse(res, { code: 500, message: err.message });

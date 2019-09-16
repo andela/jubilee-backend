@@ -7,14 +7,14 @@ const router = Router();
 
 const { updateUserRole } = RoleController;
 const { verifyRoles } = RoleMiddleware;
-const { getUserRequests, getTripRequests } = RequestController;
+const { getUserRequests, getTripRequestsStats } = RequestController;
 const { userProfile, updateProfile } = UserController;
 const { isAuthenticated, authenticate } = AuthMiddleware;
 const { supplierAdmin } = Permissions;
 const { tripStatsCheck } = TripRequestMiddleware;
 
 router.get('/requests', authenticate, getUserRequests);
-router.post('/request/stats', authenticate, tripStatsCheck, getTripRequests);
+router.post('/request/stats', authenticate, tripStatsCheck, getTripRequestsStats);
 router.get('/profile/:userId', isAuthenticated, userProfile);
 router.put('/profile/:userId', isAuthenticated, updateProfile);
 
