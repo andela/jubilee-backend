@@ -866,7 +866,8 @@
                     "city": "ikeja",
                     "state": "Lagos",
                     "birthdate": "2010-01-01",
-                    "phoneNumber": "08063345598"
+                    "phoneNumber": "08063345598",
+                    "signupToken": "supplier.1.5861@4680"
                   },
                 "required": [
                     "firstName, lastName, email, password"

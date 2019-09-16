@@ -55,7 +55,6 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE'
       },
       password: { type: DataTypes.STRING, allowNull: true },
-      role: { type: DataTypes.STRING, allowNull: true, defaultValue: 'user' },
       isVerified: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
@@ -69,7 +68,9 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = (models) => {
     User.belongsTo(models.Supplier, {
       foreignKey: 'supplierId',
-      as: 'affiliateSupplier'
+      as: 'supplier',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     });
     User.belongsToMany(models.Role, {
       through: 'RoleUsers',
@@ -91,6 +92,12 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Comment, {
       foreignKey: 'userId',
       as: 'comments'
+    });
+    User.hasMany(models.Notification, {
+      foreignKey: 'userId',
+      as: 'notifications',
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
     });
   };
   return User;

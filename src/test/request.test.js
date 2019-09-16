@@ -20,9 +20,9 @@ chai.use(sinonChai);
 const [companyAdmin] = createCompanyFacility;
 
 describe('Request route endpoints', () => {
-  let adminToken;
+  let userToken;
+  let userId;
   let companyAdminResponse;
-  let requester;
   before(async () => {
     const reqCompany = { body: { ...companyAdmin, email: 'baystef@slack.com', companyName: 'paystack' } };
 
@@ -46,8 +46,8 @@ describe('Request route endpoints', () => {
       }
     };
     const companyUserResponse = await userSignup(reqUser, res);
-    requester = companyUserResponse.data;
-    adminToken = companyUserResponse.data.token;
+    userToken = companyUserResponse.data.token;
+    userId = companyUserResponse.data.id;
   });
   afterEach(() => {
     sinon.restore();
@@ -55,7 +55,7 @@ describe('Request route endpoints', () => {
 
   describe('GET api/users/requests', () => {
     it('should return 404 for user with no request yet', async () => {
-      const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${adminToken}`);
+      const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${userToken}`);
       expect(response).to.have.status(404);
       expect(response.body.error.message).to.be.eql('You have made no request yet');
     });
@@ -75,8 +75,8 @@ describe('Request route endpoints', () => {
       expect(res.status).to.have.been.calledWith(500);
     });
     it('should get a request successfuly', async () => {
-      await Request.create({ ...newRequest, requesterId: requester.id });
-      const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${adminToken}`);
+      await Request.create({ ...newRequest, requesterId: userId });
+      const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${userToken}`);
       expect(response).to.have.status(200);
       expect(response.body.status).to.equal('success');
     });
@@ -85,7 +85,7 @@ describe('Request route endpoints', () => {
   describe('Trip Request Endpoint', () => {
     it('should successfully create a one-way trip request', async () => {
       const response = await chai
-        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .request(server).post('/api/trip/request').set('Cookie', `token=${userToken};`)
         .send(tripRequest);
       expect(response).to.have.status(201);
       expect(response.body.data).to.include({
@@ -98,7 +98,7 @@ describe('Request route endpoints', () => {
 
     it('should return validation error tripType is invalid', async () => {
       const response = await chai
-        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .request(server).post('/api/trip/request').set('Cookie', `token=${userToken};`)
         .send({ ...tripRequest, tripType: 'kkhkh' });
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -107,7 +107,7 @@ describe('Request route endpoints', () => {
 
     it('should return validation error tripType is empty', async () => {
       const response = await chai
-        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .request(server).post('/api/trip/request').set('Cookie', `token=${userToken};`)
         .send({ ...tripRequest, tripType: '' });
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -116,7 +116,7 @@ describe('Request route endpoints', () => {
 
     it('should return validation error purpose is empty', async () => {
       const response = await chai
-        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .request(server).post('/api/trip/request').set('Cookie', `token=${userToken};`)
         .send({ ...tripRequest, purpose: '' });
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -124,7 +124,7 @@ describe('Request route endpoints', () => {
     });
     it('should return validation error purpose is less than 3 characters', async () => {
       const response = await chai
-        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .request(server).post('/api/trip/request').set('Cookie', `token=${userToken};`)
         .send({ ...tripRequest, purpose: 'a' });
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -132,7 +132,7 @@ describe('Request route endpoints', () => {
     });
     it('should return validation error origin is empty', async () => {
       const response = await chai
-        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .request(server).post('/api/trip/request').set('Cookie', `token=${userToken};`)
         .send({ ...tripRequest, origin: '' });
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -140,7 +140,7 @@ describe('Request route endpoints', () => {
     });
     it('should return validation error origin is less than 3 characters', async () => {
       const response = await chai
-        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .request(server).post('/api/trip/request').set('Cookie', `token=${userToken};`)
         .send({ ...tripRequest, origin: 'q' });
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -148,7 +148,7 @@ describe('Request route endpoints', () => {
     });
     it('should return validation error destination is empty', async () => {
       const response = await chai
-        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .request(server).post('/api/trip/request').set('Cookie', `token=${userToken};`)
         .send({ ...tripRequest, destination: '' });
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -156,7 +156,7 @@ describe('Request route endpoints', () => {
     });
     it('should return validation error destination is less than 3 characters', async () => {
       const response = await chai
-        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .request(server).post('/api/trip/request').set('Cookie', `token=${userToken};`)
         .send({ ...tripRequest, destination: 'q' });
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
@@ -164,7 +164,7 @@ describe('Request route endpoints', () => {
     });
     it('should return validation error departureDate is empty', async () => {
       const response = await chai
-        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .request(server).post('/api/trip/request').set('Cookie', `token=${userToken};`)
         .send({ ...tripRequest, departureDate: '' });
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');

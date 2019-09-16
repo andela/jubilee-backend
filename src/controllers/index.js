@@ -5,6 +5,7 @@ import FacilityController from './facilityController';
 import BookingController from './bookingController';
 import RequestController from './requestController';
 import CommentController from './commentController';
+import MockController from './mockController';
 
 export {
   AuthController,
@@ -13,5 +14,6 @@ export {
   FacilityController,
   BookingController,
   RequestController,
-  CommentController
+  CommentController,
+  MockController
 };
