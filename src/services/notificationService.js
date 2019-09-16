@@ -44,12 +44,13 @@ class NotificationService {
    * @memberof NotificationService
    */
   static async fetchAll(userId, offset = 0, limit = 10) {
-    return await Notification.findAll({
+    const notifications = await Notification.findAll({
       where: { userId },
       order: [['id', 'DESC']],
       offset,
       limit
     });
+    return notifications;
   }
 
   /**
@@ -62,12 +63,13 @@ class NotificationService {
    * @memberof NotificationService
    */
   static async fetchUnread(userId, offset = 0, limit = 10) {
-    return await Notification.findAll({
+    const notifications = await Notification.findAll({
       where: { userId, status: 'unseen' },
       order: [['id', 'DESC']],
       offset,
       limit
     });
+    return notifications;
   }
 
   /**
@@ -109,9 +111,10 @@ class NotificationService {
     * @memberof NotificationService
 */
   static async deleteOne(notificationId) {
-    return await Notification.destroy({
+    const deleted = await Notification.destroy({
       where: { id: notificationId },
     });
+    return deleted;
   }
 }
 
