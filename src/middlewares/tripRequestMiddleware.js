@@ -85,7 +85,8 @@ export default class TripRequestMiddleware {
        */
   static async tripStatsCheck(req, res, next) {
     try {
-      const validated = statsRequest(req.body);
+      const { start: startDate, end: endDate } = req.query;
+      const validated = statsRequest({ startDate, endDate });
       if (validated) next();
     } catch (error) {
       errorResponse(res, { code: error.status || 500, message: error.message });

@@ -14,7 +14,7 @@ const { supplierAdmin } = Permissions;
 const { tripStatsCheck } = TripRequestMiddleware;
 
 router.get('/requests', authenticate, getUserRequests);
-router.post('/request/stats', authenticate, tripStatsCheck, getTripRequestsStats);
+router.get('/request/stats', authenticate, tripStatsCheck, getTripRequestsStats);
 router.get('/profile/:userId', isAuthenticated, userProfile);
 router.put('/profile/:userId', isAuthenticated, updateProfile);
 

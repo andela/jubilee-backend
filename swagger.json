@@ -379,8 +379,8 @@
                 }
             }
         },
-        "/users/request/stats": {
-            "post": {
+        "/users/request/stats?start={startDate}&end={endDate}": {
+            "get": {
                 "description": "Get all requests for a particular user within timeframe",
                 "summary": "User can get their request history within a timeframe",
                 "tags": [
@@ -396,13 +396,26 @@
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
+                        "in": "path",
+                        "name": "startDate",
                         "required": true,
-                        "description": "This is the request body object containing trip request dates",
                         "schema": {
-                            "$ref": "#/requestBody/getUserTripStats"
-                        }
+                            "type":"string",
+                            "format": "date",
+                            "default": "2019-09-16"
+                        },
+                        "description": "Start date of the request"
+                    },
+                    {
+                        "in": "path",
+                        "name": "endDate",
+                        "required": true,
+                        "schema": {
+                            "type":"string",
+                            "format": "date",
+                            "default": "2019-09-16"
+                        },
+                        "description": "End date of the request"
                     }
                 ],
                 "responses": {
@@ -410,7 +423,7 @@
                         "description": "Success"
                     },
                     "401": {
-                        "description": "Access denied"
+                        "description": "Access denied, Token required"
                     },
                     "404": {
                         "description": "You have not made any request yet"
@@ -599,7 +612,7 @@
                         "in": "path",
                         "name": "facilityId",
                         "required": true,
-                        "description": "TThe id of facility to be updated"
+                        "description": "The id of facility to be updated"
                     },
                     {
                         "in": "path",
@@ -1102,27 +1115,6 @@
                   },
                 "required": [
                     "tripType, purpose, origin, destination, departureDate, managerId"
-                ]
-            },
-            "getUserTripStats": {
-                "title": "Trip Stats",
-                "type": "object",
-                "properties": {
-                    "startDate": {
-                        "description": "Start date of the request",
-                        "type": "string"
-                    },
-                    "endDate": {
-                        "description": "End date of the request",
-                        "type": "string"
-                    }
-                },
-                "example": {
-                    "startDate": "2019-09-16",
-                    "endDate": "2019-09-16"
-                  },
-                "required": [
-                    "startDate, endDate"
                 ]
             },
             "companySignUpRequest": {

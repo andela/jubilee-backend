@@ -42,7 +42,7 @@ export default class RequestController {
  */
   static async getTripRequestsStats(req, res) {
     try {
-      const { startDate, endDate } = req.body;
+      const { start: startDate, end: endDate } = req.query;
       const { id } = req.data;
       const result = await searchByTime(startDate, endDate, id);
       return successResponse(res, result, 200);
