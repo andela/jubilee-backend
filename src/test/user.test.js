@@ -89,3 +89,24 @@ describe('GET /users/requests', () => {
     expect(response).to.have.status(404);
   });
 });
+
+describe('POST /users/request/stats', () => {
+  it('should successfully return the number of trip request count', async () => {
+    const data = {
+      startDate: '2019-09-16',
+      endDate: '2019-09-17'
+    };
+    const response = await chai.request(server).post('/api/users/request/stats').send(data)
+      .set('Cookie', `token=${token}`);
+    expect(response).to.have.status(200);
+  });
+  it('should return 400 error for invalid date input', async () => {
+    const data = {
+      startDate: '2019-09-16',
+      endDate: '2019-09'
+    };
+    const response = await chai.request(server).post('/api/users/request/stats').send(data)
+      .set('Cookie', `token=${token}`);
+    expect(response).to.have.status(400);
+  });
+});
