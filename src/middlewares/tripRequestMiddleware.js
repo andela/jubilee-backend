@@ -3,7 +3,7 @@ import { Helpers, ApiError } from '../utils';
 import { UserService } from '../services';
 
 const { errorResponse } = Helpers;
-const { tripRequest } = TripRequestValidation;
+const { tripRequest, statsRequest } = TripRequestValidation;
 const { find } = UserService;
 
 /**
@@ -71,6 +71,22 @@ export default class TripRequestMiddleware {
       tripUserChecker('Line Manager', requesterLineManager);
       tripUserChecker('PassportNo', requesterPassportNo);
       next();
+    } catch (error) {
+      errorResponse(res, { code: error.status || 500, message: error.message });
+    }
+  }
+
+  /**
+       * Middleware method for trip stats request validation
+       * @param {object} req - The request from the endpoint.
+       * @param {object} res - The response returned by the method.
+       * @param {object} next - Call the next operation.
+       * @returns {object} - Returns an object (error or response).
+       */
+  static async tripStatsCheck(req, res, next) {
+    try {
+      const validated = statsRequest(req.body);
+      if (validated) next();
     } catch (error) {
       errorResponse(res, { code: error.status || 500, message: error.message });
     }

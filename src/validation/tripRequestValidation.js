@@ -148,6 +148,33 @@ export default class TripRequestValidation {
   }
 
   /**
+  * Validates Trip stats Request paramenters
+  *
+  * @param {object} body - The request object
+  * @param {object} res - The request response object
+  * @returns {object} - returns an object (error or response).
+  */
+  static statsRequest(body) {
+    const schema = {
+      startDate: Joi.date()
+        .format('YYYY-MM-DD')
+        .min(newdate)
+        .required()
+        .error(TripRequestValidation.validateTripDate('startDate')),
+      endDate: Joi.date()
+        .format('YYYY-MM-DD')
+        .min(newdate)
+        .required()
+        .error(TripRequestValidation.validateTripDate('endDate'))
+    };
+    const { error } = Joi.validate({ ...body }, schema);
+    if (error) {
+      throw new ApiError(400, error.details[0].message);
+    }
+    return true;
+  }
+
+  /**
    * Validates departureDate and returnDate keys
    * @param {string} key - The key to validate
    * @returns {Error} Returns a descriptive error message
