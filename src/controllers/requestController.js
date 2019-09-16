@@ -40,13 +40,11 @@ export default class RequestController {
    * @returns { JSON } - A JSON object containing success or failure details.
    * @memberof RequestController
    */
-  static async oneWayTripRequest(req, res) {
+  static async allTripRequest(req, res) {
     try {
       const { body } = req;
-      const { requester } = req;
-      delete body.returnDate;
-      const oneWayTrip = await createTripRequest({ ...body });
-      return successResponse(res, { ...oneWayTrip, ...requester }, 201);
+      const requestedTrip = await createTripRequest({ ...body });
+      return successResponse(res, { ...requestedTrip }, 201);
     } catch (error) {
       errorResponse(res, {});
     }

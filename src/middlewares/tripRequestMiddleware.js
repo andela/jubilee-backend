@@ -1,10 +1,10 @@
 import { TripRequestValidation } from '../validation';
 import { Helpers, ApiError } from '../utils';
-import { UserService } from '../services';
+import { RoleService } from '../services';
 
 const { errorResponse } = Helpers;
-const { tripRequest } = TripRequestValidation;
-const { find } = UserService;
+const { tripRequest, tripRequestReturn } = TripRequestValidation;
+const { getRoles } = RoleService;
 
 /**
  * Middleware for trip input validations
@@ -20,37 +20,19 @@ export default class TripRequestMiddleware {
   static async onTripRequest(req, res, next) {
     try {
       const validated = await tripRequest(req.body);
-      const { email } = req.data;
-      if (validated) {
-        const user = await find({ email });
-        const requesterObj = {
-          requesterFirstName: user.firstName,
-          requesterLastName: user.lastName,
-          requesterGender: user.gender,
-          requesterLineManager: user.lineManager,
-          requesterPassportNo: user.passportNo,
-        };
-        if (user) {
-          req.body.requesterId = user.id;
-          req.requester = requesterObj;
-          return next();
-        }
-        throw new ApiError(404, 'User does not exist');
+      const { tripType } = req.body;
+      const { id } = req.data;
+      if (tripType === 'One-way' && validated) {
+        delete validated.returnDate;
+        req.body.requesterId = id;
+        return next();
       }
+      const retrunTripValidated = await tripRequestReturn(validated);
+      if (tripType === 'Round-Trip' && retrunTripValidated) return next();
+      console.log(tripType);
+      throw new ApiError(400, 'tripType is invalid');
     } catch (error) {
       errorResponse(res, { code: error.status || 500, message: error.message });
-    }
-  }
-
-  /**
-     * Validation of requester keys
-     * @param {string} value - Value of key to validate.
-     * @param {param} key - The key to validate.
-     * @returns {object} - Returns an object (error or response).
-     */
-  static tripUserChecker(value, key) {
-    if (!key) {
-      throw new ApiError(400, `Please update your profile with your ${value}`);
     }
   }
 
@@ -61,16 +43,12 @@ export default class TripRequestMiddleware {
        * @param {object} next - Call the next operation.
        * @returns {object} - Returns an object (error or response).
        */
-  static async tripCheckUser(req, res, next) {
+  static async checkManagerId(req, res, next) {
     try {
-      const { tripUserChecker } = TripRequestMiddleware;
-      const {
-        requesterGender, requesterLineManager, requesterPassportNo
-      } = req.requester;
-      tripUserChecker('Gender', requesterGender);
-      tripUserChecker('Line Manager', requesterLineManager);
-      tripUserChecker('PassportNo', requesterPassportNo);
-      next();
+      const { managerId } = req.body;
+      const { roleId } = await getRoles(managerId);
+      if (roleId === 5) return next();
+      throw new ApiError(400, 'The user with this ID is not a manager');
     } catch (error) {
       errorResponse(res, { code: error.status || 500, message: error.message });
     }

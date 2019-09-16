@@ -43,6 +43,24 @@ export default class TripRequestValidation {
           });
           return errors;
         }),
+      gender: Joi.string()
+        .valid('male', 'female')
+        .required()
+        .error((errors) => {
+          errors.forEach((err) => {
+            switch (err.type) {
+              case 'any.required':
+                err.message = 'gender is required!';
+                break;
+              case 'any.empty':
+                err.message = 'gender should not be empty';
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
+        }),
       departureDate: Joi.date()
         .format('YYYY-MM-DD')
         .min(newdate)
@@ -122,7 +140,113 @@ export default class TripRequestValidation {
             }
           });
           return errors;
-        })
+        }),
+      nameAsOnPassport: Joi.string()
+        .min(3)
+        .max(255)
+        .required()
+        .error((errors) => {
+          errors.forEach((err) => {
+            switch (err.type) {
+              case 'any.required':
+                err.message = 'nameAsOnPassport is required!';
+                break;
+              case 'string.min':
+                err.message = 'nameAsOnPassport must not be less than 3 letters';
+                break;
+              case 'string.max':
+                err.message = 'nameAsOnPassport must not exceed 255 letters';
+                break;
+              case 'any.empty':
+                err.message = 'nameAsOnPassport should not be empty';
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
+        }),
+      passportNumber: Joi.string()
+        .min(3)
+        .max(25)
+        .allow('', null)
+        .error((errors) => {
+          errors.forEach((err) => {
+            switch (err.type) {
+              case 'string.min':
+                err.message = 'passportNumber must not be less than 3 letters';
+                break;
+              case 'string.max':
+                err.message = 'passportNumber must not exceed 25 letters';
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
+        }),
+      others: Joi.string()
+        .min(3)
+        .max(255)
+        .allow('', null)
+        .error((errors) => {
+          errors.forEach((err) => {
+            switch (err.type) {
+              case 'string.min':
+                err.message = 'others must not be less than 3 letters';
+                break;
+              case 'string.max':
+                err.message = 'others must not exceed 255 letters';
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
+        }),
+      managerId: Joi.number()
+        .positive()
+        .required()
+        .error((errors) => {
+          errors.forEach((err) => {
+            switch (err.type) {
+              case 'any.required':
+                err.message = 'managerId is required!';
+                break;
+              case 'number.base':
+                err.message = 'managerId should not be empty';
+                break;
+              case 'number.positive':
+                err.message = 'managerId must be a positive number';
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
+        }),
+    };
+    const { error } = Joi.validate({ ...tripObject }, schema);
+    if (error) {
+      throw new ApiError(400, error.details[0].message);
+    }
+    return true;
+  }
+
+  /**
+       * Validates Trip Request paramenters
+       *
+       * @param {object} tripObject - The request object
+       * @param {object} res - The request response object
+       * @returns {object} - returns an object (error or response).
+       */
+  static async tripRequestReturn(tripObject) {
+    const schema = {
+      returnDate: Joi.date()
+        .format('YYYY-MM-DD')
+        .min(Joi.ref('departureDate'))
+        .required()
+        .error(TripRequestValidation.validateTripDate('returnDate')),
     };
     const { error } = Joi.validate({ ...tripObject }, schema);
     if (error) {

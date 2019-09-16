@@ -102,10 +102,13 @@ export const newCompanyUser = {
   password: 'Exunemployed01'
 };
 export const newRequest = {
+  nameAsOnPassport: 'Daniel Smith',
+  gender: 'male',
   requesterId: 12,
   purpose: 'Business Meeting',
   rememberMe: true,
   tripType: 'One-way',
+  managerId: '14',
   origin: 'Lagos',
   destination: 'Abuja',
   departureDate: '2019-11-07',
@@ -113,11 +116,14 @@ export const newRequest = {
 };
 
 export const tripRequest = {
+  nameAsOnPassport: 'Daniel Smith',
+  gender: 'male',
   purpose: 'Official',
   tripType: 'One-way',
   origin: 'Abuja',
   destination: 'Lagos',
-  departureDate: '2020-11-07'
+  departureDate: '2020-11-07',
+  managerId: '14'
 };
 
 export const commentData = {

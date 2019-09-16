@@ -89,6 +89,8 @@ describe('Request route endpoints', () => {
         .send(tripRequest);
       expect(response).to.have.status(201);
       expect(response.body.data).to.include({
+        nameAsOnPassport: 'Daniel Smith',
+        gender: 'male',
         purpose: 'Official',
         origin: 'Abuja',
         destination: 'Lagos',
@@ -112,6 +114,23 @@ describe('Request route endpoints', () => {
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
       expect(response.body.error.message).to.equal('tripType should not be empty');
+    });
+    it('should return validation error gender is invalid', async () => {
+      const response = await chai
+        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .send({ ...tripRequest, gender: 'kkhkh' });
+      expect(response).to.have.status(400);
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error.message).to.equal('"gender" must be one of [male, female]');
+    });
+
+    it('should return validation error gender is empty', async () => {
+      const response = await chai
+        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .send({ ...tripRequest, gender: '' });
+      expect(response).to.have.status(400);
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error.message).to.equal('gender should not be empty');
     });
 
     it('should return validation error purpose is empty', async () => {
@@ -161,6 +180,22 @@ describe('Request route endpoints', () => {
       expect(response).to.have.status(400);
       expect(response.body.error).to.be.a('object');
       expect(response.body.error.message).to.equal('destination must not be less than 3 letters');
+    });
+    it('should return validation error nameAsOnPassport is empty', async () => {
+      const response = await chai
+        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .send({ ...tripRequest, nameAsOnPassport: '' });
+      expect(response).to.have.status(400);
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error.message).to.equal('nameAsOnPassport should not be empty');
+    });
+    it('should return validation error nameAsOnPassport is less than 3 characters', async () => {
+      const response = await chai
+        .request(server).post('/api/trip/request').set('Cookie', `token=${adminToken};`)
+        .send({ ...tripRequest, nameAsOnPassport: 'q' });
+      expect(response).to.have.status(400);
+      expect(response.body.error).to.be.a('object');
+      expect(response.body.error.message).to.equal('nameAsOnPassport must not be less than 3 letters');
     });
     it('should return validation error departureDate is empty', async () => {
       const response = await chai
