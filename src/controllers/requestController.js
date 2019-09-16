@@ -2,7 +2,7 @@ import { RequestService } from '../services';
 import { Helpers } from '../utils';
 
 
-const { getRequests, createTripRequest } = RequestService;
+const { getRequests, createTripRequest, createMultiCityTrip } = RequestService;
 const { successResponse, errorResponse } = Helpers;
 
 /**
@@ -42,8 +42,7 @@ export default class RequestController {
    */
   static async oneWayTripRequest(req, res) {
     try {
-      const { body } = req;
-      const { requester } = req;
+      const { body, requester } = req;
       delete body.returnDate;
       const oneWayTrip = await createTripRequest({ ...body });
       return successResponse(res, { ...oneWayTrip, ...requester }, 201);
@@ -61,6 +60,12 @@ export default class RequestController {
   * @memberof RequestController
   */
   static async multiCityRequest(req, res) {
-    const requests = await createTripRequest()
-  };
+    const { body } = req;
+    try {
+      const multiCityRequest = await createMultiCityTrip(body);
+      return successResponse(res, multiCityRequest, 201);
+    } catch (error) {
+      errorResponse(res, { code: 500, message: error.message });
+    }
+  }
 }

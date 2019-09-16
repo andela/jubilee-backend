@@ -1,6 +1,9 @@
 import db from '../models';
+import { ApiError } from '../utils';
 
-const { Request, Status, User } = db;
+const {
+  Request, Status, User, TripDetail, sequelize
+} = db;
 
 /**
  * RequestService class, interface for CompanyModel
@@ -50,5 +53,25 @@ export default class RequestService {
    */
   static async findRequestById(requestId, options = {}) {
     return Request.findByPk(requestId, options);
+  }
+
+  /**
+  * Create Multi-city trip request
+  * @static
+  * @param {objet} tripreq - The user id
+  * @returns {Promise<object>} A promise object with user requests.
+  * @memberof RequestService
+  */
+  static async createMultiCityTrip(tripreq) {
+    try {
+      const result = await sequelize.transaction(async () => {
+        const options = { include: [{ model: TripDetail, as: 'tripDetails' }] };
+        const { dataValues: newMultiRequest } = await Request.create(tripreq, options);
+        return newMultiRequest;
+      });
+      return result;
+    } catch (error) {
+      throw new ApiError(500, 'Failed to create request. Try again');
+    }
   }
 }

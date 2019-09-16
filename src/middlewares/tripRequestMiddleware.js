@@ -3,7 +3,7 @@ import { Helpers, ApiError } from '../utils';
 import { UserService } from '../services';
 
 const { errorResponse } = Helpers;
-const { tripRequest } = TripRequestValidation;
+const { tripRequest, multiCityRequest } = TripRequestValidation;
 const { find } = UserService;
 
 /**
@@ -12,33 +12,37 @@ const { find } = UserService;
 export default class TripRequestMiddleware {
   /**
      * Middleware method for trip request validation
+     * @param {boolean} isReturnTrip - Boolean for if it's a return trip
      * @param {object} req - The request from the endpoint.
      * @param {object} res - The response returned by the method.
      * @param {object} next - Call the next operation.
      * @returns {object} - Returns an object (error or response).
      */
-  static async onTripRequest(req, res, next) {
-    try {
-      const validated = await tripRequest(req.body);
-      const { email } = req.data;
-      if (validated) {
-        const user = await find({ email });
-        const requesterObj = {
-          requesterFirstName: user.firstName,
-          requesterLastName: user.lastName,
-          requesterGender: user.gender,
-          requesterLineManager: user.lineManager,
-          requesterPassportNo: user.passportNo,
-        };
-        if (user) {
-          req.body.requesterId = user.id;
-          req.requester = requesterObj;
-          return next();
+  static onTripRequest(isReturnTrip) {
+    return async (req, res, next) => {
+      try {
+        const validated = await multiCityRequest(req.body, isReturnTrip);
+        const { email } = req.data;
+        if (validated) {
+          const {
+            id, firstName, lastName, gender, lineManager, passportNo,
+          } = await find({ email });
+          const requesterObj = {
+            firstName,
+            lastName,
+            gender,
+            lineManager,
+            passportNo,
+          };
+          if (id) {
+            req.body.requesterId = id;
+            req.requester = requesterObj;
+            return next();
+          }
         }
-        throw new ApiError(404, 'User does not exist');
+      } catch (error) {
+        errorResponse(res, { code: error.status || 500, message: error.details[0].context.label });
       }
-    } catch (error) {
-      errorResponse(res, { code: error.status || 500, message: error.message });
     }
   }
 
