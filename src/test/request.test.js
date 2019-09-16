@@ -191,9 +191,11 @@ describe('Request Endpoints', () => {
 
 
 describe('Request route endpoints', () => {
-  let userToken;
+  let anotherUserToken;
   let userId;
   let companyAdminResponse;
+  let requester;
+  let adminId;
   before(async () => {
     const reqCompany = { body: { ...companyAdmin, email: 'baystef@slack.com', companyName: 'paystack' } };
 
@@ -210,15 +212,17 @@ describe('Request route endpoints', () => {
     };
 
     companyAdminResponse = await companySignUp(reqCompany, res);
-    const { data: { signupToken } } = companyAdminResponse;
+    const { data: { signupToken, admin } } = companyAdminResponse;
     const reqUser = {
       body: {
         ...newCompanyUser, email: 'steve@google.com', signupToken, roleId: 5
       }
     };
     const companyUserResponse = await userSignup(reqUser, res);
-    userToken = companyUserResponse.data.token;
+    anotherUserToken = companyUserResponse.data.token;
     userId = companyUserResponse.data.id;
+    requester = companyUserResponse.data;
+    adminId = admin.id;
   });
   afterEach(() => {
     sinon.restore();
@@ -246,13 +250,7 @@ describe('Request route endpoints', () => {
       expect(res.status).to.have.been.calledWith(500);
     });
     it('should get a request successfuly', async () => {
-      newRequest.managerId = newlyCreatedCompany.id;
-      const newlyRequest = {
-        ...newRequest,
-        managerId: newlyCreatedCompany.admin.id,
-        requesterId: newlyCreatedUser.id
-      };
-      await Request.create(newlyRequest);
+      await Request.create({ ...newRequest, requesterId: requester.id, managerId: adminId });
       const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${userToken}`);
       expect(response).to.have.status(200);
       expect(response.body.status).to.equal('success');
@@ -263,7 +261,7 @@ describe('Request route endpoints', () => {
     it('should successfully create a one-way trip request', async () => {
       const response = await chai
         .request(server).post('/api/trip/request').set('Cookie', `token=${userToken};`)
-        .send(tripRequest);
+        .send({ ...tripRequest, managerId: adminId });
       expect(response).to.have.status(201);
       expect(response.body.data).to.include({
         purpose: 'Official',

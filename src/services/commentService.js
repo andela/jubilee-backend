@@ -9,7 +9,7 @@ const { Comment, sequelize } = db;
  */
 export default class CommentService {
   /**
-   * Fetches a commen instance based on it's primary key.
+   * Fetches a comment instance based on it's primary key.
    * @static
    * @param {integer} commentId - Primary key of the comment to be fetched.
    * @param {object} options - Additional query information
@@ -22,7 +22,7 @@ export default class CommentService {
 
 
   /**
-   * Creates a facility record in the database.
+   * Creates a comment record in the database.
    * @static
    * @param {object} commentData - comment data to be recorded in the database.
    * @returns {Promise<object>} - A promise object which resolves to the newly created comment.
@@ -43,5 +43,16 @@ export default class CommentService {
     } catch (err) {
       throw new ApiError(500, 'comment was not created');
     }
+  }
+
+  /**
+   * Deletes a comment record from the database.
+   * @static
+   * @param {number} commentId - id of comment to be deleted from the database.
+   * @returns {Promise<object>} - A promise object which resolves to the newly created comment.
+   * @memberof CommentService
+   */
+  static async deleteCommentById(commentId) {
+    return Comment.destroy({ where: { id: commentId } });
   }
 }
