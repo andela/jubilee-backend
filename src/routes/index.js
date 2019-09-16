@@ -8,6 +8,7 @@ import bookingRoutes from './booking';
 import tripRoutes from './trip';
 import commentRoutes from './comment';
 import mockRoutes from './mock';
+import notificationRoutes from './notification';
 
 const router = Router();
 
@@ -18,6 +19,7 @@ router.use('/facility', facilityRoutes);
 router.use('/trip', tripRoutes);
 router.use('/comment', commentRoutes);
 router.use('/mock', mockRoutes);
+router.use('/notification', notificationRoutes);
 router.use('/docs', swaggerUi.serve);
 router.get('/docs', swaggerUi.setup(swaggerDocument));
 

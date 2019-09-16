@@ -6,6 +6,7 @@ import BookingController from './bookingController';
 import RequestController from './requestController';
 import CommentController from './commentController';
 import MockController from './mockController';
+import NotificationController from './notificationController';
 
 export {
   AuthController,
@@ -15,5 +16,6 @@ export {
   BookingController,
   RequestController,
   CommentController,
-  MockController
+  MockController,
+  NotificationController
 };

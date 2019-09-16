@@ -18,7 +18,8 @@ class NotificationService {
    * @memberof NotificationService
    */
   static async findById(notificationId, options = {}) {
-    return await Notification.findByPk(notificationId, options);
+    const notification = await Notification.findByPk(notificationId, options);
+    return notification;
   }
 
   /**
@@ -43,12 +44,13 @@ class NotificationService {
    * @memberof NotificationService
    */
   static async fetchAll(userId, offset = 0, limit = 10) {
-    return await Notification.findAll({
+    const notifications = await Notification.findAll({
       where: { userId },
       order: [['id', 'DESC']],
       offset,
       limit
     });
+    return notifications;
   }
 
   /**
@@ -61,12 +63,13 @@ class NotificationService {
    * @memberof NotificationService
    */
   static async fetchUnread(userId, offset = 0, limit = 10) {
-    return await Notification.findAll({
+    const notifications = await Notification.findAll({
       where: { userId, status: 'unseen' },
       order: [['id', 'DESC']],
       offset,
       limit
     });
+    return notifications;
   }
 
   /**
@@ -93,11 +96,10 @@ class NotificationService {
     * @memberof NotificationService
 */
   static async markAllAsRead(userId) {
-    const [rowAffected, [notification]] = await Notification.update({ status: 'seen' }, {
+    const [, notification] = await Notification.update({ status: 'seen' }, {
       where: { userId, status: 'unseen' },
       returning: true
     });
-    if (!rowAffected) throw new Error('Not Found');
     return notification;
   }
 
@@ -109,9 +111,10 @@ class NotificationService {
     * @memberof NotificationService
 */
   static async deleteOne(notificationId) {
-    return await Notification.destroy({
+    const deleted = await Notification.destroy({
       where: { id: notificationId },
     });
+    return deleted;
   }
 }
 

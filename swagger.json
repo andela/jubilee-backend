@@ -43,6 +43,10 @@
         {
             "name": "Comment",
             "description": "Endpoint for CRUD operations on Comment"
+        },
+        {
+            "name": "Notifications",
+            "description": "Endpoint for manipulating notifications"
         }
     ],
     "paths": {
@@ -688,6 +692,41 @@
                 }
             }
         },
+        "/notification/status/seen": {
+            "patch": {
+                "description": "Endpoint for marking all unseen notifications as seen for a particular user",
+                "summary": "Enables a logged in user to mark all his/her unseen notifications as seen",
+                "tags": [
+                    "Notifications"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "description": "This is the request body object containing trip request",
+                        "schema": {
+                            "$ref": "#/requestBody/tripRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "one-way trip request created successfully"
+                    },
+                    "400": {
+                        "description": "Please fill in the fields"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/booking/accommodation": {
             "post": {
                 "description": "Endpoint for booking accommodations",
@@ -781,7 +820,7 @@
                         "description": "Non-existent record"
                       },
                       "500": {
-                        "description": "Internal Server Error"
+                        "description": "Internal Server error"
                       }
                 }
             }
@@ -1433,6 +1472,41 @@
                       }
                   }
               },
+              "notificationSuccess": {
+                "properties": {
+                    "status": {
+                        "description": "Success message",
+                        "type": "string"
+                    },
+                    "data": {
+                        "description": "An array of updated notifications",
+                        "type": "array"
+                    }
+                },
+                "example": {
+                    "status": "success",
+                    "data": [
+                      {
+                        "id": 8,
+                        "userId": 18,
+                        "message": "Kingsley arinze just registed with your company token",
+                        "url": "https://app.andela.com/kingleyArinze",
+                        "status": "seen",
+                        "createdAt": "2019-09-15T10:15:24.924Z",
+                        "updatedAt": "2019-09-15T10:15:28.183Z"
+                      },
+                      {
+                        "id": 9,
+                        "userId": 18,
+                        "message": "Kingsley arinze just registed with your company token",
+                        "url": "https://app.andela.com/kingleyArinze",
+                        "status": "seen",
+                        "createdAt": "2019-09-15T10:15:25.792Z",
+                        "updatedAt": "2019-09-15T10:15:28.183Z"
+                      }
+                    ]
+                }
+            },
               "400": {
                 "properties": {
                     "status": {
