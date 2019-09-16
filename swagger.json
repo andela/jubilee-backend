@@ -781,12 +781,70 @@
                         "description": "Non-existent record"
                       },
                       "500": {
-                        "description": "Internal Server error"
+                        "description": "Internal Server Error"
                       }
                 }
             }
+        },
+        "/comment/{commentId}":{
+            "delete" : {
+                "description": "Deletes a comment from a comment thread",
+                "summary": "Enables a user to delete his/her comment on a travel request",
+                "tags": [
+                    "Comment"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "commentId",
+                        "required": true,
+                        "description": "The ID of the comment you want to delete"
+                    }
+                  ],
+                  "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/requestBody/commentDeleteSuccess"
+                          }
+                    },
+                    "401": {
+                      "description": "Unauthenticated Request",
+                      "schema": {
+                        "$ref": "#/requestBody/401"
+                      }
+                    },
+                    "403": {
+                        "description": "Unauthorized Request",
+                        "schema": {
+                            "$ref": "#/requestBody/403"
+                          }
+                    },
+                    "404": {
+                        "description": "Non-existent record",
+                        "schema": {
+                            "$ref": "#/requestBody/404"
+                          }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/requestBody/500"
+                          }
+                    }
+                }
+            }
         }
-    },
+    }
+    ,
         "requestBody": {
             "userSignupRequest": {
                 "title": "User Signup Request",
@@ -921,7 +979,7 @@
                     "phoneNumber": "08063345598"
                   },
                 "required": [
-                    "firstName, lastName, email, companyName, companyAddress, categoryOfService, password"
+                    "firstName", "lastName", "email", "companyName", "companyAddress", "categoryOfService", "password"
                 ]
             },
             "tripRequest": {
@@ -947,6 +1005,10 @@
                     "departureDate": {
                         "description": "departureDate of trip request",
                         "type": "string"
+                    },
+                    "managerId": {
+                        "description": "The id of the line manager that would process the trip request",
+                        "type": "number"
                     }
                 },
                 "example": {
@@ -954,10 +1016,11 @@
                     "purpose": "official",
                     "origin": "Abuja",
                     "destination": "Lagos",
-                    "departureDate": "2019-11-07"
+                    "departureDate": "2019-11-07",
+                    "managerId": 2
                   },
                 "required": [
-                    "tripType, purpose, origin, destination, departureDate"
+                    "tripType, purpose, origin, destination, departureDate, managerId"
                 ]
             },
             "companySignUpRequest": {
@@ -1352,6 +1415,24 @@
                     }
                 }
               },
+              "commentDeleteSuccess": {
+                  "properties":{
+                    "status" : {
+                        "description":"A success text that indicates the comment has been deleted",
+                        "type": "string"
+                    },
+                    "data": {
+                        "description": "An object that only contains an id property whose value is the id of the deleted comment",
+                        "type": "object"
+                    }
+                  },
+                  "example": {
+                      "status": "success",
+                      "data":{
+                          "id": 2
+                      }
+                  }
+              },
               "400": {
                 "properties": {
                     "status": {
@@ -1385,6 +1466,24 @@
                     "status": "fail",
                     "error": {
                         "message": "Token is required"
+                    }
+                }
+            },
+            "403": {
+                "properties": {
+                    "status": {
+                        "description": "Usually just the text fail",
+                        "type":"string"
+                    },
+                    "error": {
+                        "description": "A descriptive error message",
+                        "type": "object"
+                    }
+                },
+                "example": {
+                    "status": "fail",
+                    "error": {
+                        "message": "User is unauthorized"
                     }
                 }
             },

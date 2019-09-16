@@ -122,6 +122,22 @@ export default class TripRequestValidation {
             }
           });
           return errors;
+        }),
+      managerId: Joi.number()
+        .required().error((errors) => {
+          errors.forEach((err) => {
+            switch (err.type) {
+              case 'any.required':
+                err.message = 'managerId is required';
+                break;
+              case 'number.base':
+                err.message = 'managerId must be a number';
+                break;
+              default:
+                break;
+            }
+          });
+          return errors;
         })
     };
     const { error } = Joi.validate({ ...tripObject }, schema);
