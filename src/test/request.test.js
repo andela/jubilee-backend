@@ -127,7 +127,7 @@ describe('Request Endpoints', () => {
       .request(server)
       .put(`/api/users/requests/${newlyCreatedRequest.id}/update`)
       .set('Cookie', `token=${userToken}`)
-      .send({ purpose: 'just official', rememberMe: true, departureDate: new Date() });
+      .send({ purpose: 'just official', rememberMe: true, departureDate: '2019-12-09' });
     expect(response).to.have.status(200);
     expect(response.body.status).to.equal('success');
   });
