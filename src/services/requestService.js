@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import db from '../models';
 
 const { Request, Status, User } = db;
@@ -50,5 +51,26 @@ export default class RequestService {
    */
   static async findRequestById(requestId, options = {}) {
     return Request.findByPk(requestId, options);
+  }
+
+  /**
+   * Fetches a request instance from the database based on it's primary key within a timeframe.
+   * @static
+   * @param {sting} startDate - Request start date
+   * @param {sting} endDate - Request end date
+   * @param {integer} userId - Primary key of the request to be fetched.
+   * @returns {Promise<string>} - Number of counts.
+   * @memberof FacilityService
+   */
+  static async searchByTime(startDate, endDate, userId) {
+    const request = await Request.findAndCountAll({
+      where: {
+        createdAt: {
+          [Op.between]: [startDate, endDate]
+        },
+        requesterId: userId
+      }
+    });
+    return request.count;
   }
 }

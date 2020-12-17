@@ -2,6 +2,7 @@ import chai, { expect } from 'chai';
 import faker from 'faker';
 import chaiHttp from 'chai-http';
 import server from '../index';
+import { formatDate } from './dummies';
 
 chai.use(chaiHttp);
 let newlyCreatedUser;
@@ -87,5 +88,34 @@ describe('GET /users/requests', () => {
   it('should return 404 for user with no request yet', async () => {
     const response = await chai.request(server).get('/api/users/requests').set('Cookie', `token=${token}`);
     expect(response).to.have.status(404);
+  });
+});
+
+describe('POST /users/request/stats', () => {
+  it('should successfully return the number of trip request count', async () => {
+    const queryObj = {
+      startDate: formatDate(Date.now()),
+      endDate: formatDate(Date.now())
+    };
+    const response = await chai.request(server)
+      .get(`/api/users/request/stats?start=${queryObj.startDate}&end=${queryObj.endDate}`)
+      .set('Cookie', `token=${token}`);
+    const { body: { status, data } } = response;
+    expect(response).to.have.status(200);
+    expect(status).to.equal('success');
+    expect(data).to.be.a('number');
+  });
+  it('should return 400 error for invalid date input', async () => {
+    const queryObj = {
+      startDate: formatDate(Date.now()),
+      endDate: '2019-09'
+    };
+    const response = await chai.request(server)
+      .get(`/api/users/request/stats?start=${queryObj.startDate}&end=${queryObj.endDate}`)
+      .set('Cookie', `token=${token}`);
+    const { body: { status, error } } = response;
+    expect(response).to.have.status(400);
+    expect(status).to.equal('fail');
+    expect(error.message).to.be.a('string');
   });
 });

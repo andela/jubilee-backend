@@ -379,6 +379,61 @@
                 }
             }
         },
+        "/users/request/stats?start={startDate}&end={endDate}": {
+            "get": {
+                "description": "Get all requests for a particular user within timeframe",
+                "summary": "User can get their request history within a timeframe",
+                "tags": [
+                    "Users"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "startDate",
+                        "required": true,
+                        "schema": {
+                            "type":"string",
+                            "format": "date",
+                            "default": "2019-09-16"
+                        },
+                        "description": "Start date of the request"
+                    },
+                    {
+                        "in": "path",
+                        "name": "endDate",
+                        "required": true,
+                        "schema": {
+                            "type":"string",
+                            "format": "date",
+                            "default": "2019-09-16"
+                        },
+                        "description": "End date of the request"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Access denied, Token required"
+                    },
+                    "404": {
+                        "description": "You have not made any request yet"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
         "/users/role": {
             "patch": {
                 "description": "Updates User Role",
@@ -557,7 +612,7 @@
                         "in": "path",
                         "name": "facilityId",
                         "required": true,
-                        "description": "TThe id of facility to be updated"
+                        "description": "The id of facility to be updated"
                     },
                     {
                         "in": "path",
