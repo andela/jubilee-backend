@@ -4,6 +4,7 @@ import { Helpers } from '../utils';
 
 const { getRequests, createTripRequest } = RequestService;
 const { successResponse, errorResponse } = Helpers;
+let oneWayTrip;
 
 /**
  * A collection of methods that controls user requests.
@@ -45,7 +46,12 @@ export default class RequestController {
       const { body } = req;
       const { requester } = req;
       delete body.returnDate;
-      const oneWayTrip = await createTripRequest({ ...body });
+      const { rememberUserData } = body;
+      if ((requester.check) ? requester.check : rememberUserData) {
+        oneWayTrip = await createTripRequest({ ...body, ...requester });
+      } else {
+        oneWayTrip = await createTripRequest({ ...body });
+      }
       return successResponse(res, { ...oneWayTrip, ...requester }, 201);
     } catch (error) {
       errorResponse(res, {});

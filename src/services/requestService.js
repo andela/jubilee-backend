@@ -46,9 +46,25 @@ export default class RequestService {
    * @param {integer} requestId - Primary key of the request to be fetched.
    * @param {object} options - Additional query information
    * @returns {Promise<array>} - An instance of Request table including it's relationships.
-   * @memberof FacilityService
+   * @memberof RequestService
    */
   static async findRequestById(requestId, options = {}) {
     return Request.findByPk(requestId, options);
+  }
+
+  /**
+   * Fetches a request instance from the database based on it's primary key.
+   * @static
+   * @param {integer} id - Primary key of the request to be fetched.
+   * @param {object} options - Additional query information
+   * @returns {Promise<array>} - An instance of Request table including it's relationships.
+   * @memberof RequestService
+   */
+  static async requestData(id, options) {
+    const dataValues = await Request.findOne({
+      where: { requesterId: id, rememberUserData: options, },
+      order: [['createdAt', 'DESC']]
+    });
+    return dataValues;
   }
 }

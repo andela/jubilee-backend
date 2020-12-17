@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       country: { type: DataTypes.STRING, allowNull: true },
       zip: { type: DataTypes.STRING, allowNull: true },
       phoneNumber: { type: DataTypes.STRING, allowNull: true },
-      passportNo: { type: DataTypes.STRING, allowNull: true },
+      passportNumber: { type: DataTypes.STRING, allowNull: true },
       supplierId: {
         type: DataTypes.INTEGER,
         allowNull: true,

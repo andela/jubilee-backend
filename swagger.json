@@ -257,7 +257,7 @@
                 }
             }
         },
-        "/users/profile/{userId}": {
+        "/users/{userId}": {
             "get": {
                 "description": "Populates user details on the profile",
                 "summary": "Gets a single user profile",
@@ -296,7 +296,7 @@
                 }
             }
         },
-        "/users/profile/{userId}/": {
+        "/users/{userId}/": {
             "put": {
                 "description": "Updates a single user profile",
                 "summary": "User can update the profile details",
@@ -1056,10 +1056,11 @@
                     "origin": "Abuja",
                     "destination": "Lagos",
                     "departureDate": "2019-11-07",
-                    "managerId": 2
+                    "managerId": 2,
+                    "rememberUserData": false
                   },
                 "required": [
-                    "tripType, purpose, origin, destination, departureDate, managerId"
+                    "tripType, purpose, origin, destination, departureDate, rememberUserData"
                 ]
             },
             "companySignUpRequest": {

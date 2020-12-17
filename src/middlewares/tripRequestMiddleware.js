@@ -1,10 +1,11 @@
 import { TripRequestValidation } from '../validation';
 import { Helpers, ApiError } from '../utils';
-import { UserService } from '../services';
+import { UserService, RequestService } from '../services';
 
 const { errorResponse } = Helpers;
 const { tripRequest } = TripRequestValidation;
 const { find } = UserService;
+const { requestData } = RequestService;
 
 /**
  * Middleware for trip input validations
@@ -24,11 +25,11 @@ export default class TripRequestMiddleware {
       if (validated) {
         const user = await find({ email });
         const requesterObj = {
-          requesterFirstName: user.firstName,
-          requesterLastName: user.lastName,
-          requesterGender: user.gender,
-          requesterLineManager: user.lineManager,
-          requesterPassportNo: user.passportNo,
+          firstName: user.firstName,
+          gastName: user.lastName,
+          gender: user.gender,
+          lineManager: user.lineManager,
+          passportNumber: user.passportNumber,
         };
         if (user) {
           req.body.requesterId = user.id;
@@ -65,14 +66,44 @@ export default class TripRequestMiddleware {
     try {
       const { tripUserChecker } = TripRequestMiddleware;
       const {
-        requesterGender, requesterLineManager, requesterPassportNo
+        gender, lineManager, passportNumber
       } = req.requester;
-      tripUserChecker('Gender', requesterGender);
-      tripUserChecker('Line Manager', requesterLineManager);
-      tripUserChecker('PassportNo', requesterPassportNo);
+      tripUserChecker('Gender', gender);
+      tripUserChecker('Line Manager', lineManager);
+      tripUserChecker('passportNumber', passportNumber);
       next();
     } catch (error) {
       errorResponse(res, { code: error.status || 500, message: error.message });
+    }
+  }
+
+  /**
+  * Middleware method for user data in request database
+  * @param {object} req - The request from the endpoint.
+  * @param {object} res - The response returned by the method.
+  * @param {object} next - Call the next operation.
+  * @returns {object} - next().
+  */
+  static async checkUserRecordExist(req, res, next) {
+    try {
+      const { requesterId } = req.body;
+      const userData = await requestData(requesterId, true);
+      if (userData) {
+        const requesterObj = {
+          accommodation: userData.accommodation,
+          passportNumber: userData.passportNumber,
+          passportName: userData.passportName,
+          lineManager: userData.lineManager,
+          gender: userData.gender,
+          check: true,
+        };
+        req.requester = requesterObj;
+        next();
+      } else {
+        next();
+      }
+    } catch (err) {
+      errorResponse(res, { code: 500, message: err.message });
     }
   }
 }
