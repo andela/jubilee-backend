@@ -7,7 +7,6 @@ import env from '../config/env-config';
 const basename = path.basename(__filename);
 const environ = env.NODE_ENV || 'development';
 const config = sequelizeConfig[environ];
-
 const db = {};
 
 if (environ === 'test') config.logging = false;

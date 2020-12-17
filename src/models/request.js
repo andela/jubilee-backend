@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     managerId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       references: {
         model: 'User',
         key: 'id',
@@ -72,6 +72,8 @@ module.exports = (sequelize, DataTypes) => {
     Request.belongsTo(models.User, {
       as: 'manager',
       foreignKey: 'managerId',
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
     });
     Request.belongsTo(models.Status, {
       as: 'status',
@@ -80,6 +82,8 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'CASCADE'
     });
     Request.hasMany(models.AccommodationBooking, {
+      as: 'bookings',
+      foreignKey: 'requestId',
       onUpdate: 'CASCADE',
       onDelete: 'CASCADE'
     });

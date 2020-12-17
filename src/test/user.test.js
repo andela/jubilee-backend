@@ -37,7 +37,7 @@ describe('GET REQUESTS', () => {
   it('should successfully populate the user data on the profile with a status of 200', async () => {
     const { id } = newlyCreatedUser;
     const response = await chai.request(server).get(`/api/users/profile/${id}`)
-      .set('authorization', `Bearer ${token}`);
+      .set('Cookie', `token=${token};`);
     const { body: { status } } = response;
     expect(response).to.have.status(200);
     expect(status).to.equal('success');
@@ -45,7 +45,7 @@ describe('GET REQUESTS', () => {
   it('should return error of 401, access denied', async () => {
     const id = 2131121313;
     const response = await chai.request(server).get(`/api/users/profile/${id}`)
-      .set('authorization', `Bearer ${token}`);
+      .set('Cookie', `token=${token};`);
     const { body: { status } } = response;
     expect(response).to.have.status(401);
     expect(status).to.equal('fail');
@@ -56,7 +56,7 @@ describe('PUT REQUESTS', () => {
   it('should return error of 401, access denied', async () => {
     const id = 2131121313;
     const response = await chai.request(server).put(`/api/users/profile/${id}`)
-      .set('authorization', `Bearer ${token}`);
+      .set('Cookie', `token=${token};`);
     const { body: { status } } = response;
     expect(response).to.have.status(401);
     expect(status).to.equal('fail');
@@ -67,16 +67,15 @@ describe('PUT REQUESTS', () => {
       email: faker.internet.email(),
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
-      country: faker.address.country(),
       gender: 'male',
       street: 'ajayi estate',
       city: faker.address.city(),
-      state: faker.address.state(),
+      state: 'Enugu',
       birthdate: faker.date.past(),
-      phoneNumber: faker.phone.phoneNumber()
+      phoneNumber: faker.phone.phoneNumber(),
     };
     const response = await chai.request(server).put(`/api/users/profile/${id}`).send(user)
-      .set('authorization', `Bearer ${token}`);
+      .set('Cookie', `token=${token};`);
     const { body: { status } } = response;
     expect(response).to.have.status(200);
     expect(status).to.equal('success');

@@ -25,6 +25,10 @@ export default class TripRequestValidation {
        */
   static async tripRequest(tripObject) {
     const schema = {
+      managerId: Joi.number().required()
+        .label('Manager Id is required \n Must be an integer'),
+      requesterId: Joi.number()
+        .label('Manager Id is required \n Must be an integer'),
       tripType: Joi.string()
         .valid('One-way', 'Round-Trip', 'Multi-leg')
         .required()

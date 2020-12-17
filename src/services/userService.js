@@ -102,11 +102,11 @@ export default class UserService {
         }
       });
       if (!existingUser) {
-        throw new ApiError(403, 'You need to signup to use this feature');
+        throw new ApiError(401, 'You need to signup to use this feature');
       }
       return existingUser.dataValues;
     } catch (error) {
-      throw new ApiError(error.status || 500, error.message);
+      throw new ApiError(error.status || 500, error.message || 'Internal Server Error');
     }
   }
 }
